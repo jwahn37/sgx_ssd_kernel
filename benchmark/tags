@@ -1,0 +1,920 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ACOUSTIC	reference_code/hdparm-master/identify.c	89;"	d	file:
+ADV_PIO_MODES	reference_code/hdparm-master/identify.c	57;"	d	file:
+ADV_PWR	reference_code/hdparm-master/identify.c	85;"	d	file:
+ATAPI_DEV	reference_code/hdparm-master/identify.c	20;"	d	file:
+ATA_DEV	reference_code/hdparm-master/identify.c	19;"	d	file:
+ATA_OP_CHECKPOWERMODE1	reference_code/hdparm-master/sgio.h	/^	ATA_OP_CHECKPOWERMODE1		= 0xe5,$/;"	e	enum:__anon7
+ATA_OP_CHECKPOWERMODE2	reference_code/hdparm-master/sgio.h	/^	ATA_OP_CHECKPOWERMODE2		= 0x98,$/;"	e	enum:__anon7
+ATA_OP_DCO	reference_code/hdparm-master/sgio.h	/^	ATA_OP_DCO			= 0xb1,$/;"	e	enum:__anon7
+ATA_OP_DOORLOCK	reference_code/hdparm-master/sgio.h	/^	ATA_OP_DOORLOCK			= 0xde,$/;"	e	enum:__anon7
+ATA_OP_DOORUNLOCK	reference_code/hdparm-master/sgio.h	/^	ATA_OP_DOORUNLOCK		= 0xdf,$/;"	e	enum:__anon7
+ATA_OP_DOWNLOAD_MICROCODE	reference_code/hdparm-master/sgio.h	/^	ATA_OP_DOWNLOAD_MICROCODE	= 0x92,$/;"	e	enum:__anon7
+ATA_OP_DSM	reference_code/hdparm-master/sgio.h	/^	ATA_OP_DSM			= 0x06, \/\/ Data Set Management (TRIM)$/;"	e	enum:__anon7
+ATA_OP_ERASE_SECTORS	reference_code/hdparm-master/sgio.h	/^	ATA_OP_ERASE_SECTORS		= 0xc0,$/;"	e	enum:__anon7
+ATA_OP_FLUSHCACHE	reference_code/hdparm-master/sgio.h	/^	ATA_OP_FLUSHCACHE		= 0xe7,$/;"	e	enum:__anon7
+ATA_OP_FLUSHCACHE_EXT	reference_code/hdparm-master/sgio.h	/^	ATA_OP_FLUSHCACHE_EXT		= 0xea,$/;"	e	enum:__anon7
+ATA_OP_FORMAT_TRACK	reference_code/hdparm-master/sgio.h	/^	ATA_OP_FORMAT_TRACK		= 0x50,$/;"	e	enum:__anon7
+ATA_OP_IDENTIFY	reference_code/hdparm-master/sgio.h	/^	ATA_OP_IDENTIFY			= 0xec,$/;"	e	enum:__anon7
+ATA_OP_IDLEIMMEDIATE	reference_code/hdparm-master/sgio.h	/^	ATA_OP_IDLEIMMEDIATE		= 0xe1,$/;"	e	enum:__anon7
+ATA_OP_PIDENTIFY	reference_code/hdparm-master/sgio.h	/^	ATA_OP_PIDENTIFY		= 0xa1,$/;"	e	enum:__anon7
+ATA_OP_READ_DMA	reference_code/hdparm-master/sgio.h	/^	ATA_OP_READ_DMA			= 0xc8,$/;"	e	enum:__anon7
+ATA_OP_READ_DMA_EXT	reference_code/hdparm-master/sgio.h	/^	ATA_OP_READ_DMA_EXT		= 0x25,$/;"	e	enum:__anon7
+ATA_OP_READ_FPDMA	reference_code/hdparm-master/sgio.h	/^	ATA_OP_READ_FPDMA		= 0x60,	\/\/ NCQ$/;"	e	enum:__anon7
+ATA_OP_READ_LONG	reference_code/hdparm-master/sgio.h	/^	ATA_OP_READ_LONG		= 0x22,$/;"	e	enum:__anon7
+ATA_OP_READ_LONG_ONCE	reference_code/hdparm-master/sgio.h	/^	ATA_OP_READ_LONG_ONCE		= 0x23,$/;"	e	enum:__anon7
+ATA_OP_READ_NATIVE_MAX	reference_code/hdparm-master/sgio.h	/^	ATA_OP_READ_NATIVE_MAX		= 0xf8,$/;"	e	enum:__anon7
+ATA_OP_READ_NATIVE_MAX_EXT	reference_code/hdparm-master/sgio.h	/^	ATA_OP_READ_NATIVE_MAX_EXT	= 0x27,$/;"	e	enum:__anon7
+ATA_OP_READ_PIO	reference_code/hdparm-master/sgio.h	/^	ATA_OP_READ_PIO			= 0x20,$/;"	e	enum:__anon7
+ATA_OP_READ_PIO_EXT	reference_code/hdparm-master/sgio.h	/^	ATA_OP_READ_PIO_EXT		= 0x24,$/;"	e	enum:__anon7
+ATA_OP_READ_PIO_ONCE	reference_code/hdparm-master/sgio.h	/^	ATA_OP_READ_PIO_ONCE		= 0x21,$/;"	e	enum:__anon7
+ATA_OP_READ_VERIFY	reference_code/hdparm-master/sgio.h	/^	ATA_OP_READ_VERIFY		= 0x40,$/;"	e	enum:__anon7
+ATA_OP_READ_VERIFY_EXT	reference_code/hdparm-master/sgio.h	/^	ATA_OP_READ_VERIFY_EXT		= 0x42,$/;"	e	enum:__anon7
+ATA_OP_READ_VERIFY_ONCE	reference_code/hdparm-master/sgio.h	/^	ATA_OP_READ_VERIFY_ONCE		= 0x41,$/;"	e	enum:__anon7
+ATA_OP_SECURITY_DISABLE	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SECURITY_DISABLE		= 0xf6,$/;"	e	enum:__anon7
+ATA_OP_SECURITY_ERASE_PREPARE	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SECURITY_ERASE_PREPARE	= 0xf3,$/;"	e	enum:__anon7
+ATA_OP_SECURITY_ERASE_UNIT	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SECURITY_ERASE_UNIT	= 0xf4,$/;"	e	enum:__anon7
+ATA_OP_SECURITY_FREEZE_LOCK	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SECURITY_FREEZE_LOCK	= 0xf5,$/;"	e	enum:__anon7
+ATA_OP_SECURITY_SET_PASS	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SECURITY_SET_PASS	= 0xf1,$/;"	e	enum:__anon7
+ATA_OP_SECURITY_UNLOCK	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SECURITY_UNLOCK		= 0xf2,$/;"	e	enum:__anon7
+ATA_OP_SETFEATURES	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SETFEATURES		= 0xef,$/;"	e	enum:__anon7
+ATA_OP_SETIDLE	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SETIDLE			= 0xe3,$/;"	e	enum:__anon7
+ATA_OP_SET_MAX	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SET_MAX			= 0xf9,$/;"	e	enum:__anon7
+ATA_OP_SET_MAX_EXT	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SET_MAX_EXT		= 0x37,$/;"	e	enum:__anon7
+ATA_OP_SET_MULTIPLE	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SET_MULTIPLE		= 0xc6,$/;"	e	enum:__anon7
+ATA_OP_SLEEPNOW1	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SLEEPNOW1		= 0xe6,$/;"	e	enum:__anon7
+ATA_OP_SLEEPNOW2	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SLEEPNOW2		= 0x99,$/;"	e	enum:__anon7
+ATA_OP_SMART	reference_code/hdparm-master/sgio.h	/^	ATA_OP_SMART			= 0xb0,$/;"	e	enum:__anon7
+ATA_OP_STANDBYNOW1	reference_code/hdparm-master/sgio.h	/^	ATA_OP_STANDBYNOW1		= 0xe0,$/;"	e	enum:__anon7
+ATA_OP_STANDBYNOW2	reference_code/hdparm-master/sgio.h	/^	ATA_OP_STANDBYNOW2		= 0x94,$/;"	e	enum:__anon7
+ATA_OP_VENDOR_SPECIFIC_0x80	reference_code/hdparm-master/sgio.h	/^	ATA_OP_VENDOR_SPECIFIC_0x80	= 0x80,$/;"	e	enum:__anon7
+ATA_OP_WRITE_DMA	reference_code/hdparm-master/sgio.h	/^	ATA_OP_WRITE_DMA		= 0xca,$/;"	e	enum:__anon7
+ATA_OP_WRITE_DMA_EXT	reference_code/hdparm-master/sgio.h	/^	ATA_OP_WRITE_DMA_EXT		= 0x35,$/;"	e	enum:__anon7
+ATA_OP_WRITE_FPDMA	reference_code/hdparm-master/sgio.h	/^	ATA_OP_WRITE_FPDMA		= 0x61,	\/\/ NCQ$/;"	e	enum:__anon7
+ATA_OP_WRITE_LONG	reference_code/hdparm-master/sgio.h	/^	ATA_OP_WRITE_LONG		= 0x32,$/;"	e	enum:__anon7
+ATA_OP_WRITE_LONG_ONCE	reference_code/hdparm-master/sgio.h	/^	ATA_OP_WRITE_LONG_ONCE		= 0x33,$/;"	e	enum:__anon7
+ATA_OP_WRITE_PIO	reference_code/hdparm-master/sgio.h	/^	ATA_OP_WRITE_PIO		= 0x30,$/;"	e	enum:__anon7
+ATA_OP_WRITE_PIO_EXT	reference_code/hdparm-master/sgio.h	/^	ATA_OP_WRITE_PIO_EXT		= 0x34,$/;"	e	enum:__anon7
+ATA_OP_WRITE_UNC_EXT	reference_code/hdparm-master/sgio.h	/^	ATA_OP_WRITE_UNC_EXT		= 0x45,	\/\/ lba48, no data, uses feat reg$/;"	e	enum:__anon7
+ATA_STAT_DRQ	reference_code/hdparm-master/sgio.h	/^	ATA_STAT_DRQ		= (1 << 3),$/;"	e	enum:__anon8
+ATA_STAT_ERR	reference_code/hdparm-master/sgio.h	/^	ATA_STAT_ERR		= (1 << 0),$/;"	e	enum:__anon8
+ATA_USING_LBA	reference_code/hdparm-master/sgio.h	/^	ATA_USING_LBA		= (1 << 6),$/;"	e	enum:__anon8
+BLKGETSIZE64	hdparm.h	92;"	d
+BLKGETSIZE64	hdparm.h	94;"	d
+BLKGETSIZE64	reference_code/hdparm-master/hdparm.h	92;"	d
+BLKGETSIZE64	reference_code/hdparm-master/hdparm.h	94;"	d
+BUF_ELE_SIZE	frecovery.c	23;"	d	file:
+BUF_LBA_SIZE	frecovery.c	24;"	d	file:
+BUF_SIZE	eval_performance.c	18;"	d	file:
+BUF_SIZE	eval_performance_backup.c	18;"	d	file:
+BUF_SIZE	frecovery.c	22;"	d	file:
+BUF_SIZE	reference_code/hdparm-master/identify.c	34;"	d	file:
+BUF_TYPE	reference_code/hdparm-master/identify.c	33;"	d	file:
+BUSY_STAT	reference_code/hdparm-master/contrib/fix_standby.c	/^	BUSY_STAT	= 0x80,$/;"	e	enum:__anon4	file:
+BuffType	reference_code/hdparm-master/hdparm.c	/^const char *BuffType[4]		= {"unknown", "1Sect", "DualPort", "DualPortCache"};$/;"	v
+CAPAB_0	reference_code/hdparm-master/identify.c	42;"	d	file:
+CAPAB_1	reference_code/hdparm-master/identify.c	43;"	d	file:
+CAPACITY_LSB	reference_code/hdparm-master/identify.c	50;"	d	file:
+CAPACITY_MSB	reference_code/hdparm-master/identify.c	51;"	d	file:
+CBLID	reference_code/hdparm-master/identify.c	473;"	d	file:
+CC	Makefile	/^CC = gcc$/;"	m
+CC	reference_code/hdparm-master/Makefile	/^CC ?= gcc$/;"	m
+CDROM	reference_code/hdparm-master/identify.c	133;"	d	file:
+CDROM_SELECT_SPEED	reference_code/hdparm-master/hdparm.c	48;"	d	file:
+CDROM__SPEED	hdparm.h	/^	CDROM__SPEED		= 0x5322,$/;"	e	enum:__anon1
+CDROM__SPEED	reference_code/hdparm-master/hdparm.h	/^	CDROM__SPEED		= 0x5322,$/;"	e	enum:__anon2
+CDR_MAJOR	reference_code/hdparm-master/identify.c	66;"	d	file:
+CDR_MINOR	reference_code/hdparm-master/identify.c	67;"	d	file:
+CFA_PWR_MODE	reference_code/hdparm-master/identify.c	98;"	d	file:
+CFLAGS	reference_code/hdparm-master/Makefile	/^CFLAGS := -O2 -W -Wall -Wbad-function-cast -Wcast-align -Wpointer-arith -Wcast-qual -Wshadow -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -fkeep-inline-functions -Wwrite-strings -Waggregate-return -Wnested-externs -Wtrigraphs $(CFLAGS)$/;"	m
+CHECKPOWERMODE	reference_code/hdparm-master/contrib/fix_standby.c	/^	CHECKPOWERMODE	= 0xE5,$/;"	e	enum:__anon5	file:
+CLOSE_KEY	benchmark.c	12;"	d	file:
+CLOSE_KEY	eval_performance.c	12;"	d	file:
+CLOSE_KEY	eval_performance_backup.c	12;"	d	file:
+CLOSE_KEY	key_file.c	10;"	d	file:
+CMDS_EN_0	reference_code/hdparm-master/identify.c	78;"	d	file:
+CMDS_EN_1	reference_code/hdparm-master/identify.c	79;"	d	file:
+CMDS_EN_2	reference_code/hdparm-master/identify.c	80;"	d	file:
+CMDS_EN_3	reference_code/hdparm-master/identify.c	95;"	d	file:
+CMDS_SUPP_0	reference_code/hdparm-master/identify.c	75;"	d	file:
+CMDS_SUPP_1	reference_code/hdparm-master/identify.c	76;"	d	file:
+CMDS_SUPP_2	reference_code/hdparm-master/identify.c	77;"	d	file:
+CMDS_SUPP_3	reference_code/hdparm-master/identify.c	94;"	d	file:
+CMDS_W82	reference_code/hdparm-master/identify.c	322;"	d	file:
+CMDS_W83	reference_code/hdparm-master/identify.c	323;"	d	file:
+CMDS_W84	reference_code/hdparm-master/identify.c	324;"	d	file:
+CMD_Q_SUP	reference_code/hdparm-master/identify.c	211;"	d	file:
+CONFIG	reference_code/hdparm-master/identify.c	26;"	d	file:
+CSEL_VAL	reference_code/hdparm-master/identify.c	477;"	d	file:
+DEFAULT_RATIO	eval_performance.c	20;"	d	file:
+DEFAULT_RATIO	eval_performance_backup.c	20;"	d	file:
+DEPTH_BITS	reference_code/hdparm-master/identify.c	236;"	d	file:
+DESTDIR	reference_code/hdparm-master/Makefile	/^DESTDIR =$/;"	m
+DEV_DET	reference_code/hdparm-master/identify.c	475;"	d	file:
+DMA_IL_SUP	reference_code/hdparm-master/identify.c	210;"	d	file:
+DMA_MODE	reference_code/hdparm-master/identify.c	45;"	d	file:
+DMA_SUP	reference_code/hdparm-master/identify.c	209;"	d	file:
+DMA_TIME_MIN	reference_code/hdparm-master/identify.c	59;"	d	file:
+DMA_TIME_NORM	reference_code/hdparm-master/identify.c	60;"	d	file:
+DO_FLAG	reference_code/hdparm-master/hdparm.c	2437;"	d	file:
+DRIVE_NOT_REMOVABLE	reference_code/hdparm-master/identify.c	121;"	d	file:
+DRQ_3MS_VAL	reference_code/hdparm-master/identify.c	124;"	d	file:
+DRQ_50US_VAL	reference_code/hdparm-master/identify.c	126;"	d	file:
+DRQ_INTR_VAL	reference_code/hdparm-master/identify.c	125;"	d	file:
+DRQ_RESPONSE_TIME	reference_code/hdparm-master/identify.c	123;"	d	file:
+DRQ_STAT	reference_code/hdparm-master/contrib/fix_standby.c	/^	DRQ_STAT	= 0x08,$/;"	e	enum:__anon4	file:
+DWORD_IO	reference_code/hdparm-master/identify.c	41;"	d	file:
+ECC_STAT	reference_code/hdparm-master/contrib/fix_standby.c	/^	ECC_STAT	= 0x04,$/;"	e	enum:__anon4	file:
+ENH_ERASE_TIME	reference_code/hdparm-master/identify.c	84;"	d	file:
+ENOIOCTLCMD	reference_code/hdparm-master/hdparm.c	173;"	d	file:
+EQPT_TYPE	reference_code/hdparm-master/identify.c	130;"	d	file:
+ERASE_BITS	reference_code/hdparm-master/identify.c	467;"	d	file:
+ERASE_TIME	reference_code/hdparm-master/identify.c	83;"	d	file:
+ERR_STAT	reference_code/hdparm-master/contrib/fix_standby.c	/^	ERR_STAT	= 0x01,$/;"	e	enum:__anon4	file:
+EXTENT_UNKNOWN	reference_code/hdparm-master/fibmap.c	128;"	d	file:
+FE_COUNT	reference_code/hdparm-master/fibmap.c	122;"	d	file:
+FE_FLAG_LAST	reference_code/hdparm-master/fibmap.c	123;"	d	file:
+FE_FLAG_NOALIGN	reference_code/hdparm-master/fibmap.c	126;"	d	file:
+FE_FLAG_UNALLOC	reference_code/hdparm-master/fibmap.c	125;"	d	file:
+FE_FLAG_UNKNOWN	reference_code/hdparm-master/fibmap.c	124;"	d	file:
+FIEMAP	reference_code/hdparm-master/fibmap.c	153;"	d	file:
+GEN_CONFIG	reference_code/hdparm-master/identify.c	24;"	d	file:
+GET_SET_PARM	reference_code/hdparm-master/hdparm.c	2433;"	d	file:
+GET_XFERMODE	reference_code/hdparm-master/hdparm.c	2340;"	d	file:
+HDIO_DRIVE_CMD	hdparm.h	/^	HDIO_DRIVE_CMD		= 0x031f,$/;"	e	enum:__anon1
+HDIO_DRIVE_CMD	reference_code/hdparm-master/hdparm.h	/^	HDIO_DRIVE_CMD		= 0x031f,$/;"	e	enum:__anon2
+HDIO_DRIVE_RESET	hdparm.h	/^	HDIO_DRIVE_RESET	= 0x031c,$/;"	e	enum:__anon1
+HDIO_DRIVE_RESET	reference_code/hdparm-master/hdparm.h	/^	HDIO_DRIVE_RESET	= 0x031c,$/;"	e	enum:__anon2
+HDIO_DRIVE_TASK	hdparm.h	/^	HDIO_DRIVE_TASK		= 0x031e,$/;"	e	enum:__anon1
+HDIO_DRIVE_TASK	reference_code/hdparm-master/hdparm.h	/^	HDIO_DRIVE_TASK		= 0x031e,$/;"	e	enum:__anon2
+HDIO_DRIVE_TASKFILE	hdparm.h	/^	HDIO_DRIVE_TASKFILE	= 0x031d,$/;"	e	enum:__anon1
+HDIO_DRIVE_TASKFILE	reference_code/hdparm-master/hdparm.h	/^	HDIO_DRIVE_TASKFILE	= 0x031d,$/;"	e	enum:__anon2
+HDIO_GETGEO	hdparm.h	/^	HDIO_GETGEO		= 0x0301,$/;"	e	enum:__anon1
+HDIO_GETGEO	reference_code/hdparm-master/hdparm.h	/^	HDIO_GETGEO		= 0x0301,$/;"	e	enum:__anon2
+HDIO_GETGEO_BIG	hdparm.h	/^	HDIO_GETGEO_BIG		= 0x0330,$/;"	e	enum:__anon1
+HDIO_GETGEO_BIG	reference_code/hdparm-master/hdparm.h	/^	HDIO_GETGEO_BIG		= 0x0330,$/;"	e	enum:__anon2
+HDIO_GET_32BIT	hdparm.h	/^	HDIO_GET_32BIT		= 0x0309,$/;"	e	enum:__anon1
+HDIO_GET_32BIT	reference_code/hdparm-master/hdparm.h	/^	HDIO_GET_32BIT		= 0x0309,$/;"	e	enum:__anon2
+HDIO_GET_ACOUSTIC	hdparm.h	/^	HDIO_GET_ACOUSTIC	= 0x030f,$/;"	e	enum:__anon1
+HDIO_GET_ACOUSTIC	reference_code/hdparm-master/hdparm.h	/^	HDIO_GET_ACOUSTIC	= 0x030f,$/;"	e	enum:__anon2
+HDIO_GET_BUSSTATE	hdparm.h	/^	HDIO_GET_BUSSTATE	= 0x031a,$/;"	e	enum:__anon1
+HDIO_GET_BUSSTATE	reference_code/hdparm-master/hdparm.h	/^	HDIO_GET_BUSSTATE	= 0x031a,$/;"	e	enum:__anon2
+HDIO_GET_DMA	hdparm.h	/^	HDIO_GET_DMA		= 0x030b,$/;"	e	enum:__anon1
+HDIO_GET_DMA	reference_code/hdparm-master/hdparm.h	/^	HDIO_GET_DMA		= 0x030b,$/;"	e	enum:__anon2
+HDIO_GET_IDENTITY	hdparm.h	/^	HDIO_GET_IDENTITY	= 0x030d,$/;"	e	enum:__anon1
+HDIO_GET_IDENTITY	reference_code/hdparm-master/hdparm.h	/^	HDIO_GET_IDENTITY	= 0x030d,$/;"	e	enum:__anon2
+HDIO_GET_KEEPSETTINGS	hdparm.h	/^	HDIO_GET_KEEPSETTINGS	= 0x0308,$/;"	e	enum:__anon1
+HDIO_GET_KEEPSETTINGS	reference_code/hdparm-master/hdparm.h	/^	HDIO_GET_KEEPSETTINGS	= 0x0308,$/;"	e	enum:__anon2
+HDIO_GET_MULTCOUNT	hdparm.h	/^	HDIO_GET_MULTCOUNT	= 0x0304,$/;"	e	enum:__anon1
+HDIO_GET_MULTCOUNT	reference_code/hdparm-master/hdparm.h	/^	HDIO_GET_MULTCOUNT	= 0x0304,$/;"	e	enum:__anon2
+HDIO_GET_NOWERR	hdparm.h	/^	HDIO_GET_NOWERR		= 0x030a,$/;"	e	enum:__anon1
+HDIO_GET_NOWERR	reference_code/hdparm-master/hdparm.h	/^	HDIO_GET_NOWERR		= 0x030a,$/;"	e	enum:__anon2
+HDIO_GET_QDMA	hdparm.h	/^	HDIO_GET_QDMA		= 0x0305,$/;"	e	enum:__anon1
+HDIO_GET_QDMA	reference_code/hdparm-master/hdparm.h	/^	HDIO_GET_QDMA		= 0x0305,$/;"	e	enum:__anon2
+HDIO_GET_UNMASKINTR	hdparm.h	/^	HDIO_GET_UNMASKINTR	= 0x0302,$/;"	e	enum:__anon1
+HDIO_GET_UNMASKINTR	reference_code/hdparm-master/hdparm.h	/^	HDIO_GET_UNMASKINTR	= 0x0302,$/;"	e	enum:__anon2
+HDIO_OBSOLETE_IDENTITY	hdparm.h	/^	HDIO_OBSOLETE_IDENTITY	= 0x0307,$/;"	e	enum:__anon1
+HDIO_OBSOLETE_IDENTITY	reference_code/hdparm-master/hdparm.h	/^	HDIO_OBSOLETE_IDENTITY	= 0x0307,$/;"	e	enum:__anon2
+HDIO_SCAN_HWIF	hdparm.h	/^	HDIO_SCAN_HWIF		= 0x0328,$/;"	e	enum:__anon1
+HDIO_SCAN_HWIF	reference_code/hdparm-master/hdparm.h	/^	HDIO_SCAN_HWIF		= 0x0328,$/;"	e	enum:__anon2
+HDIO_SET_32BIT	hdparm.h	/^	HDIO_SET_32BIT		= 0x0324,$/;"	e	enum:__anon1
+HDIO_SET_32BIT	reference_code/hdparm-master/hdparm.h	/^	HDIO_SET_32BIT		= 0x0324,$/;"	e	enum:__anon2
+HDIO_SET_ACOUSTIC	hdparm.h	/^	HDIO_SET_ACOUSTIC	= 0x032c,$/;"	e	enum:__anon1
+HDIO_SET_ACOUSTIC	reference_code/hdparm-master/hdparm.h	/^	HDIO_SET_ACOUSTIC	= 0x032c,$/;"	e	enum:__anon2
+HDIO_SET_BUSSTATE	hdparm.h	/^	HDIO_SET_BUSSTATE	= 0x032d,$/;"	e	enum:__anon1
+HDIO_SET_BUSSTATE	reference_code/hdparm-master/hdparm.h	/^	HDIO_SET_BUSSTATE	= 0x032d,$/;"	e	enum:__anon2
+HDIO_SET_DMA	hdparm.h	/^	HDIO_SET_DMA		= 0x0326,$/;"	e	enum:__anon1
+HDIO_SET_DMA	reference_code/hdparm-master/hdparm.h	/^	HDIO_SET_DMA		= 0x0326,$/;"	e	enum:__anon2
+HDIO_SET_KEEPSETTINGS	hdparm.h	/^	HDIO_SET_KEEPSETTINGS	= 0x0323,$/;"	e	enum:__anon1
+HDIO_SET_KEEPSETTINGS	reference_code/hdparm-master/hdparm.h	/^	HDIO_SET_KEEPSETTINGS	= 0x0323,$/;"	e	enum:__anon2
+HDIO_SET_MULTCOUNT	hdparm.h	/^	HDIO_SET_MULTCOUNT	= 0x0321,$/;"	e	enum:__anon1
+HDIO_SET_MULTCOUNT	reference_code/hdparm-master/hdparm.h	/^	HDIO_SET_MULTCOUNT	= 0x0321,$/;"	e	enum:__anon2
+HDIO_SET_NOWERR	hdparm.h	/^	HDIO_SET_NOWERR		= 0x0325,$/;"	e	enum:__anon1
+HDIO_SET_NOWERR	reference_code/hdparm-master/hdparm.h	/^	HDIO_SET_NOWERR		= 0x0325,$/;"	e	enum:__anon2
+HDIO_SET_PIO_MODE	hdparm.h	/^	HDIO_SET_PIO_MODE	= 0x0327,$/;"	e	enum:__anon1
+HDIO_SET_PIO_MODE	reference_code/hdparm-master/hdparm.h	/^	HDIO_SET_PIO_MODE	= 0x0327,$/;"	e	enum:__anon2
+HDIO_SET_QDMA	hdparm.h	/^	HDIO_SET_QDMA		= 0x032e,$/;"	e	enum:__anon1
+HDIO_SET_QDMA	reference_code/hdparm-master/hdparm.h	/^	HDIO_SET_QDMA		= 0x032e,$/;"	e	enum:__anon2
+HDIO_SET_UNMASKINTR	hdparm.h	/^	HDIO_SET_UNMASKINTR	= 0x0322,$/;"	e	enum:__anon1
+HDIO_SET_UNMASKINTR	reference_code/hdparm-master/hdparm.h	/^	HDIO_SET_UNMASKINTR	= 0x0322,$/;"	e	enum:__anon2
+HDIO_SET_WCACHE	hdparm.h	/^	HDIO_SET_WCACHE		= 0x032b,$/;"	e	enum:__anon1
+HDIO_SET_WCACHE	reference_code/hdparm-master/hdparm.h	/^	HDIO_SET_WCACHE		= 0x032b,$/;"	e	enum:__anon2
+HDIO_TRISTATE_HWIF	hdparm.h	/^	HDIO_TRISTATE_HWIF	= 0x031b,$/;"	e	enum:__anon1
+HDIO_TRISTATE_HWIF	reference_code/hdparm-master/hdparm.h	/^	HDIO_TRISTATE_HWIF	= 0x031b,$/;"	e	enum:__anon2
+HDIO_UNREGISTER_HWIF	hdparm.h	/^	HDIO_UNREGISTER_HWIF	= 0x032a,$/;"	e	enum:__anon1
+HDIO_UNREGISTER_HWIF	reference_code/hdparm-master/hdparm.h	/^	HDIO_UNREGISTER_HWIF	= 0x032a,$/;"	e	enum:__anon2
+HWRST_RSLT	reference_code/hdparm-master/identify.c	88;"	d	file:
+INB	reference_code/hdparm-master/contrib/fix_standby.c	/^INB (unsigned int reg)$/;"	f	file:
+INCOMPLETE	reference_code/hdparm-master/identify.c	122;"	d	file:
+INCR_FLAG	reference_code/hdparm-master/hdparm.c	2438;"	d	file:
+INDEX_STAT	reference_code/hdparm-master/contrib/fix_standby.c	/^	INDEX_STAT	= 0x02,$/;"	e	enum:__anon4	file:
+INSTALL	reference_code/hdparm-master/Makefile	/^INSTALL = install$/;"	m
+INSTALL_DATA	reference_code/hdparm-master/Makefile	/^INSTALL_DATA = $(INSTALL) -m 644$/;"	m
+INSTALL_DIR	reference_code/hdparm-master/Makefile	/^INSTALL_DIR = $(INSTALL) -m 755 -d$/;"	m
+INSTALL_PROGRAM	reference_code/hdparm-master/Makefile	/^INSTALL_PROGRAM = $(INSTALL)$/;"	m
+INTEGRITY	reference_code/hdparm-master/identify.c	107;"	d	file:
+INW	reference_code/hdparm-master/contrib/fix_standby.c	/^INW (unsigned int reg)$/;"	f	file:
+IORDY_OFF	reference_code/hdparm-master/identify.c	207;"	d	file:
+IORDY_SUP	reference_code/hdparm-master/identify.c	206;"	d	file:
+JUMPER_VAL	reference_code/hdparm-master/identify.c	476;"	d	file:
+LBA28_OK	reference_code/hdparm-master/sgio.h	/^	LBA28_OK		= 0,$/;"	e	enum:__anon9
+LBA48_FORCE	reference_code/hdparm-master/sgio.h	/^	LBA48_FORCE		= 1,$/;"	e	enum:__anon9
+LBA_48_MSB	reference_code/hdparm-master/identify.c	92;"	d	file:
+LBA_64_MSB	reference_code/hdparm-master/identify.c	93;"	d	file:
+LBA_LSB	reference_code/hdparm-master/identify.c	90;"	d	file:
+LBA_MID	reference_code/hdparm-master/identify.c	91;"	d	file:
+LBA_SECTS_LSB	reference_code/hdparm-master/identify.c	53;"	d	file:
+LBA_SECTS_MSB	reference_code/hdparm-master/identify.c	54;"	d	file:
+LBA_SUP	reference_code/hdparm-master/identify.c	208;"	d	file:
+LCYLS	reference_code/hdparm-master/identify.c	25;"	d	file:
+LCYLS_CUR	reference_code/hdparm-master/identify.c	47;"	d	file:
+LCYLS_MAX	reference_code/hdparm-master/identify.c	188;"	d	file:
+LDFLAGS	reference_code/hdparm-master/Makefile	/^LDFLAGS = -s$/;"	m
+LENGTH_FW_REV	reference_code/hdparm-master/identify.c	37;"	d	file:
+LENGTH_MANUF	reference_code/hdparm-master/identify.c	102;"	d	file:
+LENGTH_MEDIA	reference_code/hdparm-master/identify.c	100;"	d	file:
+LENGTH_MODEL	reference_code/hdparm-master/identify.c	39;"	d	file:
+LENGTH_SERIAL	reference_code/hdparm-master/identify.c	32;"	d	file:
+LHEADS	reference_code/hdparm-master/identify.c	27;"	d	file:
+LHEADS_CUR	reference_code/hdparm-master/identify.c	48;"	d	file:
+LSECTS	reference_code/hdparm-master/identify.c	30;"	d	file:
+LSECTS_CUR	reference_code/hdparm-master/identify.c	49;"	d	file:
+MAJOR	reference_code/hdparm-master/identify.c	73;"	d	file:
+MAP_POPULATE	reference_code/hdparm-master/fwdownload.c	26;"	d	file:
+MAX	basic_file.c	9;"	d	file:
+MAX	benchmark.c	15;"	d	file:
+MAX	eval_performance.c	15;"	d	file:
+MAX	eval_performance_backup.c	15;"	d	file:
+MAX	key_file.c	13;"	d	file:
+MAX_AMPS	reference_code/hdparm-master/identify.c	500;"	d	file:
+MEDIA_REMOVABLE	reference_code/hdparm-master/identify.c	120;"	d	file:
+MINOR	reference_code/hdparm-master/identify.c	74;"	d	file:
+MINOR_MAX	reference_code/hdparm-master/identify.c	242;"	d	file:
+MIN_STANDBY_TIMER	reference_code/hdparm-master/identify.c	216;"	d	file:
+MODE	reference_code/hdparm-master/identify.c	219;"	d	file:
+MODE_MAX	reference_code/hdparm-master/identify.c	227;"	d	file:
+MULTIPLE_SETTING_VALID	reference_code/hdparm-master/identify.c	201;"	d	file:
+MULTI_DMA	reference_code/hdparm-master/identify.c	56;"	d	file:
+NAME_BEGIN	eval_performance.c	23;"	d	file:
+NAME_BEGIN	eval_performance_backup.c	23;"	d	file:
+NAME_END	eval_performance.c	22;"	d	file:
+NAME_END	eval_performance_backup.c	22;"	d	file:
+NAME_LEN	eval_performance.c	21;"	d	file:
+NAME_LEN	eval_performance_backup.c	21;"	d	file:
+NMRR	reference_code/hdparm-master/identify.c	106;"	d	file:
+NOT_ATA	reference_code/hdparm-master/identify.c	118;"	d	file:
+NOT_ATAPI	reference_code/hdparm-master/identify.c	119;"	d	file:
+NO_DEV	reference_code/hdparm-master/identify.c	18;"	d	file:
+NUMERIC_PARM	reference_code/hdparm-master/hdparm.c	2432;"	d	file:
+NUM_CMD_FEAT_STR	reference_code/hdparm-master/identify.c	326;"	d	file:
+NUM_RATIO	eval_performance.c	19;"	d	file:
+NUM_RATIO	eval_performance_backup.c	19;"	d	file:
+NUM_SECU_STR	reference_code/hdparm-master/identify.c	486;"	d	file:
+OBJS	reference_code/hdparm-master/Makefile	/^OBJS = hdparm.o identify.o sgio.o sysfs.o geom.o fallocate.o fibmap.o fwdownload.o dvdspeed.o wdidle3.o$/;"	m
+OK_W54_58	reference_code/hdparm-master/identify.c	224;"	d	file:
+OK_W64_70	reference_code/hdparm-master/identify.c	223;"	d	file:
+OK_W88	reference_code/hdparm-master/identify.c	222;"	d	file:
+OPEN_KEY	benchmark.c	11;"	d	file:
+OPEN_KEY	eval_performance.c	11;"	d	file:
+OPEN_KEY	eval_performance_backup.c	11;"	d	file:
+OPEN_KEY	key_file.c	9;"	d	file:
+OUTB	reference_code/hdparm-master/contrib/fix_standby.c	/^OUTB (u8 val, unsigned int reg)$/;"	f	file:
+OUTW	reference_code/hdparm-master/contrib/fix_standby.c	/^OUTW (u16 val, unsigned int reg)$/;"	f	file:
+OVLP_SUP	reference_code/hdparm-master/identify.c	212;"	d	file:
+O_DIRECT	reference_code/hdparm-master/hdparm.c	44;"	d	file:
+PIO_FLOW	reference_code/hdparm-master/identify.c	63;"	d	file:
+PIO_MODE	reference_code/hdparm-master/identify.c	44;"	d	file:
+PIO_MODE_MAX	reference_code/hdparm-master/identify.c	233;"	d	file:
+PIO_NO_FLOW	reference_code/hdparm-master/identify.c	62;"	d	file:
+PIO_SUP	reference_code/hdparm-master/identify.c	232;"	d	file:
+PKT_REL	reference_code/hdparm-master/identify.c	64;"	d	file:
+PKT_SIZE_12_VAL	reference_code/hdparm-master/identify.c	128;"	d	file:
+PKT_SIZE_16_VAL	reference_code/hdparm-master/identify.c	129;"	d	file:
+PKT_SIZE_SUPPORTED	reference_code/hdparm-master/identify.c	127;"	d	file:
+PSWD_CODE	reference_code/hdparm-master/identify.c	87;"	d	file:
+PWRD_ID_VAL	reference_code/hdparm-master/identify.c	197;"	d	file:
+PWRD_NID_VAL	reference_code/hdparm-master/identify.c	196;"	d	file:
+PWR_MODE_OFF	reference_code/hdparm-master/identify.c	499;"	d	file:
+PWR_MODE_REQ	reference_code/hdparm-master/identify.c	498;"	d	file:
+QUEUE_DEPTH	reference_code/hdparm-master/identify.c	68;"	d	file:
+READ	reference_code/hdparm-master/contrib/make_bad_sector.c	18;"	d	file:
+READY_STAT	reference_code/hdparm-master/contrib/fix_standby.c	/^	READY_STAT	= 0x40,$/;"	e	enum:__anon4	file:
+READ_KEY	benchmark.c	13;"	d	file:
+READ_KEY	eval_performance.c	13;"	d	file:
+READ_KEY	eval_performance_backup.c	13;"	d	file:
+READ_KEY	key_file.c	11;"	d	file:
+RECOVERY_KEY	frecovery.c	26;"	d	file:
+RM_STAT	reference_code/hdparm-master/identify.c	96;"	d	file:
+RM_STAT_BITS	reference_code/hdparm-master/identify.c	480;"	d	file:
+RM_STAT_SUP	reference_code/hdparm-master/identify.c	481;"	d	file:
+RST0	reference_code/hdparm-master/identify.c	474;"	d	file:
+RW_LONG	reference_code/hdparm-master/identify.c	35;"	d	file:
+RW_READ	reference_code/hdparm-master/sgio.h	/^enum {	RW_READ			= 0,$/;"	e	enum:__anon9
+RW_WRITE	reference_code/hdparm-master/sgio.h	/^	RW_WRITE		= 1,$/;"	e	enum:__anon9
+SATA_CAP_0	reference_code/hdparm-master/identify.c	69;"	d	file:
+SATA_EN_0	reference_code/hdparm-master/identify.c	72;"	d	file:
+SATA_RESERVED_77	reference_code/hdparm-master/identify.c	70;"	d	file:
+SATA_SUPP_0	reference_code/hdparm-master/identify.c	71;"	d	file:
+SCT_SUPP	reference_code/hdparm-master/identify.c	103;"	d	file:
+SECTOR_SIZE	frecovery.c	21;"	d	file:
+SECTOR_XFER	reference_code/hdparm-master/identify.c	200;"	d	file:
+SECTOR_XFER_CUR	reference_code/hdparm-master/identify.c	52;"	d	file:
+SECTOR_XFER_MAX	reference_code/hdparm-master/identify.c	40;"	d	file:
+SECT_BYTES	reference_code/hdparm-master/identify.c	29;"	d	file:
+SECU_ENABLED	reference_code/hdparm-master/identify.c	484;"	d	file:
+SECU_LEVEL	reference_code/hdparm-master/identify.c	485;"	d	file:
+SECU_STATUS	reference_code/hdparm-master/identify.c	97;"	d	file:
+SEEK_STAT	reference_code/hdparm-master/contrib/fix_standby.c	/^	SEEK_STAT	= 0x10,$/;"	e	enum:__anon4	file:
+SETFEATURES	reference_code/hdparm-master/contrib/fix_standby.c	/^	SETFEATURES	= 0xEF,$/;"	e	enum:__anon5	file:
+SET_FLAG	reference_code/hdparm-master/hdparm.c	2436;"	d	file:
+SET_FLAG1	reference_code/hdparm-master/hdparm.c	2435;"	d	file:
+SET_PARM	reference_code/hdparm-master/hdparm.c	2434;"	d	file:
+SF_NO_STANDBY	reference_code/hdparm-master/contrib/fix_standby.c	/^	SF_NO_STANDBY	= 0x86,$/;"	e	enum:__anon5	file:
+SF_SPINUP_NOW	reference_code/hdparm-master/contrib/fix_standby.c	/^	SF_SPINUP_NOW	= 0x07,$/;"	e	enum:__anon5	file:
+SG_ATA_12	reference_code/hdparm-master/sgio.h	215;"	d
+SG_ATA_12_LEN	reference_code/hdparm-master/sgio.h	216;"	d
+SG_ATA_16	reference_code/hdparm-master/sgio.h	212;"	d
+SG_ATA_16_LEN	reference_code/hdparm-master/sgio.h	213;"	d
+SG_ATA_LBA48	reference_code/hdparm-master/sgio.h	218;"	d
+SG_ATA_PROTO_DMA	reference_code/hdparm-master/sgio.h	222;"	d
+SG_ATA_PROTO_NON_DATA	reference_code/hdparm-master/sgio.h	219;"	d
+SG_ATA_PROTO_PIO_IN	reference_code/hdparm-master/sgio.h	220;"	d
+SG_ATA_PROTO_PIO_OUT	reference_code/hdparm-master/sgio.h	221;"	d
+SG_ATA_PROTO_UDMA_IN	reference_code/hdparm-master/sgio.h	223;"	d
+SG_ATA_PROTO_UDMA_OUT	reference_code/hdparm-master/sgio.h	224;"	d
+SG_CDB2_CHECK_COND	reference_code/hdparm-master/sgio.c	/^	SG_CDB2_CHECK_COND	= 1 << 5,$/;"	e	enum:__anon15	file:
+SG_CDB2_TDIR_FROM_DEV	reference_code/hdparm-master/sgio.c	/^	SG_CDB2_TDIR_FROM_DEV	= 1 << 3,$/;"	e	enum:__anon15	file:
+SG_CDB2_TDIR_TO_DEV	reference_code/hdparm-master/sgio.c	/^	SG_CDB2_TDIR_TO_DEV	= 0 << 3,$/;"	e	enum:__anon15	file:
+SG_CDB2_TLEN_BYTES	reference_code/hdparm-master/sgio.c	/^	SG_CDB2_TLEN_BYTES	= 0 << 2,$/;"	e	enum:__anon15	file:
+SG_CDB2_TLEN_FEAT	reference_code/hdparm-master/sgio.c	/^	SG_CDB2_TLEN_FEAT	= 1 << 0,$/;"	e	enum:__anon15	file:
+SG_CDB2_TLEN_NODATA	reference_code/hdparm-master/sgio.c	/^	SG_CDB2_TLEN_NODATA	= 0 << 0,$/;"	e	enum:__anon15	file:
+SG_CDB2_TLEN_NSECT	reference_code/hdparm-master/sgio.c	/^	SG_CDB2_TLEN_NSECT	= 2 << 0,$/;"	e	enum:__anon15	file:
+SG_CDB2_TLEN_SECTORS	reference_code/hdparm-master/sgio.c	/^	SG_CDB2_TLEN_SECTORS	= 1 << 2,$/;"	e	enum:__anon15	file:
+SG_CHECK_CONDITION	reference_code/hdparm-master/sgio.h	209;"	d
+SG_DMA	reference_code/hdparm-master/sgio.h	207;"	d
+SG_DRIVER_SENSE	reference_code/hdparm-master/sgio.h	210;"	d
+SG_DXFER_FROM_DEV	reference_code/hdparm-master/sgio.h	199;"	d
+SG_DXFER_NONE	reference_code/hdparm-master/sgio.h	197;"	d
+SG_DXFER_TO_DEV	reference_code/hdparm-master/sgio.h	198;"	d
+SG_DXFER_TO_FROM_DEV	reference_code/hdparm-master/sgio.h	200;"	d
+SG_PIO	reference_code/hdparm-master/sgio.h	206;"	d
+SG_READ	reference_code/hdparm-master/sgio.h	203;"	d
+SG_WRITE	reference_code/hdparm-master/sgio.h	204;"	d
+SHIFT_EQPT	reference_code/hdparm-master/identify.c	131;"	d	file:
+SIG	reference_code/hdparm-master/identify.c	523;"	d	file:
+SIG_VAL	reference_code/hdparm-master/identify.c	524;"	d	file:
+SINGLE_DMA	reference_code/hdparm-master/identify.c	55;"	d	file:
+START_FW_REV	reference_code/hdparm-master/identify.c	36;"	d	file:
+START_LBA_UNKNOWN	hdparm.h	84;"	d
+START_LBA_UNKNOWN	reference_code/hdparm-master/hdparm.h	84;"	d
+START_MANUF	reference_code/hdparm-master/identify.c	101;"	d	file:
+START_MEDIA	reference_code/hdparm-master/identify.c	99;"	d	file:
+START_MODEL	reference_code/hdparm-master/identify.c	38;"	d	file:
+START_SERIAL	reference_code/hdparm-master/identify.c	31;"	d	file:
+STBY_ID_VAL	reference_code/hdparm-master/identify.c	195;"	d	file:
+STBY_NID_VAL	reference_code/hdparm-master/identify.c	194;"	d	file:
+STD_STBY	reference_code/hdparm-master/identify.c	204;"	d	file:
+STRIP	reference_code/hdparm-master/Makefile	/^STRIP ?= strip$/;"	m
+SUPPORT_48_BIT	reference_code/hdparm-master/identify.c	325;"	d	file:
+SVC_NBSY	reference_code/hdparm-master/identify.c	65;"	d	file:
+SWRST_REQ	reference_code/hdparm-master/identify.c	213;"	d	file:
+SlowMedFast	reference_code/hdparm-master/hdparm.c	/^const char *SlowMedFast[]	= {"slow", "medium", "fast", "eide", "ata"};$/;"	v
+TARGET	Makefile	/^TARGET = benchmark$/;"	m
+TASKFILE_CMD_REQ_IN	reference_code/hdparm-master/sgio.h	/^	TASKFILE_CMD_REQ_IN	= 2,	\/* ide: IDE_DRIVE_TASK_IN *\/$/;"	e	enum:__anon10
+TASKFILE_CMD_REQ_NODATA	reference_code/hdparm-master/sgio.h	/^	TASKFILE_CMD_REQ_NODATA	= 0,	\/* ide: IDE_DRIVE_TASK_NO_DATA *\/$/;"	e	enum:__anon10
+TASKFILE_CMD_REQ_OUT	reference_code/hdparm-master/sgio.h	/^	TASKFILE_CMD_REQ_OUT	= 3,	\/* ide: IDE_DRIVE_TASK_OUT *\/$/;"	e	enum:__anon10
+TASKFILE_CMD_REQ_RAW_OUT	reference_code/hdparm-master/sgio.h	/^	TASKFILE_CMD_REQ_RAW_OUT= 4,	\/* ide: IDE_DRIVE_TASK_RAW_WRITE *\/$/;"	e	enum:__anon10
+TASKFILE_DPHASE_NONE	reference_code/hdparm-master/sgio.h	/^	TASKFILE_DPHASE_NONE	= 0,	\/* ide: TASKFILE_IN *\/$/;"	e	enum:__anon10
+TASKFILE_DPHASE_PIO_IN	reference_code/hdparm-master/sgio.h	/^	TASKFILE_DPHASE_PIO_IN	= 1,	\/* ide: TASKFILE_IN *\/$/;"	e	enum:__anon10
+TASKFILE_DPHASE_PIO_OUT	reference_code/hdparm-master/sgio.h	/^	TASKFILE_DPHASE_PIO_OUT	= 4,	\/* ide: TASKFILE_OUT *\/$/;"	e	enum:__anon10
+TIMING_BUF_BYTES	reference_code/hdparm-master/hdparm.c	52;"	d	file:
+TIMING_BUF_MB	reference_code/hdparm-master/hdparm.c	51;"	d	file:
+TOTAL_SIZE	eval_performance.c	17;"	d	file:
+TOTAL_SIZE	eval_performance_backup.c	17;"	d	file:
+TRACK_BYTES	reference_code/hdparm-master/identify.c	28;"	d	file:
+TRANSPORT_MAJOR	reference_code/hdparm-master/identify.c	104;"	d	file:
+TRANSPORT_MINOR	reference_code/hdparm-master/identify.c	105;"	d	file:
+ULTRA_DMA	reference_code/hdparm-master/identify.c	81;"	d	file:
+VALID	reference_code/hdparm-master/identify.c	113;"	d	file:
+VALID_VAL	reference_code/hdparm-master/identify.c	114;"	d	file:
+VALID_W160	reference_code/hdparm-master/identify.c	497;"	d	file:
+VERSION	reference_code/hdparm-master/hdparm.c	41;"	d	file:
+WDC_IDLE3_READ	reference_code/hdparm-master/wdidle3.c	/^	WDC_IDLE3_READ		= 1,$/;"	e	enum:__anon3	file:
+WDC_IDLE3_WRITE	reference_code/hdparm-master/wdidle3.c	/^	WDC_IDLE3_WRITE		= 2,$/;"	e	enum:__anon3	file:
+WDC_OP_TIMEOUT_SECS	reference_code/hdparm-master/wdidle3.c	/^	WDC_OP_TIMEOUT_SECS	= 12,$/;"	e	enum:__anon3	file:
+WDC_TIMEOUT_THRESHOLD	reference_code/hdparm-master/wdidle3.c	/^	WDC_TIMEOUT_THRESHOLD	= 128,$/;"	e	enum:__anon3	file:
+WDC_VSC_DISABLED	reference_code/hdparm-master/wdidle3.c	/^	WDC_VSC_DISABLED	= 'D',$/;"	e	enum:__anon3	file:
+WDC_VSC_ENABLED	reference_code/hdparm-master/wdidle3.c	/^	WDC_VSC_ENABLED		= 'E',$/;"	e	enum:__anon3	file:
+WHATS_VALID	reference_code/hdparm-master/identify.c	46;"	d	file:
+WRERR_STAT	reference_code/hdparm-master/contrib/fix_standby.c	/^	WRERR_STAT	= 0x20,$/;"	e	enum:__anon4	file:
+WRITE	reference_code/hdparm-master/contrib/make_bad_sector.c	19;"	d	file:
+WRITE_KEY	benchmark.c	14;"	d	file:
+WRITE_KEY	eval_performance.c	14;"	d	file:
+WRITE_KEY	eval_performance_backup.c	14;"	d	file:
+WRITE_KEY	key_file.c	12;"	d	file:
+WWN_SUP	reference_code/hdparm-master/identify.c	464;"	d	file:
+YN	reference_code/hdparm-master/hdparm.c	165;"	d	file:
+_BSD_SOURCE	reference_code/hdparm-master/hdparm.c	6;"	d	file:
+_FILE_OFFSET_BITS	geom.c	9;"	d	file:
+_FILE_OFFSET_BITS	reference_code/hdparm-master/fallocate.c	7;"	d	file:
+_FILE_OFFSET_BITS	reference_code/hdparm-master/fibmap.c	11;"	d	file:
+_FILE_OFFSET_BITS	reference_code/hdparm-master/geom.c	9;"	d	file:
+_LARGEFILE64_SOURCE	reference_code/hdparm-master/hdparm.c	5;"	d	file:
+__FRECOVERY__	frecovery.h	2;"	d
+__USE_GNU	reference_code/hdparm-master/hdparm.c	10;"	d	file:
+__USE_XOPEN	reference_code/hdparm-master/identify.c	11;"	d	file:
+__attribute__	hdparm.h	7;"	d
+__attribute__	reference_code/hdparm-master/hdparm.h	7;"	d
+abort_if_not_full_device	reference_code/hdparm-master/hdparm.c	/^static int abort_if_not_full_device (int fd, __u64 lba, const char *devname, const char *msg)$/;"	f	file:
+acoustic	reference_code/hdparm-master/hdparm.c	/^static int	set_acoustic = 0, get_acoustic = 0, acoustic = 0;$/;"	v	file:
+actual_ver	reference_code/hdparm-master/identify.c	/^const char actual_ver[MINOR_MAX+2] = { $/;"	v
+apmmode	reference_code/hdparm-master/hdparm.c	/^static int set_apmmode = 0, get_apmmode= 0, apmmode = 0;$/;"	v	file:
+append_range	reference_code/hdparm-master/wiper/contrib/raid1ext4trim.sh-1.5	/^	function append_range (lba,count  ,this_count){$/;"	f
+append_range	reference_code/hdparm-master/wiper/wiper.sh	/^	function append_range (lba,count  ,this_count){$/;"	f
+argc	reference_code/hdparm-master/hdparm.c	/^static int    argc;$/;"	v	file:
+argp	reference_code/hdparm-master/hdparm.c	/^static char  *argp;$/;"	v	file:
+argv	reference_code/hdparm-master/hdparm.c	/^static char **argv;$/;"	v	file:
+ata1_cfg_str	reference_code/hdparm-master/identify.c	/^const char *ata1_cfg_str[] = {			\/* word 0 in ATA-1 mode *\/$/;"	v
+ata_lba_regs	reference_code/hdparm-master/sgio.h	/^struct ata_lba_regs {$/;"	s
+ata_tf	reference_code/hdparm-master/sgio.h	/^struct ata_tf {$/;"	s
+binprefix	reference_code/hdparm-master/Makefile	/^binprefix = $/;"	m
+block_count	reference_code/hdparm-master/fibmap.c	/^	__u64 block_count;$/;"	m	struct:file_extent	file:
+busstate	reference_code/hdparm-master/hdparm.c	/^static int	set_busstate = 0, get_busstate = 0, busstate = 0;$/;"	v	file:
+busstate_str	reference_code/hdparm-master/hdparm.c	/^static const char *busstate_str (unsigned int value)$/;"	f	file:
+byte_offset	reference_code/hdparm-master/fibmap.c	/^	__u64 byte_offset;$/;"	m	struct:file_extent	file:
+cap_sata0_str	reference_code/hdparm-master/identify.c	/^static const char *cap_sata0_str[16] = { $/;"	v	file:
+cdromspeed	reference_code/hdparm-master/hdparm.c	/^static int get_cdromspeed = 0, set_cdromspeed = 0, cdromspeed = 0;$/;"	v	file:
+cfg_str	reference_code/hdparm-master/hdparm.c	/^const char *cfg_str[] =$/;"	v
+cli	reference_code/hdparm-master/contrib/fix_standby.c	/^cli (void)$/;"	f	file:
+cmd_len	reference_code/hdparm-master/sgio.h	/^	unsigned char		cmd_len;$/;"	m	struct:scsi_sg_io_hdr
+cmd_req	reference_code/hdparm-master/sgio.h	/^	int			cmd_req;     \/* IDE command_type *\/$/;"	m	struct:hdio_taskfile
+cmdp	reference_code/hdparm-master/sgio.h	/^	unsigned char *		cmdp;$/;"	m	struct:scsi_sg_io_hdr
+command	reference_code/hdparm-master/sgio.h	/^			unsigned command	: 1;$/;"	m	struct:reg_flags::__anon11::__anon12
+command	reference_code/hdparm-master/sgio.h	/^			unsigned command	: 1;$/;"	m	struct:reg_flags::__anon13::__anon14
+command	reference_code/hdparm-master/sgio.h	/^	__u8			command;$/;"	m	struct:ata_tf
+command	reference_code/hdparm-master/sgio.h	/^	__u8	command;$/;"	m	struct:taskfile_regs
+confirm_i_know_what_i_am_doing	reference_code/hdparm-master/hdparm.c	/^static void confirm_i_know_what_i_am_doing (const char *opt, const char *explanation)$/;"	f	file:
+confirm_please_destroy_my_drive	reference_code/hdparm-master/hdparm.c	/^static void confirm_please_destroy_my_drive (const char *opt, const char *explanation)$/;"	f	file:
+count_emsg	reference_code/hdparm-master/hdparm.c	/^static const char *count_emsg = "bad\/missing sector count";$/;"	v	file:
+cylinders	hdparm.h	/^       unsigned int	cylinders;$/;"	m	struct:local_hd_big_geometry
+cylinders	hdparm.h	/^      unsigned short	cylinders;$/;"	m	struct:local_hd_geometry
+cylinders	reference_code/hdparm-master/hdparm.h	/^       unsigned int	cylinders;$/;"	m	struct:local_hd_big_geometry
+cylinders	reference_code/hdparm-master/hdparm.h	/^      unsigned short	cylinders;$/;"	m	struct:local_hd_geometry
+data	reference_code/hdparm-master/sgio.h	/^			unsigned data		: 1;$/;"	m	struct:reg_flags::__anon11::__anon12
+data	reference_code/hdparm-master/sgio.h	/^			unsigned data		: 1;$/;"	m	struct:reg_flags::__anon13::__anon14
+data	reference_code/hdparm-master/sgio.h	/^	__u16			data[0];$/;"	m	struct:hdio_taskfile
+data	reference_code/hdparm-master/sgio.h	/^	__u8	data;$/;"	m	struct:taskfile_regs
+dco_identify_print	reference_code/hdparm-master/identify.c	/^void dco_identify_print (__u16 *dco)$/;"	f
+default_timeout_secs	reference_code/hdparm-master/sgio.c	/^static const unsigned int default_timeout_secs = 15;$/;"	v	file:
+defects	reference_code/hdparm-master/hdparm.c	/^static int set_defects  = 0, get_defects  = 0, defects  = 0;$/;"	v	file:
+dev	reference_code/hdparm-master/sgio.h	/^			unsigned dev		: 1;$/;"	m	struct:reg_flags::__anon11::__anon12
+dev	reference_code/hdparm-master/sgio.h	/^			unsigned dev		: 1;$/;"	m	struct:reg_flags::__anon13::__anon14
+dev	reference_code/hdparm-master/sgio.h	/^	__u8			dev;$/;"	m	struct:ata_tf
+dev	reference_code/hdparm-master/sgio.h	/^	__u8	dev;$/;"	m	struct:taskfile_regs
+dkeep	reference_code/hdparm-master/hdparm.c	/^static int set_dkeep    = 0, get_dkeep    = 0, dkeep    = 0;$/;"	v	file:
+dma	reference_code/hdparm-master/hdparm.c	/^static int set_dma      = 0, get_dma      = 0, dma      = 0;$/;"	v	file:
+dma_q	reference_code/hdparm-master/hdparm.c	/^static int set_dma_q	  = 0, get_dma_q    = 0, dma_q	  = 0;$/;"	v	file:
+dmpstr	reference_code/hdparm-master/hdparm.c	/^static void dmpstr (const char *prefix, unsigned int i, const char *s[], unsigned int maxi)$/;"	f	file:
+do_IDentity	reference_code/hdparm-master/hdparm.c	/^static int do_IDentity = 0, drq_hsm_error = 0;$/;"	v	file:
+do_abort	reference_code/hdparm-master/wiper/contrib/raid1ext4trim.sh-1.5	/^function do_abort(){$/;"	f
+do_abort	reference_code/hdparm-master/wiper/wiper.sh	/^function do_abort(){$/;"	f
+do_cleanup	reference_code/hdparm-master/wiper/contrib/raid1ext4trim.sh-1.5	/^function do_cleanup(){$/;"	f
+do_cleanup	reference_code/hdparm-master/wiper/wiper.sh	/^function do_cleanup(){$/;"	f
+do_ctimings	reference_code/hdparm-master/hdparm.c	/^static int do_defaults = 0, do_flush = 0, do_ctimings, do_timings = 0;$/;"	v	file:
+do_dco_freeze	reference_code/hdparm-master/hdparm.c	/^static int do_dco_freeze = 0, do_dco_restore = 0, do_dco_identify = 0;$/;"	v	file:
+do_dco_identify	reference_code/hdparm-master/hdparm.c	/^static int do_dco_freeze = 0, do_dco_restore = 0, do_dco_identify = 0;$/;"	v	file:
+do_dco_restore	reference_code/hdparm-master/hdparm.c	/^static int do_dco_freeze = 0, do_dco_restore = 0, do_dco_identify = 0;$/;"	v	file:
+do_defaults	reference_code/hdparm-master/hdparm.c	/^static int do_defaults = 0, do_flush = 0, do_ctimings, do_timings = 0;$/;"	v	file:
+do_drive_cmd	reference_code/hdparm-master/sgio.c	/^int do_drive_cmd (int fd, unsigned char *args, unsigned int timeout_secs)$/;"	f
+do_drive_select	reference_code/hdparm-master/contrib/fix_standby.c	/^do_drive_select (int master_slave)$/;"	f	file:
+do_erase_sectors	reference_code/hdparm-master/hdparm.c	/^static int do_erase_sectors (int fd, __u64 lba, const char *devname)$/;"	f	file:
+do_fallocate	reference_code/hdparm-master/hdparm.c	/^do_fallocate (const char *name)$/;"	f	file:
+do_fallocate_syscall	reference_code/hdparm-master/fallocate.c	/^int do_fallocate_syscall (const char *path, __u64 bytecount)$/;"	f
+do_fibmap_file	reference_code/hdparm-master/hdparm.c	/^do_fibmap_file (const char *name)$/;"	f	file:
+do_filemap	reference_code/hdparm-master/fibmap.c	/^int do_filemap (const char *file_name)$/;"	f
+do_fix_drive	reference_code/hdparm-master/contrib/fix_standby.c	/^do_fix_drive (void)$/;"	f	file:
+do_flush	reference_code/hdparm-master/hdparm.c	/^static int do_defaults = 0, do_flush = 0, do_ctimings, do_timings = 0;$/;"	v	file:
+do_flush_wcache	reference_code/hdparm-master/hdparm.c	/^static int do_flush_wcache = 0;$/;"	v	file:
+do_format_track	reference_code/hdparm-master/hdparm.c	/^static int do_format_track (int fd, __u64 lba, const char *devname)$/;"	f	file:
+do_fwdownload	reference_code/hdparm-master/hdparm.c	/^static int do_fwdownload = 0, xfer_mode = 0;$/;"	v	file:
+do_get_native_max_sectors	reference_code/hdparm-master/hdparm.c	/^static __u64 do_get_native_max_sectors (int fd)$/;"	f	file:
+do_identity	reference_code/hdparm-master/hdparm.c	/^static int do_identity = 0, get_geom = 0, noisy = 1, quiet = 0;$/;"	v	file:
+do_idleunload	reference_code/hdparm-master/hdparm.c	/^static int do_idleunload (int fd, const char *devname)$/;"	f	file:
+do_make_bad_sector	reference_code/hdparm-master/hdparm.c	/^static int do_make_bad_sector (int fd, __u64 lba, const char *devname)$/;"	f	file:
+do_nondata_command	reference_code/hdparm-master/contrib/fix_standby.c	/^do_nondata_command (u8 command)$/;"	f	file:
+do_read_sector	reference_code/hdparm-master/hdparm.c	/^static int do_read_sector (int fd, __u64 lba, const char *devname)$/;"	f	file:
+do_rw_test	reference_code/hdparm-master/contrib/fix_standby.c	/^do_rw_test (void)$/;"	f	file:
+do_set_max_sectors	reference_code/hdparm-master/hdparm.c	/^static int do_set_max_sectors (int fd, __u64 max_lba, int permanent)$/;"	f	file:
+do_set_security	reference_code/hdparm-master/hdparm.c	/^do_set_security (int fd)$/;"	f	file:
+do_setfeatures	reference_code/hdparm-master/contrib/fix_standby.c	/^do_setfeatures (u8 subcommand, u8 parameter)$/;"	f	file:
+do_taskfile_cmd	reference_code/hdparm-master/sgio.c	/^int do_taskfile_cmd (int fd, struct hdio_taskfile *r, unsigned int timeout_secs)$/;"	f
+do_timings	reference_code/hdparm-master/hdparm.c	/^static int do_defaults = 0, do_flush = 0, do_ctimings, do_timings = 0;$/;"	v	file:
+do_trim_from_stdin	reference_code/hdparm-master/hdparm.c	/^do_trim_from_stdin (int fd, const char *devname)$/;"	f	file:
+do_trim_sector_ranges	reference_code/hdparm-master/hdparm.c	/^static void do_trim_sector_ranges (int fd, const char *devname, int nranges, struct sector_range_s *sr)$/;"	f	file:
+do_write_sector	reference_code/hdparm-master/hdparm.c	/^static int do_write_sector (int fd, __u64 lba, const char *devname)$/;"	f	file:
+doorlock	reference_code/hdparm-master/hdparm.c	/^static int set_doorlock = 0, get_doorlock = 0, doorlock = 0;$/;"	v	file:
+dphase	reference_code/hdparm-master/sgio.h	/^	int			dphase;$/;"	m	struct:hdio_taskfile
+driver_status	reference_code/hdparm-master/sgio.h	/^	unsigned short		driver_status;$/;"	m	struct:scsi_sg_io_hdr
+drq_hsm_error	reference_code/hdparm-master/hdparm.c	/^static int do_IDentity = 0, drq_hsm_error = 0;$/;"	v	file:
+dump_bytes	reference_code/hdparm-master/sgio.c	/^static void dump_bytes (const char *prefix, unsigned char *p, int len)$/;"	f	file:
+dump_identity	reference_code/hdparm-master/hdparm.c	/^static void dump_identity (__u16 *idw)$/;"	f	file:
+dump_regs	reference_code/hdparm-master/contrib/fix_standby.c	/^dump_regs (void)$/;"	f	file:
+dump_sectors	reference_code/hdparm-master/hdparm.c	/^static void dump_sectors (__u16 *w, unsigned int count)$/;"	f	file:
+duration	reference_code/hdparm-master/sgio.h	/^	unsigned int		duration;$/;"	m	struct:scsi_sg_io_hdr
+dxfer_direction	reference_code/hdparm-master/sgio.h	/^	int			dxfer_direction;$/;"	m	struct:scsi_sg_io_hdr
+dxfer_len	reference_code/hdparm-master/sgio.h	/^	unsigned int		dxfer_len;$/;"	m	struct:scsi_sg_io_hdr
+dxferp	reference_code/hdparm-master/sgio.h	/^	void *			dxferp;$/;"	m	struct:scsi_sg_io_hdr
+enhanced_erase	reference_code/hdparm-master/hdparm.c	/^static int enhanced_erase = 0;$/;"	v	file:
+erase_sectors	reference_code/hdparm-master/hdparm.c	/^static int   erase_sectors = 0;$/;"	v	file:
+erase_sectors_addr	reference_code/hdparm-master/hdparm.c	/^static __u64 erase_sectors_addr = ~0ULL;$/;"	v	file:
+error	reference_code/hdparm-master/sgio.h	/^	__u8			error;$/;"	m	struct:ata_tf
+eval_value	reference_code/hdparm-master/debian/hdparm.init	/^eval_value()$/;"	f
+exec_prefix	reference_code/hdparm-master/Makefile	/^exec_prefix = $(binprefix)\/$/;"	m
+extent_count	reference_code/hdparm-master/fibmap.c	/^	__u32 extent_count;$/;"	m	struct:fm_s	file:
+extract_id_string	reference_code/hdparm-master/hdparm.c	/^extract_id_string (__u16 *idw, int words, char *dst)$/;"	f	file:
+fd_is_raid	geom.c	/^int fd_is_raid (int fd)$/;"	f
+fd_is_raid	reference_code/hdparm-master/geom.c	/^int fd_is_raid (int fd)$/;"	f
+fe	reference_code/hdparm-master/fibmap.c	/^	struct fe_s fe[FE_COUNT];$/;"	m	struct:fs_s	typeref:struct:fs_s::fe_s	file:
+fe_s	reference_code/hdparm-master/fibmap.c	/^struct fe_s {$/;"	s	file:
+feat	reference_code/hdparm-master/sgio.h	/^			unsigned feat		: 1;$/;"	m	struct:reg_flags::__anon11::__anon12
+feat	reference_code/hdparm-master/sgio.h	/^			unsigned feat		: 1;$/;"	m	struct:reg_flags::__anon13::__anon14
+feat	reference_code/hdparm-master/sgio.h	/^	__u8	feat;$/;"	m	struct:ata_lba_regs
+feat	reference_code/hdparm-master/sgio.h	/^	__u8	feat;$/;"	m	struct:taskfile_regs
+feat_3_str	reference_code/hdparm-master/identify.c	/^static const char *feat_3_str[16] = { $/;"	v	file:
+feat_sata0_str	reference_code/hdparm-master/identify.c	/^static const char *feat_sata0_str[16] = {$/;"	v	file:
+feat_sct_str	reference_code/hdparm-master/identify.c	/^static const char *feat_sct_str[16] = {$/;"	v	file:
+feat_word69_str	reference_code/hdparm-master/identify.c	/^static const char *feat_word69_str[16] = { $/;"	v	file:
+feat_word82_str	reference_code/hdparm-master/identify.c	/^static const char *feat_word82_str[16] = { $/;"	v	file:
+feat_word83_str	reference_code/hdparm-master/identify.c	/^static const char *feat_word83_str[16] = { $/;"	v	file:
+feat_word84_str	reference_code/hdparm-master/identify.c	/^static const char *feat_word84_str[16] = { $/;"	v	file:
+file_extent	reference_code/hdparm-master/fibmap.c	/^struct file_extent {$/;"	s	file:
+find_dev_file	frecovery.c	/^static void find_dev_file(dev_t dev, char *dev_file)$/;"	f	file:
+find_dev_in_directory	geom.c	/^static int find_dev_in_directory (dev_t dev, const char *dir, char *path, int verbose)$/;"	f	file:
+find_dev_in_directory	reference_code/hdparm-master/geom.c	/^static int find_dev_in_directory (dev_t dev, const char *dir, char *path, int verbose)$/;"	f	file:
+find_prog	reference_code/hdparm-master/wiper/contrib/raid1ext4trim.sh-1.5	/^function find_prog(){$/;"	f
+find_prog	reference_code/hdparm-master/wiper/wiper.sh	/^function find_prog(){$/;"	f
+first_block	reference_code/hdparm-master/fibmap.c	/^	__u64 first_block;$/;"	m	struct:file_extent	file:
+flags	reference_code/hdparm-master/fibmap.c	/^	__u32 flags;$/;"	m	struct:fe_s	file:
+flags	reference_code/hdparm-master/fibmap.c	/^	__u32 flags;$/;"	m	struct:fm_s	file:
+flags	reference_code/hdparm-master/sgio.h	/^	unsigned int		flags;$/;"	m	struct:scsi_sg_io_hdr
+flush_buffer_cache	reference_code/hdparm-master/hdparm.c	/^static void flush_buffer_cache (int fd)$/;"	f	file:
+flush_wcache	reference_code/hdparm-master/hdparm.c	/^static int flush_wcache (int fd)$/;"	f	file:
+fm	reference_code/hdparm-master/fibmap.c	/^	struct fm_s fm;$/;"	m	struct:fs_s	typeref:struct:fs_s::fm_s	file:
+fm_s	reference_code/hdparm-master/fibmap.c	/^struct fm_s {$/;"	s	file:
+format_track	reference_code/hdparm-master/hdparm.c	/^static int   format_track = 0;$/;"	v	file:
+format_track_addr	reference_code/hdparm-master/hdparm.c	/^static __u64 format_track_addr = ~0ULL;$/;"	v	file:
+frecovery	frecovery.c	/^int frecovery(int fd, unsigned int recovery_time)$/;"	f
+fromhex	reference_code/hdparm-master/hdparm.c	/^static int fromhex (__u8 c)$/;"	f	file:
+fs_s	reference_code/hdparm-master/fibmap.c	/^struct fs_s {$/;"	s	file:
+fsreadahead	reference_code/hdparm-master/hdparm.c	/^static int set_fsreadahead= 0, get_fsreadahead= 0, fsreadahead= 0;$/;"	v	file:
+fwdownload	reference_code/hdparm-master/fwdownload.c	/^int fwdownload (int fd, __u16 *id, const char *fwpath, int xfer_mode)$/;"	f
+fwpath	reference_code/hdparm-master/hdparm.c	/^static char security_password[33], *fwpath;$/;"	v	file:
+get_acoustic	reference_code/hdparm-master/hdparm.c	/^static int	set_acoustic = 0, get_acoustic = 0, acoustic = 0;$/;"	v	file:
+get_apmmode	reference_code/hdparm-master/hdparm.c	/^static int set_apmmode = 0, get_apmmode= 0, apmmode = 0;$/;"	v	file:
+get_busstate	reference_code/hdparm-master/hdparm.c	/^static int	set_busstate = 0, get_busstate = 0, busstate = 0;$/;"	v	file:
+get_cdromspeed	reference_code/hdparm-master/hdparm.c	/^static int get_cdromspeed = 0, set_cdromspeed = 0, cdromspeed = 0;$/;"	v	file:
+get_dco_identify_data	reference_code/hdparm-master/hdparm.c	/^static __u16 *get_dco_identify_data (int fd, int quietly)$/;"	f	file:
+get_defects	reference_code/hdparm-master/hdparm.c	/^static int set_defects  = 0, get_defects  = 0, defects  = 0;$/;"	v	file:
+get_dev_from_fd	reference_code/hdparm-master/sysfs.c	/^static int get_dev_from_fd (int fd, dev_t *dev, int verbose)$/;"	f	file:
+get_dev_geometry	geom.c	/^int get_dev_geometry (int fd, __u32 *cyls, __u32 *heads, __u32 *sects,$/;"	f
+get_dev_geometry	reference_code/hdparm-master/geom.c	/^int get_dev_geometry (int fd, __u32 *cyls, __u32 *heads, __u32 *sects,$/;"	f
+get_dev_t_geometry	geom.c	/^int get_dev_t_geometry (dev_t dev, __u32 *cyls, __u32 *heads, __u32 *sects,$/;"	f
+get_dev_t_geometry	reference_code/hdparm-master/geom.c	/^int get_dev_t_geometry (dev_t dev, __u32 *cyls, __u32 *heads, __u32 *sects,$/;"	f
+get_devpath	reference_code/hdparm-master/wiper/wiper.sh	/^function get_devpath(){$/;"	f
+get_dkeep	reference_code/hdparm-master/hdparm.c	/^static int set_dkeep    = 0, get_dkeep    = 0, dkeep    = 0;$/;"	v	file:
+get_dma	reference_code/hdparm-master/hdparm.c	/^static int set_dma      = 0, get_dma      = 0, dma      = 0;$/;"	v	file:
+get_dma_q	reference_code/hdparm-master/hdparm.c	/^static int set_dma_q	  = 0, get_dma_q    = 0, dma_q	  = 0;$/;"	v	file:
+get_doorlock	reference_code/hdparm-master/hdparm.c	/^static int set_doorlock = 0, get_doorlock = 0, doorlock = 0;$/;"	v	file:
+get_doreset	reference_code/hdparm-master/hdparm.c	/^static int	get_doreset = 0, set_doreset = 0;$/;"	v	file:
+get_driver_major	geom.c	/^static int get_driver_major (const char *driver, unsigned int *major)$/;"	f	file:
+get_driver_major	reference_code/hdparm-master/geom.c	/^static int get_driver_major (const char *driver, unsigned int *major)$/;"	f	file:
+get_erase_timeout_secs	reference_code/hdparm-master/hdparm.c	/^static unsigned int get_erase_timeout_secs (int fd, int enhanced)$/;"	f	file:
+get_filename_parm	reference_code/hdparm-master/hdparm.c	/^get_filename_parm (char **result, const char *emsg)$/;"	f	file:
+get_fsdev	reference_code/hdparm-master/wiper/wiper.sh	/^function get_fsdev(){   ## from fsdir$/;"	f
+get_fsdir	reference_code/hdparm-master/wiper/wiper.sh	/^function get_fsdir(){$/;"	f
+get_fsmode	reference_code/hdparm-master/wiper/wiper.sh	/^function get_fsmode(){  ## from fsdir$/;"	f
+get_fsreadahead	reference_code/hdparm-master/hdparm.c	/^static int set_fsreadahead= 0, get_fsreadahead= 0, fsreadahead= 0;$/;"	v	file:
+get_geom	reference_code/hdparm-master/hdparm.c	/^static int do_identity = 0, get_geom = 0, noisy = 1, quiet = 0;$/;"	v	file:
+get_hitachi_temp	reference_code/hdparm-master/hdparm.c	/^static int get_hitachi_temp = 0, set_hitachi_temp = 0;$/;"	v	file:
+get_identify_data	reference_code/hdparm-master/hdparm.c	/^static void get_identify_data (int fd)$/;"	f	file:
+get_idleimmediate	reference_code/hdparm-master/hdparm.c	/^static int get_idleimmediate = 0, set_idleimmediate = 0;$/;"	v	file:
+get_idleunload	reference_code/hdparm-master/hdparm.c	/^static int get_idleunload = 0, set_idleunload = 0;$/;"	v	file:
+get_io32bit	reference_code/hdparm-master/hdparm.c	/^static int set_io32bit  = 0, get_io32bit  = 0, io32bit  = 0;$/;"	v	file:
+get_keep	reference_code/hdparm-master/hdparm.c	/^static int set_keep     = 0, get_keep     = 0, keep     = 0;$/;"	v	file:
+get_lba_capacity	reference_code/hdparm-master/hdparm.c	/^static __u64 get_lba_capacity (__u16 *idw)$/;"	f	file:
+get_longarg	reference_code/hdparm-master/hdparm.c	/^get_longarg (void)$/;"	f	file:
+get_lookahead	reference_code/hdparm-master/hdparm.c	/^static int set_lookahead= 0, get_lookahead= 0, lookahead= 0;$/;"	v	file:
+get_major	reference_code/hdparm-master/wiper/wiper.sh	/^function get_major(){$/;"	f
+get_mult	reference_code/hdparm-master/hdparm.c	/^static int set_mult     = 0, get_mult     = 0, mult     = 0;$/;"	v	file:
+get_native_max_sectors	reference_code/hdparm-master/hdparm.c	/^static int   set_max_sectors = 0, set_max_permanent, get_native_max_sectors = 0;$/;"	v	file:
+get_nowerr	reference_code/hdparm-master/hdparm.c	/^static int set_nowerr   = 0, get_nowerr   = 0, nowerr   = 0;$/;"	v	file:
+get_piomode	reference_code/hdparm-master/hdparm.c	/^static int set_piomode  = 0, get_piomode= 0, piomode = 0;$/;"	v	file:
+get_powermode	reference_code/hdparm-master/hdparm.c	/^static int get_powermode  = 0, set_powermode = 0;$/;"	v	file:
+get_powerup_in_standby	reference_code/hdparm-master/hdparm.c	/^static int set_powerup_in_standby = 0, get_powerup_in_standby = 0, powerup_in_standby = 0;$/;"	v	file:
+get_prefetch	reference_code/hdparm-master/hdparm.c	/^static int set_prefetch = 0, get_prefetch = 0, prefetch = 0;$/;"	v	file:
+get_raid1_start_lba	geom.c	/^static int get_raid1_start_lba (int fd, __u64 *start_lba)$/;"	f	file:
+get_raid1_start_lba	reference_code/hdparm-master/geom.c	/^static int get_raid1_start_lba (int fd, __u64 *start_lba)$/;"	f	file:
+get_readonly	reference_code/hdparm-master/hdparm.c	/^static int set_readonly = 0, get_readonly = 0, readonly = 0;$/;"	v	file:
+get_realpath	reference_code/hdparm-master/wiper/wiper.sh	/^function get_realpath(){$/;"	f
+get_reread_partn	reference_code/hdparm-master/hdparm.c	/^static int	set_reread_partn = 0, get_reread_partn;$/;"	v	file:
+get_seagate	reference_code/hdparm-master/hdparm.c	/^static int set_seagate  = 0, get_seagate  = 0;$/;"	v	file:
+get_sector_count	geom.c	/^static int get_sector_count (int fd, __u64 *nsectors)$/;"	f	file:
+get_sector_count	reference_code/hdparm-master/geom.c	/^static int get_sector_count (int fd, __u64 *nsectors)$/;"	f	file:
+get_security_password	reference_code/hdparm-master/hdparm.c	/^static void get_security_password (int handle_NULL)$/;"	f	file:
+get_set_max_sectors_parms	reference_code/hdparm-master/hdparm.c	/^get_set_max_sectors_parms (void)$/;"	f	file:
+get_sleepnow	reference_code/hdparm-master/hdparm.c	/^static int set_sleepnow   = 0, get_sleepnow   = 0;$/;"	v	file:
+get_standby	reference_code/hdparm-master/hdparm.c	/^static int set_standby  = 0, get_standby  = 0, standby= 0;$/;"	v	file:
+get_standbynow	reference_code/hdparm-master/hdparm.c	/^static int set_standbynow = 0, get_standbynow = 0;$/;"	v	file:
+get_start_lba	frecovery.c	/^static unsigned long get_start_lba(dev_t dev)$/;"	f	file:
+get_trim_dev_limit	reference_code/hdparm-master/hdparm.c	/^get_trim_dev_limit (void)$/;"	f	file:
+get_u64_parm	reference_code/hdparm-master/hdparm.c	/^get_u64_parm (int optional, const char flag_c, int *flag_p, __u64 *value_p,$/;"	f	file:
+get_unmask	reference_code/hdparm-master/hdparm.c	/^static int set_unmask   = 0, get_unmask   = 0, unmask   = 0;$/;"	v	file:
+get_wcache	reference_code/hdparm-master/hdparm.c	/^static int set_wcache   = 0, get_wcache   = 0, wcache   = 0;$/;"	v	file:
+get_wdidle3	reference_code/hdparm-master/hdparm.c	/^static int set_wdidle3  = 0, get_wdidle3 = 0, wdidle3 = 0;$/;"	v	file:
+get_write_read_verify	reference_code/hdparm-master/hdparm.c	/^static int write_read_verify = 0, get_write_read_verify = 0, set_write_read_verify = 0;$/;"	v	file:
+get_xfermode	reference_code/hdparm-master/hdparm.c	/^static int set_xfermode = 0, get_xfermode = 0;$/;"	v	file:
+handle_extent	reference_code/hdparm-master/fibmap.c	/^static void handle_extent (struct file_extent ext, unsigned int sectors_per_block, __u64 start_lba)$/;"	f	file:
+handle_standalone_longarg	reference_code/hdparm-master/hdparm.c	/^handle_standalone_longarg (char *name)$/;"	f	file:
+hdio_taskfile	reference_code/hdparm-master/sgio.h	/^struct hdio_taskfile {$/;"	s
+heads	hdparm.h	/^       unsigned char	heads;$/;"	m	struct:local_hd_big_geometry
+heads	hdparm.h	/^      unsigned char	heads;$/;"	m	struct:local_hd_geometry
+heads	reference_code/hdparm-master/hdparm.h	/^       unsigned char	heads;$/;"	m	struct:local_hd_big_geometry
+heads	reference_code/hdparm-master/hdparm.h	/^      unsigned char	heads;$/;"	m	struct:local_hd_geometry
+hob	reference_code/hdparm-master/sgio.h	/^		} hob;$/;"	m	union:reg_flags::__anon13	typeref:struct:reg_flags::__anon13::__anon14
+hob	reference_code/hdparm-master/sgio.h	/^	struct ata_lba_regs	hob;$/;"	m	struct:ata_tf	typeref:struct:ata_tf::ata_lba_regs
+hob	reference_code/hdparm-master/sgio.h	/^	struct taskfile_regs	hob;$/;"	m	struct:hdio_taskfile	typeref:struct:hdio_taskfile::taskfile_regs
+host_status	reference_code/hdparm-master/sgio.h	/^	unsigned short		host_status;$/;"	m	struct:scsi_sg_io_hdr
+i_know_what_i_am_doing	reference_code/hdparm-master/hdparm.c	/^static int	i_know_what_i_am_doing = 0;$/;"	v	file:
+ibytes	reference_code/hdparm-master/sgio.h	/^	unsigned long		ibytes;$/;"	m	struct:hdio_taskfile
+id	reference_code/hdparm-master/hdparm.c	/^static __u16 *id;$/;"	v	file:
+ide_altstatus	reference_code/hdparm-master/contrib/fix_standby.c	/^static unsigned int ide_base, ide_control, ide_altstatus;$/;"	v	file:
+ide_base	reference_code/hdparm-master/contrib/fix_standby.c	/^static unsigned int ide_base, ide_control, ide_altstatus;$/;"	v	file:
+ide_command	reference_code/hdparm-master/contrib/fix_standby.c	/^	ide_command	= 7,$/;"	e	enum:__anon6	file:
+ide_control	reference_code/hdparm-master/contrib/fix_standby.c	/^static unsigned int ide_base, ide_control, ide_altstatus;$/;"	v	file:
+ide_data	reference_code/hdparm-master/contrib/fix_standby.c	/^	ide_data	= 0,$/;"	e	enum:__anon6	file:
+ide_error	reference_code/hdparm-master/contrib/fix_standby.c	/^	ide_error	= ide_feature,$/;"	e	enum:__anon6	file:
+ide_feature	reference_code/hdparm-master/contrib/fix_standby.c	/^	ide_feature	= 1,$/;"	e	enum:__anon6	file:
+ide_lbah	reference_code/hdparm-master/contrib/fix_standby.c	/^	ide_lbah	= 5,$/;"	e	enum:__anon6	file:
+ide_lbal	reference_code/hdparm-master/contrib/fix_standby.c	/^	ide_lbal	= 3,$/;"	e	enum:__anon6	file:
+ide_lbam	reference_code/hdparm-master/contrib/fix_standby.c	/^	ide_lbam	= 4,$/;"	e	enum:__anon6	file:
+ide_nsectors	reference_code/hdparm-master/contrib/fix_standby.c	/^	ide_nsectors	= 2,$/;"	e	enum:__anon6	file:
+ide_select	reference_code/hdparm-master/contrib/fix_standby.c	/^	ide_select	= 6,$/;"	e	enum:__anon6	file:
+ide_status	reference_code/hdparm-master/contrib/fix_standby.c	/^	ide_status	= ide_command,$/;"	e	enum:__anon6	file:
+identify	reference_code/hdparm-master/identify.c	/^void identify (__u16 *id_supplied)$/;"	f
+identify_from_stdin	reference_code/hdparm-master/hdparm.c	/^identify_from_stdin (void)$/;"	f	file:
+iflags	reference_code/hdparm-master/sgio.h	/^	union reg_flags		iflags;$/;"	m	struct:hdio_taskfile	typeref:union:hdio_taskfile::reg_flags
+info	reference_code/hdparm-master/sgio.h	/^	unsigned int		info;$/;"	m	struct:scsi_sg_io_hdr
+init_hdio_taskfile	reference_code/hdparm-master/sgio.c	/^void init_hdio_taskfile (struct hdio_taskfile *r, __u8 ata_op, int rw, int force_lba48,$/;"	f
+interface_id	reference_code/hdparm-master/sgio.h	/^	int			interface_id;$/;"	m	struct:scsi_sg_io_hdr
+interpret_standby	reference_code/hdparm-master/hdparm.c	/^static void interpret_standby (void)$/;"	f	file:
+interpret_xfermode	reference_code/hdparm-master/hdparm.c	/^static void interpret_xfermode (unsigned int xfermode)$/;"	f	file:
+io32bit	reference_code/hdparm-master/hdparm.c	/^static int set_io32bit  = 0, get_io32bit  = 0, io32bit  = 0;$/;"	v	file:
+iovec_count	reference_code/hdparm-master/sgio.h	/^	unsigned short		iovec_count;$/;"	m	struct:scsi_sg_io_hdr
+is_cfa_dev	reference_code/hdparm-master/identify.c	/^static int is_cfa_dev (__u16 *id)$/;"	f	file:
+is_dma	reference_code/hdparm-master/sgio.c	/^static inline int is_dma (__u8 ata_op)$/;"	f	file:
+is_lba48	reference_code/hdparm-master/sgio.h	/^	__u8			is_lba48;$/;"	m	struct:ata_tf
+isdigit	reference_code/hdparm-master/wiper/contrib/raid1ext4trim.sh-1.5	/^isdigit ()    # Tests whether *entire string* is numerical.$/;"	f
+ishex	reference_code/hdparm-master/hdparm.c	/^static int ishex (char c)$/;"	f	file:
+keep	reference_code/hdparm-master/hdparm.c	/^static int set_keep     = 0, get_keep     = 0, keep     = 0;$/;"	v	file:
+last_block	reference_code/hdparm-master/fibmap.c	/^	__u64 last_block;$/;"	m	struct:file_extent	file:
+last_identify_op	reference_code/hdparm-master/hdparm.c	/^static __u8 last_identify_op = 0;$/;"	v	file:
+lba	reference_code/hdparm-master/hdparm.c	/^	__u64	lba;$/;"	m	struct:sector_range_s	file:
+lba28_limit	hdparm.h	10;"	d
+lba28_limit	reference_code/hdparm-master/hdparm.h	10;"	d
+lba_emsg	reference_code/hdparm-master/hdparm.c	/^static const char *lba_emsg = "bad\/missing sector value";$/;"	v	file:
+lba_limit	reference_code/hdparm-master/hdparm.c	/^static const __u64 lba_limit = (1ULL << 48) - 1;$/;"	v	file:
+lba_list	frecovery.c	/^static unsigned char lba_list[BUF_SIZE];$/;"	v	file:
+lbah	reference_code/hdparm-master/sgio.h	/^			unsigned lbah		: 1;$/;"	m	struct:reg_flags::__anon11::__anon12
+lbah	reference_code/hdparm-master/sgio.h	/^			unsigned lbah		: 1;$/;"	m	struct:reg_flags::__anon13::__anon14
+lbah	reference_code/hdparm-master/sgio.h	/^	__u8	lbah;$/;"	m	struct:ata_lba_regs
+lbah	reference_code/hdparm-master/sgio.h	/^	__u8	lbah;$/;"	m	struct:taskfile_regs
+lbal	reference_code/hdparm-master/sgio.h	/^			unsigned lbal		: 1;$/;"	m	struct:reg_flags::__anon11::__anon12
+lbal	reference_code/hdparm-master/sgio.h	/^			unsigned lbal		: 1;$/;"	m	struct:reg_flags::__anon13::__anon14
+lbal	reference_code/hdparm-master/sgio.h	/^	__u8	lbal;$/;"	m	struct:ata_lba_regs
+lbal	reference_code/hdparm-master/sgio.h	/^	__u8	lbal;$/;"	m	struct:taskfile_regs
+lbam	reference_code/hdparm-master/sgio.h	/^			unsigned lbam		: 1;$/;"	m	struct:reg_flags::__anon11::__anon12
+lbam	reference_code/hdparm-master/sgio.h	/^			unsigned lbam		: 1;$/;"	m	struct:reg_flags::__anon13::__anon14
+lbam	reference_code/hdparm-master/sgio.h	/^	__u8	lbam;$/;"	m	struct:ata_lba_regs
+lbam	reference_code/hdparm-master/sgio.h	/^	__u8	lbam;$/;"	m	struct:taskfile_regs
+length	reference_code/hdparm-master/fibmap.c	/^	__u64 length;$/;"	m	struct:fe_s	file:
+length	reference_code/hdparm-master/fibmap.c	/^	__u64 length;$/;"	m	struct:fm_s	file:
+lob	reference_code/hdparm-master/sgio.h	/^		} lob;$/;"	m	union:reg_flags::__anon11	typeref:struct:reg_flags::__anon11::__anon12
+lob	reference_code/hdparm-master/sgio.h	/^	struct ata_lba_regs	lob;$/;"	m	struct:ata_tf	typeref:struct:ata_tf::ata_lba_regs
+lob	reference_code/hdparm-master/sgio.h	/^	struct taskfile_regs	lob;$/;"	m	struct:hdio_taskfile	typeref:struct:hdio_taskfile::taskfile_regs
+local_hd_big_geometry	hdparm.h	/^struct local_hd_big_geometry {$/;"	s
+local_hd_big_geometry	reference_code/hdparm-master/hdparm.h	/^struct local_hd_big_geometry {$/;"	s
+local_hd_geometry	hdparm.h	/^struct local_hd_geometry {$/;"	s
+local_hd_geometry	reference_code/hdparm-master/hdparm.h	/^struct local_hd_geometry {$/;"	s
+logical	reference_code/hdparm-master/fibmap.c	/^	__u64 logical;$/;"	m	struct:fe_s	file:
+lookahead	reference_code/hdparm-master/hdparm.c	/^static int set_lookahead= 0, get_lookahead= 0, lookahead= 0;$/;"	v	file:
+main	basic_file.c	/^int main(int *argc, char **argv)$/;"	f
+main	benchmark.c	/^int main(int *argc, char **argv)$/;"	f
+main	eval_performance.c	/^int main(int *argc, char **argv)$/;"	f
+main	eval_performance_backup.c	/^int main(int *argc, char **argv)$/;"	f
+main	ioctl.c	/^int main(int argc, char **argv)$/;"	f
+main	key_file.c	/^int main(int *argc, char **argv)$/;"	f
+main	reference_code/hdparm-master/contrib/fix_standby.c	/^int  main (int argc, char **argv)$/;"	f
+main	reference_code/hdparm-master/contrib/make_bad_sector.c	/^int main (int argc, char *argv[])$/;"	f
+main	reference_code/hdparm-master/hdparm.c	/^int main (int _argc, char **_argv)$/;"	f
+main	struct.c	/^int main()$/;"	f
+make_bad_sector	reference_code/hdparm-master/hdparm.c	/^static int   make_bad_sector = 0, make_bad_sector_flagged;$/;"	v	file:
+make_bad_sector_addr	reference_code/hdparm-master/hdparm.c	/^static __u64 make_bad_sector_addr = ~0ULL;$/;"	v	file:
+make_bad_sector_flagged	reference_code/hdparm-master/hdparm.c	/^static int   make_bad_sector = 0, make_bad_sector_flagged;$/;"	v	file:
+mandir	reference_code/hdparm-master/Makefile	/^mandir = $(manprefix)\/share\/man$/;"	m
+manprefix	reference_code/hdparm-master/Makefile	/^manprefix = \/usr$/;"	m
+mapped_extents	reference_code/hdparm-master/fibmap.c	/^	__u32 mapped_extents;$/;"	m	struct:fm_s	file:
+masked_status	reference_code/hdparm-master/sgio.h	/^	unsigned char		masked_status;$/;"	m	struct:scsi_sg_io_hdr
+match_rootdev	reference_code/hdparm-master/wiper/wiper.sh	/^function match_rootdev() {$/;"	f
+md_major	geom.c	/^static unsigned int md_major (void)$/;"	f	file:
+md_major	reference_code/hdparm-master/geom.c	/^static unsigned int md_major (void)$/;"	f	file:
+min_ata_std	reference_code/hdparm-master/identify.c	/^static __u16 min_ata_std (__u16 major)$/;"	f	file:
+minor_str	reference_code/hdparm-master/identify.c	/^const char *minor_str[MINOR_MAX+2] = {			\/* word 81 value: *\/$/;"	v
+mode_loop	reference_code/hdparm-master/identify.c	/^__u8 mode_loop(__u16 mode_sup, __u16 mode_sel, int cc, __u8 *have_mode) {$/;"	f
+msg_status	reference_code/hdparm-master/sgio.h	/^	unsigned char		msg_status;$/;"	m	struct:scsi_sg_io_hdr
+mult	reference_code/hdparm-master/hdparm.c	/^static int set_mult     = 0, get_mult     = 0, mult     = 0;$/;"	v	file:
+mx_sb_len	reference_code/hdparm-master/sgio.h	/^	unsigned char		mx_sb_len;$/;"	m	struct:scsi_sg_io_hdr
+name	reference_code/hdparm-master/hdparm.c	/^	const char *name;$/;"	m	struct:xfermode_entry	file:
+needs_lba48	reference_code/hdparm-master/sgio.c	/^static inline int needs_lba48 (__u8 ata_op, __u64 lba, unsigned int nsect)$/;"	f	file:
+noisy	reference_code/hdparm-master/hdparm.c	/^static int do_identity = 0, get_geom = 0, noisy = 1, quiet = 0;$/;"	v	file:
+nowerr	reference_code/hdparm-master/hdparm.c	/^static int set_nowerr   = 0, get_nowerr   = 0, nowerr   = 0;$/;"	v	file:
+nsect	reference_code/hdparm-master/sgio.h	/^			unsigned nsect		: 1;$/;"	m	struct:reg_flags::__anon11::__anon12
+nsect	reference_code/hdparm-master/sgio.h	/^			unsigned nsect		: 1;$/;"	m	struct:reg_flags::__anon13::__anon14
+nsect	reference_code/hdparm-master/sgio.h	/^	__u8	nsect;$/;"	m	struct:ata_lba_regs
+nsect	reference_code/hdparm-master/sgio.h	/^	__u8	nsect;$/;"	m	struct:taskfile_regs
+nsectors	reference_code/hdparm-master/hdparm.c	/^	__u64	nsectors;$/;"	m	struct:sector_range_s	file:
+num_flags_processed	reference_code/hdparm-master/hdparm.c	/^static int    num_flags_processed = 0;$/;"	v	file:
+numeric_parm	reference_code/hdparm-master/hdparm.c	/^numeric_parm (char c, const char *name, int *val, int *setparm, int *getparm, int min, int max, int set_only)$/;"	f	file:
+obytes	reference_code/hdparm-master/sgio.h	/^	unsigned long		obytes;$/;"	m	struct:hdio_taskfile
+oflags	reference_code/hdparm-master/sgio.h	/^	union reg_flags		oflags;$/;"	m	struct:hdio_taskfile	typeref:union:hdio_taskfile::reg_flags
+oldmandir	reference_code/hdparm-master/Makefile	/^oldmandir = $(manprefix)\/man$/;"	m
+on_off	reference_code/hdparm-master/hdparm.c	/^static void on_off (unsigned int value)$/;"	f	file:
+open_flags	reference_code/hdparm-master/hdparm.c	/^static int open_flags = O_RDONLY|O_NONBLOCK;$/;"	v	file:
+pack_id	reference_code/hdparm-master/sgio.h	/^	int			pack_id;$/;"	m	struct:scsi_sg_io_hdr
+path_append	reference_code/hdparm-master/sysfs.c	/^static char *path_append (char *path, const char *new)$/;"	f	file:
+physical	reference_code/hdparm-master/fibmap.c	/^	__u64 physical;$/;"	m	struct:fe_s	file:
+piomode	reference_code/hdparm-master/hdparm.c	/^static int set_piomode  = 0, get_piomode= 0, piomode = 0;$/;"	v	file:
+pkt_str	reference_code/hdparm-master/identify.c	/^const char *pkt_str[] = {$/;"	v
+please_destroy_my_drive	reference_code/hdparm-master/hdparm.c	/^static int	please_destroy_my_drive = 0;$/;"	v	file:
+powerup_in_standby	reference_code/hdparm-master/hdparm.c	/^static int set_powerup_in_standby = 0, get_powerup_in_standby = 0, powerup_in_standby = 0;$/;"	v	file:
+prefer_ata12	reference_code/hdparm-master/hdparm.c	/^int prefer_ata12 = 0;$/;"	v
+prefetch	reference_code/hdparm-master/hdparm.c	/^static int set_prefetch = 0, get_prefetch = 0, prefetch = 0;$/;"	v	file:
+prepare_timing_buf	reference_code/hdparm-master/hdparm.c	/^static void *prepare_timing_buf (unsigned int len)$/;"	f	file:
+print_ascii	reference_code/hdparm-master/identify.c	/^static void print_ascii(__u16 *p, unsigned int length) {$/;"	f	file:
+print_buf	frecovery.c	/^static void print_buf(char *buf, unsigned int buf_size)$/;"	f	file:
+print_features	reference_code/hdparm-master/identify.c	/^static void print_features (__u16 supported, __u16 enabled, const char *names[])$/;"	f	file:
+print_transport_type	reference_code/hdparm-master/identify.c	/^static int print_transport_type(__u16 val[])$/;"	f	file:
+process_dev	reference_code/hdparm-master/hdparm.c	/^void process_dev (char *devname)$/;"	f
+progname	reference_code/hdparm-master/hdparm.c	/^char *progname;$/;"	v
+quiet	reference_code/hdparm-master/hdparm.c	/^static int do_identity = 0, get_geom = 0, noisy = 1, quiet = 0;$/;"	v	file:
+read_big_block	reference_code/hdparm-master/hdparm.c	/^static int read_big_block (int fd, char *buf)$/;"	f	file:
+read_sector	reference_code/hdparm-master/hdparm.c	/^static int   read_sector = 0;$/;"	v	file:
+read_sector_addr	reference_code/hdparm-master/hdparm.c	/^static __u64 read_sector_addr = ~0ULL;$/;"	v	file:
+readonly	reference_code/hdparm-master/hdparm.c	/^static int set_readonly = 0, get_readonly = 0, readonly = 0;$/;"	v	file:
+reg_flags	reference_code/hdparm-master/sgio.h	/^union reg_flags {$/;"	u
+require_status	reference_code/hdparm-master/contrib/fix_standby.c	/^require_status (u8 ones, u8 zeros, u8 *stat_r, unsigned int timeout, const char *msg)$/;"	f	file:
+reserved	reference_code/hdparm-master/fibmap.c	/^	__u32 reserved;$/;"	m	struct:fm_s	file:
+reserved32	reference_code/hdparm-master/fibmap.c	/^	__u32 reserved32[3];$/;"	m	struct:fe_s	file:
+reserved64	reference_code/hdparm-master/fibmap.c	/^	__u64 reserved64[2];$/;"	m	struct:fe_s	file:
+resid	reference_code/hdparm-master/sgio.h	/^	int			resid;$/;"	m	struct:scsi_sg_io_hdr
+rm_conffile	reference_code/hdparm-master/debian/hdparm.preinst	/^rm_conffile() {$/;"	f
+sb_len_wr	reference_code/hdparm-master/sgio.h	/^	unsigned char		sb_len_wr;$/;"	m	struct:scsi_sg_io_hdr
+sbindir	reference_code/hdparm-master/Makefile	/^sbindir = $(exec_prefix)sbin$/;"	m
+sbp	reference_code/hdparm-master/sgio.h	/^	void *			sbp;$/;"	m	struct:scsi_sg_io_hdr
+scsi_sg_io_hdr	reference_code/hdparm-master/sgio.h	/^struct scsi_sg_io_hdr {$/;"	s
+sector_bytes	reference_code/hdparm-master/fibmap.c	/^static const unsigned int sector_bytes = 512; \/\/ FIXME someday$/;"	v	file:
+sector_range_s	reference_code/hdparm-master/hdparm.c	/^struct sector_range_s {$/;"	s	file:
+sectors	hdparm.h	/^       unsigned char	sectors;$/;"	m	struct:local_hd_big_geometry
+sectors	hdparm.h	/^      unsigned char	sectors;$/;"	m	struct:local_hd_geometry
+sectors	reference_code/hdparm-master/hdparm.h	/^       unsigned char	sectors;$/;"	m	struct:local_hd_big_geometry
+sectors	reference_code/hdparm-master/hdparm.h	/^      unsigned char	sectors;$/;"	m	struct:local_hd_geometry
+secu_str	reference_code/hdparm-master/identify.c	/^const char *secu_str[] = {$/;"	v
+security_command	reference_code/hdparm-master/hdparm.c	/^static unsigned int security_command = ATA_OP_SECURITY_UNLOCK;$/;"	v	file:
+security_freeze	reference_code/hdparm-master/hdparm.c	/^static int security_freeze   = 0;$/;"	v	file:
+security_help	reference_code/hdparm-master/hdparm.c	/^static void security_help (int rc)$/;"	f	file:
+security_master	reference_code/hdparm-master/hdparm.c	/^static int security_master = 0, security_mode = 0;$/;"	v	file:
+security_mode	reference_code/hdparm-master/hdparm.c	/^static int security_master = 0, security_mode = 0;$/;"	v	file:
+security_password	reference_code/hdparm-master/hdparm.c	/^static char security_password[33], *fwpath;$/;"	v	file:
+seek_to_zero	reference_code/hdparm-master/hdparm.c	/^static int seek_to_zero (int fd)$/;"	f	file:
+send_firmware	reference_code/hdparm-master/fwdownload.c	/^static int send_firmware (int fd, unsigned int xfer_mode, unsigned int offset,$/;"	f	file:
+set_acoustic	reference_code/hdparm-master/hdparm.c	/^static int	set_acoustic = 0, get_acoustic = 0, acoustic = 0;$/;"	v	file:
+set_apmmode	reference_code/hdparm-master/hdparm.c	/^static int set_apmmode = 0, get_apmmode= 0, apmmode = 0;$/;"	v	file:
+set_busstate	reference_code/hdparm-master/hdparm.c	/^static int	set_busstate = 0, get_busstate = 0, busstate = 0;$/;"	v	file:
+set_cdromspeed	reference_code/hdparm-master/hdparm.c	/^static int get_cdromspeed = 0, set_cdromspeed = 0, cdromspeed = 0;$/;"	v	file:
+set_defects	reference_code/hdparm-master/hdparm.c	/^static int set_defects  = 0, get_defects  = 0, defects  = 0;$/;"	v	file:
+set_dkeep	reference_code/hdparm-master/hdparm.c	/^static int set_dkeep    = 0, get_dkeep    = 0, dkeep    = 0;$/;"	v	file:
+set_dma	reference_code/hdparm-master/hdparm.c	/^static int set_dma      = 0, get_dma      = 0, dma      = 0;$/;"	v	file:
+set_dma_q	reference_code/hdparm-master/hdparm.c	/^static int set_dma_q	  = 0, get_dma_q    = 0, dma_q	  = 0;$/;"	v	file:
+set_doorlock	reference_code/hdparm-master/hdparm.c	/^static int set_doorlock = 0, get_doorlock = 0, doorlock = 0;$/;"	v	file:
+set_doreset	reference_code/hdparm-master/hdparm.c	/^static int	get_doreset = 0, set_doreset = 0;$/;"	v	file:
+set_dvdspeed	reference_code/hdparm-master/dvdspeed.c	/^int set_dvdspeed(int fd, int speed)$/;"	f
+set_file_name	eval_performance.c	/^int set_file_name(char file_name[NAME_LEN])$/;"	f
+set_file_name	eval_performance_backup.c	/^int set_file_name(char file_name[NAME_LEN])$/;"	f
+set_fsreadahead	reference_code/hdparm-master/hdparm.c	/^static int set_fsreadahead= 0, get_fsreadahead= 0, fsreadahead= 0;$/;"	v	file:
+set_hitachi_temp	reference_code/hdparm-master/hdparm.c	/^static int get_hitachi_temp = 0, set_hitachi_temp = 0;$/;"	v	file:
+set_idleimmediate	reference_code/hdparm-master/hdparm.c	/^static int get_idleimmediate = 0, set_idleimmediate = 0;$/;"	v	file:
+set_idleunload	reference_code/hdparm-master/hdparm.c	/^static int get_idleunload = 0, set_idleunload = 0;$/;"	v	file:
+set_io32bit	reference_code/hdparm-master/hdparm.c	/^static int set_io32bit  = 0, get_io32bit  = 0, io32bit  = 0;$/;"	v	file:
+set_keep	reference_code/hdparm-master/hdparm.c	/^static int set_keep     = 0, get_keep     = 0, keep     = 0;$/;"	v	file:
+set_lookahead	reference_code/hdparm-master/hdparm.c	/^static int set_lookahead= 0, get_lookahead= 0, lookahead= 0;$/;"	v	file:
+set_max_addr	reference_code/hdparm-master/hdparm.c	/^static __u64 set_max_addr = 0;$/;"	v	file:
+set_max_permanent	reference_code/hdparm-master/hdparm.c	/^static int   set_max_sectors = 0, set_max_permanent, get_native_max_sectors = 0;$/;"	v	file:
+set_max_sectors	reference_code/hdparm-master/hdparm.c	/^static int   set_max_sectors = 0, set_max_permanent, get_native_max_sectors = 0;$/;"	v	file:
+set_mult	reference_code/hdparm-master/hdparm.c	/^static int set_mult     = 0, get_mult     = 0, mult     = 0;$/;"	v	file:
+set_nowerr	reference_code/hdparm-master/hdparm.c	/^static int set_nowerr   = 0, get_nowerr   = 0, nowerr   = 0;$/;"	v	file:
+set_option	reference_code/hdparm-master/debian/hdparm.init	/^set_option()$/;"	f
+set_piomode	reference_code/hdparm-master/hdparm.c	/^static int set_piomode  = 0, get_piomode= 0, piomode = 0;$/;"	v	file:
+set_powermode	reference_code/hdparm-master/hdparm.c	/^static int get_powermode  = 0, set_powermode = 0;$/;"	v	file:
+set_powerup_in_standby	reference_code/hdparm-master/hdparm.c	/^static int set_powerup_in_standby = 0, get_powerup_in_standby = 0, powerup_in_standby = 0;$/;"	v	file:
+set_prefetch	reference_code/hdparm-master/hdparm.c	/^static int set_prefetch = 0, get_prefetch = 0, prefetch = 0;$/;"	v	file:
+set_readonly	reference_code/hdparm-master/hdparm.c	/^static int set_readonly = 0, get_readonly = 0, readonly = 0;$/;"	v	file:
+set_reread_partn	reference_code/hdparm-master/hdparm.c	/^static int	set_reread_partn = 0, get_reread_partn;$/;"	v	file:
+set_seagate	reference_code/hdparm-master/hdparm.c	/^static int set_seagate  = 0, get_seagate  = 0;$/;"	v	file:
+set_security	reference_code/hdparm-master/hdparm.c	/^static int set_security   = 0;$/;"	v	file:
+set_sleepnow	reference_code/hdparm-master/hdparm.c	/^static int set_sleepnow   = 0, get_sleepnow   = 0;$/;"	v	file:
+set_standby	reference_code/hdparm-master/hdparm.c	/^static int set_standby  = 0, get_standby  = 0, standby= 0;$/;"	v	file:
+set_standbynow	reference_code/hdparm-master/hdparm.c	/^static int set_standbynow = 0, get_standbynow = 0;$/;"	v	file:
+set_timings_offset	reference_code/hdparm-master/hdparm.c	/^static int   set_timings_offset = 0;$/;"	v	file:
+set_unmask	reference_code/hdparm-master/hdparm.c	/^static int set_unmask   = 0, get_unmask   = 0, unmask   = 0;$/;"	v	file:
+set_wcache	reference_code/hdparm-master/hdparm.c	/^static int set_wcache   = 0, get_wcache   = 0, wcache   = 0;$/;"	v	file:
+set_wdidle3	reference_code/hdparm-master/hdparm.c	/^static int set_wdidle3  = 0, get_wdidle3 = 0, wdidle3 = 0;$/;"	v	file:
+set_write_read_verify	reference_code/hdparm-master/hdparm.c	/^static int write_read_verify = 0, get_write_read_verify = 0, set_write_read_verify = 0;$/;"	v	file:
+set_xfermode	reference_code/hdparm-master/hdparm.c	/^static int set_xfermode = 0, get_xfermode = 0;$/;"	v	file:
+sg16	reference_code/hdparm-master/sgio.c	/^int sg16 (int fd, int rw, int dma, struct ata_tf *tf,$/;"	f
+slow_down_raid_sync	reference_code/hdparm-master/debian/hdparm.init	/^slow_down_raid_sync()$/;"	f
+standby	reference_code/hdparm-master/hdparm.c	/^static int set_standby  = 0, get_standby  = 0, standby= 0;$/;"	v	file:
+start	hdparm.h	/^       unsigned long	start;$/;"	m	struct:local_hd_big_geometry
+start	hdparm.h	/^      unsigned long	start;		\/* mmm.. on 32-bit, this limits us to LBA32, 2TB max offset *\/$/;"	m	struct:local_hd_geometry
+start	reference_code/hdparm-master/fibmap.c	/^	__u64 start;$/;"	m	struct:fm_s	file:
+start	reference_code/hdparm-master/hdparm.h	/^       unsigned long	start;$/;"	m	struct:local_hd_big_geometry
+start	reference_code/hdparm-master/hdparm.h	/^      unsigned long	start;		\/* mmm.. on 32-bit, this limits us to LBA32, 2TB max offset *\/$/;"	m	struct:local_hd_geometry
+status	reference_code/hdparm-master/sgio.h	/^	__u8			status;$/;"	m	struct:ata_tf
+status	reference_code/hdparm-master/sgio.h	/^	unsigned char		status;$/;"	m	struct:scsi_sg_io_hdr
+sti	reference_code/hdparm-master/contrib/fix_standby.c	/^sti (void)$/;"	f	file:
+strip	reference_code/hdparm-master/hdparm.c	/^static char *strip (char *s)$/;"	f	file:
+sync_disks	reference_code/hdparm-master/wiper/wiper.sh	/^function sync_disks(){$/;"	f
+sysfs_find_dev	reference_code/hdparm-master/sysfs.c	/^static int sysfs_find_dev (dev_t dev, char *path, int verbose)$/;"	f	file:
+sysfs_find_dev2	reference_code/hdparm-master/sysfs.c	/^static int sysfs_find_dev2 (char *path, dev_t dev, int recurse, int verbose)$/;"	f	file:
+sysfs_find_fd	reference_code/hdparm-master/sysfs.c	/^static int sysfs_find_fd (int fd, char **path_p, int verbose)$/;"	f	file:
+sysfs_get_attr	reference_code/hdparm-master/sysfs.c	/^int sysfs_get_attr (int fd, const char *attr, const char *fmt, void *val1, void *val2, int verbose)$/;"	f
+sysfs_read_attr	reference_code/hdparm-master/sysfs.c	/^static int sysfs_read_attr (char *path, const char *attr, const char *fmt, void *val1, void *val2, int verbose)$/;"	f	file:
+sysfs_set_attr	reference_code/hdparm-master/sysfs.c	/^int sysfs_set_attr (int fd, const char *attr, const char *fmt, void *val_p, int verbose)$/;"	f
+sysfs_write_attr	reference_code/hdparm-master/sysfs.c	/^static int sysfs_write_attr (char *path, const char *attr, const char *fmt, void *val, int verbose)$/;"	f	file:
+taskfile_regs	reference_code/hdparm-master/sgio.h	/^struct taskfile_regs {$/;"	s
+tf_init	reference_code/hdparm-master/sgio.c	/^void tf_init (struct ata_tf *tf, __u8 ata_op, __u64 lba, unsigned int nsect)$/;"	f
+tf_to_lba	reference_code/hdparm-master/sgio.c	/^__u64 tf_to_lba (struct ata_tf *tf)$/;"	f
+time_cache	reference_code/hdparm-master/hdparm.c	/^static void time_cache (int fd)$/;"	f	file:
+time_device	reference_code/hdparm-master/hdparm.c	/^static int time_device (int fd)$/;"	f	file:
+timeout	reference_code/hdparm-master/sgio.h	/^	unsigned int		timeout;$/;"	m	struct:scsi_sg_io_hdr
+timeout_15secs	reference_code/hdparm-master/hdparm.c	/^const int timeout_15secs = 15;$/;"	v
+timeout_2hrs	reference_code/hdparm-master/hdparm.c	/^const int timeout_2hrs   = (2 * 60 * 60);$/;"	v
+timeout_5mins	reference_code/hdparm-master/hdparm.c	/^const int timeout_5mins  = (5 * 60);$/;"	v
+timeout_60secs	reference_code/hdparm-master/hdparm.c	/^const int timeout_60secs = 60;$/;"	v
+timings_offset	reference_code/hdparm-master/hdparm.c	/^static __u64 timings_offset = 0;$/;"	v	file:
+translate_xfermode	reference_code/hdparm-master/hdparm.c	/^static int translate_xfermode(char * name)$/;"	f	file:
+trim_from_stdin	reference_code/hdparm-master/hdparm.c	/^static int   trim_from_stdin = 0;$/;"	v	file:
+trim_sector_ranges	reference_code/hdparm-master/hdparm.c	/^static struct sector_range_s *trim_sector_ranges = NULL;$/;"	v	typeref:struct:sector_range_s	file:
+trim_sector_ranges_count	reference_code/hdparm-master/hdparm.c	/^static int   trim_sector_ranges_count = 0;$/;"	v	file:
+trim_sectors	reference_code/hdparm-master/hdparm.c	/^static int trim_sectors (int fd, const char *devname, int nranges, void *data, __u64 nsectors)$/;"	f	file:
+u16	reference_code/hdparm-master/contrib/fix_standby.c	/^typedef unsigned short u16;$/;"	t	file:
+u8	reference_code/hdparm-master/contrib/fix_standby.c	/^typedef unsigned char  u8;$/;"	t	file:
+undo_slow_down_raid_sync	reference_code/hdparm-master/debian/hdparm.init	/^undo_slow_down_raid_sync()$/;"	f
+unknown	reference_code/hdparm-master/identify.c	/^static const char unknown[8] = "obsolete";$/;"	v	file:
+unknown	reference_code/hdparm-master/identify.c	330;"	d	file:
+unmask	reference_code/hdparm-master/hdparm.c	/^static int set_unmask   = 0, get_unmask   = 0, unmask   = 0;$/;"	v	file:
+usage	reference_code/hdparm-master/contrib/idectl	/^usage () {$/;"	f
+usage_error	reference_code/hdparm-master/wiper/contrib/raid1ext4trim.sh-1.5	/^function usage_error(){$/;"	f
+usage_error	reference_code/hdparm-master/wiper/wiper.sh	/^function usage_error(){$/;"	f
+usage_help	reference_code/hdparm-master/hdparm.c	/^static void usage_help (int clue, int rc)$/;"	f	file:
+usr_ptr	reference_code/hdparm-master/sgio.h	/^	void *			usr_ptr;$/;"	m	struct:scsi_sg_io_hdr
+val	reference_code/hdparm-master/hdparm.c	/^	int val;$/;"	m	struct:xfermode_entry	file:
+verbose	reference_code/hdparm-master/contrib/make_bad_sector.c	/^int verbose = 0;	\/\/ used by sgio.c$/;"	v
+verbose	reference_code/hdparm-master/hdparm.c	/^int verbose = 0;$/;"	v
+wait_400ns	reference_code/hdparm-master/contrib/fix_standby.c	/^wait_400ns (void)$/;"	f	file:
+wait_for_status	reference_code/hdparm-master/contrib/fix_standby.c	/^wait_for_status (u8 ones, u8 zeros, u8 *stat_r, unsigned int timeout)$/;"	f	file:
+walk_fibmap	reference_code/hdparm-master/fibmap.c	/^static int walk_fibmap (int fd, struct stat *st, unsigned int sectors_per_block, __u64 start_lba)$/;"	f	file:
+walk_fiemap	reference_code/hdparm-master/fibmap.c	/^static int walk_fiemap (int fd, unsigned int sectors_per_block, __u64 start_lba)$/;"	f	file:
+wcache	reference_code/hdparm-master/hdparm.c	/^static int set_wcache   = 0, get_wcache   = 0, wcache   = 0;$/;"	v	file:
+wdidle3	reference_code/hdparm-master/hdparm.c	/^static int set_wdidle3  = 0, get_wdidle3 = 0, wdidle3 = 0;$/;"	v	file:
+wdidle3_data_in	reference_code/hdparm-master/wdidle3.c	/^static int wdidle3_data_in (int fd, unsigned char *timeout)$/;"	f	file:
+wdidle3_get_timeout	reference_code/hdparm-master/wdidle3.c	/^int wdidle3_get_timeout (int fd, unsigned char *timeout)$/;"	f
+wdidle3_issue	reference_code/hdparm-master/wdidle3.c	/^static int wdidle3_issue (int fd, int rw, struct ata_tf *tf, void *data, const char *msg)$/;"	f	file:
+wdidle3_msecs_to_timeout	reference_code/hdparm-master/wdidle3.c	/^unsigned char wdidle3_msecs_to_timeout (unsigned int secs)$/;"	f
+wdidle3_print_timeout	reference_code/hdparm-master/wdidle3.c	/^void wdidle3_print_timeout (unsigned char timeout)$/;"	f
+wdidle3_set_timeout	reference_code/hdparm-master/wdidle3.c	/^int wdidle3_set_timeout (int fd, unsigned char timeout)$/;"	f
+wdidle3_vsc_data_out	reference_code/hdparm-master/wdidle3.c	/^static int wdidle3_vsc_data_out (int fd, unsigned char timeout)$/;"	f	file:
+wdidle3_vsc_enable_disable	reference_code/hdparm-master/wdidle3.c	/^static int wdidle3_vsc_enable_disable (int fd, int setting)$/;"	f	file:
+wdidle3_vsc_send_key	reference_code/hdparm-master/wdidle3.c	/^static int wdidle3_vsc_send_key (int fd, int rw)$/;"	f	file:
+write_read_verify	reference_code/hdparm-master/hdparm.c	/^static int write_read_verify = 0, get_write_read_verify = 0, set_write_read_verify = 0;$/;"	v	file:
+write_sector	reference_code/hdparm-master/hdparm.c	/^static int   write_sector = 0;$/;"	v	file:
+write_sector_addr	reference_code/hdparm-master/hdparm.c	/^static __u64 write_sector_addr = ~0ULL;$/;"	v	file:
+xfer_mode	reference_code/hdparm-master/hdparm.c	/^static int do_fwdownload = 0, xfer_mode = 0;$/;"	v	file:
+xfermode_entry	reference_code/hdparm-master/hdparm.c	/^struct xfermode_entry {$/;"	s	file:
+xfermode_requested	reference_code/hdparm-master/hdparm.c	/^static int xfermode_requested= 0;$/;"	v	file:
+xfermode_table	reference_code/hdparm-master/hdparm.c	/^static const struct xfermode_entry xfermode_table[] = {$/;"	v	typeref:struct:xfermode_entry	file:
+xfs_abort	reference_code/hdparm-master/wiper/wiper.sh	/^function xfs_abort(){$/;"	f
+xfs_trimlist	reference_code/hdparm-master/wiper/wiper.sh	/^function xfs_trimlist(){$/;"	f

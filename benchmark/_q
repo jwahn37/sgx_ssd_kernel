@@ -1,0 +1,44 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<sys/types.h>
+#include<sys/stat.h>
+#include<fcntl.h>
+
+#define MAX 1024
+
+int main(int *argc, char **argv)
+{
+    int fd;
+    int readn = 0;
+    int writen = 0;
+    char bufR[MAX];
+    char *bufW = "hello my name is jinwoo!!";
+    int i;
+
+    //file open
+    fd = open("./foo.txt", O_RDWR); //O_RDONLY, O_WRONLY
+    if(fd == -1)
+        printf("FD ERROR!! \n");
+    else
+        printf("FD SUCCESS!! FD is %d \n", fd);
+
+    //write
+    writen = write(fd, bufW, strlen(bufW));
+    printf("WR fd is writeten with bufW : %s ",bufW);
+    printf("WR writen is : %d\n", writen);
+    
+    //read
+    memset(bufR,0x00,MAX);
+    readn = read(fd, bufR, MAX-1);
+
+    printf("RD Buffer size : %d\n",sizeof(bufR));
+    printf("RD Readn is : %d\n", readn);
+    printf("bus is : %s\n",bufR);
+
+    close(fd);
+       
+    return 0; 
+
+
+}
