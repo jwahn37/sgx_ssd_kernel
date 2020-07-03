@@ -2301,7 +2301,7 @@ blk_qc_t generic_make_request(struct bio *bio)
 
 	
 
-	if (!generic_make_request_checks(bidddddddddddddo))
+	if (!generic_make_request_checks(bio))
 		goto out;
 
 	/*
