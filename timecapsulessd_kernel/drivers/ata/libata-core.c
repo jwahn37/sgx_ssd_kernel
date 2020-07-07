@@ -141,7 +141,8 @@ struct ata_force_ent {
  */
 
 #define BUCKET_SIZE 10
-#define CMD_SGXSSD_WRITE (0x48)
+#define CMD_SGXSSD_WRITE_NOR (0x48)
+#define CMD_SGXSSD_WRITE_EXT (0x49)
 
 //recovery node
 typedef struct recovery_node{
@@ -649,22 +650,27 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 	fis[15] = tf->ctl;
 	//printk("ata_tf_to_fis");
 		//1섹터만큼 추가하기 
-	if(tf->command == CMD_SGXSSD_WRITE)
-	{
+	
+	if(tf->command ==CMD_SGXSSD_WRITE_EXT )
+		fis[2] = 0x35;	
+	else if(tf->command ==CMD_SGXSSD_WRITE_NOR )
+		fis[2] = 0xca;
+	// if(tf->command == CMD_SGXSSD_WRITE_EXT || CMD_SGXSSD_WRITE_NOR)
+	// {
 		
-		if(tf->nsect != 0xff)
-		{
-			fis[12]++;
-		}
-		else
-		{
-			fis[12] = 0;
-			fis[13]++;
-		}
+	// 	if(tf->nsect != 0xff)
+	// 	{
+	// 		fis[12]++;
+	// 	}
+	// 	else
+	// 	{
+	// 		fis[12] = 0;
+	// 		fis[13]++;
+	// 	}
 		
-		//size = size+4096
-		printk("[ata_tf_to_fis] size becomes %d", fis[12] + fis[13]*256);
-	}
+	// 	//size = size+4096
+	// 	printk("[ata_tf_to_fis] size becomes %d", fis[12] + fis[13]*256);
+	// }
 
 /*
        fis[16] = tf->auxiliary & 0xff;
