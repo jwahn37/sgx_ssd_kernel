@@ -429,7 +429,6 @@ int blk_rq_map_sg(struct request_queue *q, struct request *rq,
 {
 	struct scatterlist *sg = NULL;
 	int nsegs = 0;
-	printk("[blk_rq_map_sg] : map a request to scatterlist");
 	if (rq->rq_flags & RQF_SPECIAL_PAYLOAD)
 		nsegs = __blk_bvec_map_sg(q, rq->special_vec, sglist, &sg);
 	else if (rq->bio && bio_op(rq->bio) == REQ_OP_WRITE_SAME)
@@ -449,6 +448,8 @@ int blk_rq_map_sg(struct request_queue *q, struct request *rq,
 	if (q->dma_drain_size && q->dma_drain_needed(rq)) {
 		if (op_is_write(req_op(rq)))
 			memset(q->dma_drain_buffer, 0, q->dma_drain_size);
+		
+		printk("[blk_rq_map_sg] : dma size, offset : %d, %ld", q->dma_drain_size, ((unsigned long)q->dma_drain_buffer) &(PAGE_SIZE - 1));
 
 		sg_unmark_end(sg);
 		sg = sg_next(sg);

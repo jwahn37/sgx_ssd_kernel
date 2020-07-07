@@ -47,6 +47,8 @@
 #include "ahci.h"
 #include "libata.h"
 
+#define CMD_SGXSSD_WRITE (0x48)
+
 static int ahci_skip_host_reset;
 int ahci_ignore_sss;
 EXPORT_SYMBOL_GPL(ahci_ignore_sss);
@@ -635,7 +637,7 @@ static int ahci_scr_read(struct ata_link *link, unsigned int sc_reg, u32 *val)
 
 static int ahci_scr_write(struct ata_link *link, unsigned int sc_reg, u32 val)
 {
-	printk("[ahci_scr_write] Am I scr_write?");
+	//printk("[ahci_scr_write] Am I scr_write?");
 	void __iomem *port_mmio = ahci_port_base(link->ap);
 	int offset = ahci_scr_offset(link->ap, sc_reg);
 
@@ -1668,44 +1670,114 @@ static unsigned int ahci_fill_sg(struct ata_queued_cmd *qc, void *cmd_tbl)
 	{
 		dma_addr_t addr = sg_dma_address(sg);
 		u32 sg_len = sg_dma_len(sg);
-		printk("[ahci_fill_sg] index %d, dma address : 0x%x, dma len : %d, page:0x%x", si, addr, sg_len, sg->page_link);
+		//	printk("[ahci_fill_sg] index %d, dma address : 0x%llx, dma len : %d, page:0x%lx", si, addr, sg_len, sg->page_link);
 		ahci_sg[si].addr = cpu_to_le32(addr & 0xffffffff);
 		ahci_sg[si].addr_hi = cpu_to_le32((addr >> 16) >> 16);
 		ahci_sg[si].flags_size = cpu_to_le32(sg_len - 1);
 	}
 
-	if (0)
+	return si;
+}
+
+static unsigned int ahci_fill_sg_sgxssd(struct ata_queued_cmd *qc, void *cmd_tbl, unsigned int pid, unsigned int fid, unsigned int offset)
+{
+	struct scatterlist *sg;
+	struct ahci_sg *ahci_sg = cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
+	unsigned int si;
+	dma_addr_t addr;
+	u32 sg_len;
+	char *buf;
+
+	VPRINTK("ENTER\n");
+
+	printk("[ahci_fill_sg] qc->n_elem : %d", qc->n_elem);
+
+	// // //sgxssd get inode
+	// if (qc->sg && qc->n_elem>0)
+	// {
+	// 	cur_page = sg_page(qc->sg);
+
+	// 	if (page_has_private(cur_page) && cur_page != NULL && (!PageSlab(cur_page)) && (!PageSwapCache(cur_page)) && (!PageAnon(cur_page)))
+	// 	{
+
+	// 		if (!(cur_page->mapping))
+	// 		{
+	// 			printk("[ahci_fill_sg] fail1");
+	// 		}
+
+	// 		else if (!(cur_page->mapping->host)) //error occurs here
+	// 		{
+	// 			printk("[ahci_fill_sg] fail2");
+	// 		}
+	// 		 else
+	// 		 {
+	// 			cur_inode = cur_page->mapping->host;
+	// 			cur_offset = cur_page->index;
+	// 			printk("[ahci_fill_sg] inode num : %lu, pid/fid/offset: %x/%x/%x", cur_inode->i_ino, cur_inode->pid, cur_inode->fid, cur_offset);
+	// 		 }
+	// 	}
+	// }
+	// else{
+	// 	printk("[ahci_fill_sg] fail0");
+	// }
+
+	/*
+	 * Next, the S/G list.
+	 */
+
+	for_each_sg(qc->sg, sg, qc->n_elem, si)
 	{
+		addr = sg_dma_address(sg);
+		sg_len = sg_dma_len(sg);
+		printk("[ahci_fill_sg] index %d, dma address : 0x%llx, dma len : %d, page:0x%lx", si, addr, sg_len, sg->page_link);
+		ahci_sg[si].addr = cpu_to_le32(addr & 0xffffffff);
+		ahci_sg[si].addr_hi = cpu_to_le32((addr >> 16) >> 16);
+		ahci_sg[si].flags_size = cpu_to_le32(sg_len - 1);
+	}
 
-		//sgxssd: add new page to the existing data buffer.
-		//void* buf = kmalloc(4096, GFP_KERNEL);	//GFP_DMA??
-		printk("[ahci_fill_sg] allocate buffer");
-		void *buf = kmalloc(4096, GFP_KERNEL | GFP_DMA); //GFP_DMA??
-		memset(buf, 0, 4096);
-		int pid = 0x11223344;
-		memcpy(buf, &pid, 4);
+	//if (cur_inode && cur_inode->pid != 0)
+	//{
 
-		if (sg_is_last(sg))
+	//sgxssd: add new page to the existing data buffer.
+	//void* buf = kmalloc(4096, GFP_KERNEL);	//GFP_DMA??
+	printk("[ahci_fill_sg] allocate buffer");
+	//buf = kmalloc(4096, GFP_KERNEL | GFP_DMA); //GFP_DMA??
+	buf = kmalloc(4096, GFP_NOIO | GFP_DMA | GFP_KERNEL);
+
+	memset(buf, 0, 4096);
+	//int pid = 0x11223344;
+	memcpy(buf, &pid, 4);
+	memcpy(&(buf[4]), &fid, 4);
+	memcpy(&(buf[8]), &offset, 4);
+
+	if (virt_addr_valid(buf))
+	{
+		printk("[ahci_fill_sg]virt addr valid");
+	}
+	else
+		printk("[ahci_fill_sg]virt addr invalid");
+
+	if (sg_is_last(sg))
+	{
+		printk("[ahci_fill_sg] insert buffer in tail of sg");
+
+		sg_unmark_end(sg);
+		sg = sg_next(sg);
+		//sg_set_page(sg, virt_to_page(buf), 512, 0); //Is it okay?
+		sg_set_page(sg, virt_to_page(buf), 4096, 0);
+		if (sg)
 		{
-			printk("[ahci_fill_sg] insert buffer in tail of sg");
-
-			sg_unmark_end(sg);
-			sg = sg_next(sg);
-			//sg_set_page(sg, virt_to_page(buf), 512, 0); //Is it okay?
-			sg_set_page(sg, virt_to_page(buf), 4096, 0);
-			if (sg)
-			{
-				sg_mark_end(sg);
-				dma_addr_t addr = sg_dma_address(sg);
-				u32 sg_len = sg_dma_len(sg);
-				printk("[ahci_fill_sg] index %d, dma address : 0x%x, dma len : %d, page:0x%x", si, addr, sg_len, sg->page_link);
-				ahci_sg[si].addr = cpu_to_le32(addr & 0xffffffff);
-				ahci_sg[si].addr_hi = cpu_to_le32((addr >> 16) >> 16);
-				ahci_sg[si].flags_size = cpu_to_le32(sg_len - 1);
-				si++;
-			}
+			sg_mark_end(sg);
+			addr = sg_dma_address(sg);
+			sg_len = sg_dma_len(sg);
+			printk("[ahci_fill_sg] index %d, dma address : 0x%llx, dma len : %d, page:0x%lx", si, addr, sg_len, sg->page_link);
+			ahci_sg[si].addr = cpu_to_le32(addr & 0xffffffff);
+			ahci_sg[si].addr_hi = cpu_to_le32((addr >> 16) >> 16);
+			ahci_sg[si].flags_size = cpu_to_le32(sg_len - 1);
+			si++;
 		}
 	}
+	//}
 
 	return si;
 }
@@ -1730,7 +1802,12 @@ static void ahci_qc_prep(struct ata_queued_cmd *qc)
 	u32 opts;
 	const u32 cmd_fis_len = 5; /* five dwords */
 	unsigned int n_elem;
-
+	struct page *cur_page = NULL;
+	struct inode *cur_inode = NULL;
+	unsigned int cur_offset;
+	unsigned int cur_pid;
+	unsigned int cur_fid;
+	int tmp_cmd = 0;
 	/*
 	 * Fill in command table information.  First, the header,
 	 * a SATA Register - Host to Device command FIS.
@@ -1738,6 +1815,32 @@ static void ahci_qc_prep(struct ata_queued_cmd *qc)
 	cmd_tbl = pp->cmd_tbl + qc->tag * AHCI_CMD_TBL_SZ;
 
 	printk("[ahci_qc_prep]");
+
+	// //sgxssd get inode to search piggyback set
+	if (qc && qc->sg && qc->n_elem > 0)
+	{
+		cur_page = sg_page(qc->sg);
+
+		if (page_has_private(cur_page) && cur_page != NULL && (!PageSlab(cur_page)) && (!PageSwapCache(cur_page)) && (!PageAnon(cur_page)))
+		{
+			if (cur_page->mapping && cur_page->mapping->host)
+			{
+				cur_inode = cur_page->mapping->host;
+				cur_pid = cur_inode->pid;
+				cur_fid = cur_inode->fid;
+				cur_offset = cur_page->index;
+				//if(cur_pid != 0 )	tmp_cmd = CMD_SGXSSD_WRITE;
+				if (cur_pid != 0)
+					qc->tf.command = CMD_SGXSSD_WRITE; //new command.
+				printk("[ahci_qc_prep] %x, inode num : %lu, pid/fid/offset: %x/%x/%x", CMD_SGXSSD_WRITE, cur_inode->i_ino, cur_inode->pid, cur_inode->fid, cur_offset);
+			}
+		}
+	}
+	else
+	{
+		printk("[ahci_qc_prep] fail");
+	}
+
 	ata_tf_to_fis(&qc->tf, qc->dev->link->pmp, 1, cmd_tbl);
 	if (is_atapi)
 	{
@@ -1747,8 +1850,13 @@ static void ahci_qc_prep(struct ata_queued_cmd *qc)
 
 	n_elem = 0;
 	if (qc->flags & ATA_QCFLAG_DMAMAP)
-		n_elem = ahci_fill_sg(qc, cmd_tbl);
-
+	{
+		if (qc->tf.command == CMD_SGXSSD_WRITE)
+			//if(tmp_cmd == CMD_SGXSSD_WRITE)
+			n_elem = ahci_fill_sg_sgxssd(qc, cmd_tbl, cur_pid, cur_fid, cur_offset);
+		else
+			n_elem = ahci_fill_sg(qc, cmd_tbl);
+	}
 	/*
 	 * Fill in command slot information.
 	 */

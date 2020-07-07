@@ -1284,11 +1284,12 @@ static int ata_scsi_dev_config(struct scsi_device *sdev,
 
 		/* configure draining */
 		buf = kmalloc(ATAPI_MAX_DRAIN, q->bounce_gfp | GFP_KERNEL);
+		printk("[ata_scsi_dev_config] %d 0x%x 0x%x",ATAPI_MAX_DRAIN, q->bounce_gfp, q->bounce_gfp | GFP_KERNEL);
+
 		if (!buf) {
 			ata_dev_err(dev, "drain buffer allocation failed\n");
 			return -ENOMEM;
 		}
-
 		blk_queue_dma_drain(q, atapi_drain_needed, buf, ATAPI_MAX_DRAIN);
 	} else {
 		sdev->sector_size = ata_id_logical_sector_size(dev->id);

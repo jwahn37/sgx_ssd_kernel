@@ -141,6 +141,7 @@ struct ata_force_ent {
  */
 
 #define BUCKET_SIZE 10
+#define CMD_SGXSSD_WRITE (0x48)
 
 //recovery node
 typedef struct recovery_node{
@@ -640,16 +641,30 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 	fis[10] = tf->hob_lbah;
 	fis[11] = tf->hob_feature;
 
-	if(0)
-	{
-		//size = size+4096
-	}
 
-	fis[12] = tf->nsect;	//size 조정해서 보내야함. 4096바이트 추가 구현.
+
+	fis[12] = tf->nsect;	//size 조정해서 보내야함. 512byte 추가 구현.
 	fis[13] = tf->hob_nsect;
 	fis[14] = 0;
 	fis[15] = tf->ctl;
 	//printk("ata_tf_to_fis");
+		//1섹터만큼 추가하기 
+	if(tf->command == CMD_SGXSSD_WRITE)
+	{
+		
+		if(tf->nsect != 0xff)
+		{
+			fis[12]++;
+		}
+		else
+		{
+			fis[12] = 0;
+			fis[13]++;
+		}
+		
+		//size = size+4096
+		printk("[ata_tf_to_fis] size becomes %d", fis[12] + fis[13]*256);
+	}
 
 /*
        fis[16] = tf->auxiliary & 0xff;
@@ -722,12 +737,12 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
     rcu_read_unlock();
 
 
-	printk("[ata_tf_to_fis] cmd: %x, lba : 0x%x, size: nsect-%d, hobnsect-%d", tf->command, lba, fis[12], fis[13]);
+	printk("[ata_tf_to_fis] cmd: %x, lba : 0x%lx, size: nsect-%d, hobnsect-%d", tf->command, lba, fis[12], fis[13]);
 
     if(lba_chk){
 	//printk("ata_tf_to_fis! cmd: %x, dev : %x, lba : %lx, key : %x(hexa),%d(int),||.%02x,%02x,%02x,%02x,..%02x,%02x,%02x,%x,"
 	//,tf->command,fis[7],lba,key,key,fis[13],fis[10],fis[9],fis[8],  fis[6],fis[5],fis[4],fis[7]&15);
-	printk("lbachk: ata_tf_to_fis! cmd: %x, dev : %x, lba : %lx(hexa), %ld(int), key : %x(hexa),%d(int), size: nsect-%d(%x), hobnsect-%d(%x)", tf->command,fis[7],lba,lba,key,key,fis[12],fis[12],fis[13],fis[13]);
+	printk("lbachk: ata_tf_to_fis! cmd: %x, dev : %x, lba : %lx(hexa), %ld(int), key : %x(hexa),%d(int), size: %d, nsect-%d(%x), hobnsect-%d(%x)", tf->command,fis[7],lba,lba,key,key,fis[12]+fis[13]*256,fis[12],fis[12],fis[13],fis[13]);
 	//put key and send to sata
 	fis[16] = key & 0xff;
 	fis[17] = (key >>8) & 0xff;
@@ -747,10 +762,7 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 		fis[18] = (recovery_time >>16) & 0xff;
 		fis[19] = (recovery_time >>24) & 0xff;
     }
-
-
     }
-
 }
 
 /**

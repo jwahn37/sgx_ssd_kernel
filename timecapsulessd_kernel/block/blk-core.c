@@ -2292,7 +2292,7 @@ blk_qc_t generic_make_request(struct bio *bio)
 	 */
 
 	/*
-	make_request_fndfdgggjjjjjjjjjjjjjdddddddddddddddjddddddddddddd
+	make_request_fn
 	*/
 	struct bio_list bio_list_on_stack[2];
 	//struct block_device *real_bdev;     ////////////
@@ -2385,11 +2385,18 @@ blk_qc_t generic_make_request(struct bio *bio)
 		    printk("fail hmmmm\n");
 		    goto fail_bio_add;
 		}
-//		printk("offset candidate: %ld", bio_page(bio)->index);
+		if(page_has_private(test_page))
+		{
+			printk("[generic_make_request] : page flag is PG_private");
+		}
+		else{
+			printk("[generic_make_request] : page flag is NOT PG_private!!!!");
+		}
+		printk("offset candidate: %ld", bio_page(bio)->index);
 		inode=test_page->mapping->host;		//해당 페이지는 address space를, address space는 inode를 알고있음
 		lba=(unsigned long)bio->bi_iter.bi_sector;	//bio로부터 맵핑되는 lba를 찾음
 	//	real_disk->
-		//여기는 메타데이터, 슈퍼블록 찾는 코드, 동규가 구현을 제대로 ��는지 기억이 안남. 일단 4.15에선 다시 찾아야함.
+		//여기는 메타데이터, 슈퍼블록 찾는 코드, 동규가 구현을 제대로 ��는지 기�����이 안남. 일단 4.15에선 다시 찾아야함.
 		//주석처리하겠음
 		if(0){
 		//if(real_bdev->bd_inode->i_mapping ==test_page->mapping){ //ex: inode block, superblock, etc original block

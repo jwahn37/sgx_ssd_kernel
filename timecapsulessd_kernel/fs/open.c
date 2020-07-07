@@ -1237,6 +1237,11 @@ long do_sys_open_key(int dfd, const char __user *filename, int flags, umode_t mo
 		printk("remain nodes, inode %d,lba %d tables!!!\n",inode_clear,lba_clear);
 	    }*/
 	    else{
+
+		///sgxssd
+		f->f_inode->pid = 0x11223344;
+		f->f_inode->fid = 0x11111111;
+
 		cur_map=vmalloc(sizeof(KEY_INODE_HASH));
 		cur_map->inode_num=f->f_inode->i_ino;
 		cur_map->key=key;
@@ -1270,7 +1275,7 @@ struct fiemap_extent {
 		*/
 
 		struct fiemap_extent_info LBA_list;
-		printk("inode size: %d", f->f_inode->i_size);
+		printk("inode size: %lld", f->f_inode->i_size);
 		f->f_inode->i_op->fiemap(f->f_inode, &LBA_list, 0, f->f_inode->i_size);
 		printk("the LBA list: fi_flag: %d, fi_extensts_mapped: %d, fi_extents_max: %d", LBA_list.fi_flags, LBA_list.fi_extents_mapped, LBA_list.fi_extents_max);
 		/*

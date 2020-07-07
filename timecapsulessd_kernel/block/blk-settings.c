@@ -192,6 +192,7 @@ void blk_queue_bounce_limit(struct request_queue *q, u64 max_addr)
 	unsigned long b_pfn = max_addr >> PAGE_SHIFT;
 	int dma = 0;
 
+	printk("[blk_queue_bounce_limit] bounce_gpf : GFP_NOIO");
 	q->bounce_gfp = GFP_NOIO;
 #if BITS_PER_LONG == 64
 	/*
@@ -210,6 +211,8 @@ void blk_queue_bounce_limit(struct request_queue *q, u64 max_addr)
 	if (dma) {
 		init_emergency_isa_pool();
 		q->bounce_gfp = GFP_NOIO | GFP_DMA;
+		printk("[blk_queue_bounce_limit] bounce_gpf : GFP_NOIO | GFP_DMA");
+
 		q->limits.bounce_pfn = b_pfn;
 	}
 }

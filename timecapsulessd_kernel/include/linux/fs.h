@@ -669,6 +669,9 @@ struct inode {
 	struct fscrypt_info	*i_crypt_info;
 #endif
 
+	//new info
+	unsigned int pid, fid;	//sgx-ssd key
+
 	void			*i_private; /* fs or device private pointer */
 } __randomize_layout;
 

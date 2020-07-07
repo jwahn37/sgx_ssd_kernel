@@ -627,7 +627,7 @@ SYSCALL_DEFINE3(write_key, unsigned int, fd, const char __user *, buf,
 
     
     //printk("write_key : %d, lba : %d", key_lba_table->key, key_lba_table->lba);
-	printk("write_key");
+	//printk("write_key");
 	if (f.file) {
 		loff_t pos = file_pos_read(f.file);
   //      printk("wr pos is :%lld", pos);
