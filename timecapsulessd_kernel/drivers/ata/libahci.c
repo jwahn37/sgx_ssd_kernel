@@ -1724,7 +1724,7 @@ static unsigned int ahci_fill_sg_sgxssd(struct ata_queued_cmd *qc, void *cmd_tbl
 			printk("[ahci_fill_sg] insert buffer in tail of sg");
 
 			sg_unmark_end(sg);
-			//sg = sg_next(sg);
+			//sg = sg_next(sg);	//temp
 			if (!virt_addr_valid(buf))
 			{
 				printk("[ahci_fill_sg]virt addr Invalid");
@@ -1734,16 +1734,17 @@ static unsigned int ahci_fill_sg_sgxssd(struct ata_queued_cmd *qc, void *cmd_tbl
 			if (sg)
 			{
 				sg_mark_end(sg);
-				// si++;
-				// addr = sg_dma_address(sg);
-				// sg_len = sg_dma_len(sg);
-				// printk("[ahci_fill_sg] index %d, dma address : 0x%llx, dma len : %d, page:0x%lx", si, addr, sg_len, sg->page_link);
-				// ahci_sg[si].addr = cpu_to_le32(addr & 0xffffffff);
-				// ahci_sg[si].addr_hi = cpu_to_le32((addr >> 16) >> 16);
-				// ahci_sg[si].flags_size = cpu_to_le32(sg_len - 1);
+				si++;
+				addr = sg_dma_address(sg);
+				sg_len = sg_dma_len(sg);
+				printk("[ahci_fill_sg] index %d, dma address : 0x%llx, dma len : %d, page:0x%lx", si, addr, sg_len, sg->page_link);
+				ahci_sg[si].addr = cpu_to_le32(addr & 0xffffffff);
+				ahci_sg[si].addr_hi = cpu_to_le32((addr >> 16) >> 16);
+				ahci_sg[si].flags_size = cpu_to_le32(sg_len - 1);
 			}
 		}
 	}
+	printk("[ahci_fill_sg] si: %d", si);
 
 	return si;
 }
@@ -1823,7 +1824,6 @@ static void ahci_qc_prep(struct ata_queued_cmd *qc)
 	if (qc->flags & ATA_QCFLAG_DMAMAP)
 	{
 		if (qc->tf.command == CMD_SGXSSD_WRITE_NOR || qc->tf.command == CMD_SGXSSD_WRITE_EXT)
-			//if(tmp_cmd == CMD_SGXSSD_WRITE)
 			n_elem = ahci_fill_sg_sgxssd(qc, cmd_tbl, cur_pid, cur_fid, cur_offset);
 		else
 			n_elem = ahci_fill_sg(qc, cmd_tbl);

@@ -651,26 +651,27 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 	//printk("ata_tf_to_fis");
 		//1섹터만큼 추가하기 
 	
-	if(tf->command ==CMD_SGXSSD_WRITE_EXT )
-		fis[2] = 0x35;	
-	else if(tf->command ==CMD_SGXSSD_WRITE_NOR )
-		fis[2] = 0xca;
-	// if(tf->command == CMD_SGXSSD_WRITE_EXT || CMD_SGXSSD_WRITE_NOR)
-	// {
+	// if(tf->command ==CMD_SGXSSD_WRITE_EXT )
+	// 	fis[2] = 0x35;	
+	// else if(tf->command ==CMD_SGXSSD_WRITE_NOR )
+	// 	fis[2] = 0xca;
+
+	if(tf->command == CMD_SGXSSD_WRITE_EXT || tf->command == CMD_SGXSSD_WRITE_NOR)
+	{
 		
-	// 	if(tf->nsect != 0xff)
-	// 	{
-	// 		fis[12]++;
-	// 	}
-	// 	else
-	// 	{
-	// 		fis[12] = 0;
-	// 		fis[13]++;
-	// 	}
+		if(tf->nsect != 0xff)
+		{
+			fis[12]++;
+		}
+		else
+		{
+			fis[12] = 0;
+			fis[13]++;
+		}
 		
-	// 	//size = size+4096
-	// 	printk("[ata_tf_to_fis] size becomes %d", fis[12] + fis[13]*256);
-	// }
+		//size = size+4096
+		printk("[ata_tf_to_fis] size becomes %d", fis[12] + fis[13]*256);
+	}
 
 /*
        fis[16] = tf->auxiliary & 0xff;
@@ -5229,6 +5230,7 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 	struct ata_port *ap = qc->ap;
 	unsigned int n_elem;
 
+	printk("[ata_sg_setup]");
 	VPRINTK("ENTER, ata%u\n", ap->print_id);
 
 	n_elem = dma_map_sg(ap->dev, qc->sg, qc->n_elem, qc->dma_dir);
@@ -5571,6 +5573,7 @@ void ata_qc_issue(struct ata_queued_cmd *qc)
 	struct ata_link *link = qc->dev->link;
 	u8 prot = qc->tf.protocol;
 
+	printk("[ata_qc_issue]");
 	/* Make sure only one non-NCQ command is outstanding.  The
 	 * check is skipped for old EH because it reuses active qc to
 	 * request ATAPI sense.
@@ -5614,7 +5617,6 @@ void ata_qc_issue(struct ata_queued_cmd *qc)
 		return;
 	}
 
-	printk("[ata_qc_issue]");
 	ap->ops->qc_prep(qc);
 	trace_ata_qc_issue(qc);
 	qc->err_mask |= ap->ops->qc_issue(qc);
