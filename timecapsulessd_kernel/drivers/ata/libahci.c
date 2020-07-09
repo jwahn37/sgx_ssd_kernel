@@ -1671,7 +1671,7 @@ static unsigned int ahci_fill_sg(struct ata_queued_cmd *qc, void *cmd_tbl)
 	{
 		dma_addr_t addr = sg_dma_address(sg);
 		u32 sg_len = sg_dma_len(sg);
-		//	printk("[ahci_fill_sg] index %d, dma address : 0x%llx, dma len : %d, page:0x%lx", si, addr, sg_len, sg->page_link);
+		printk("[ahci_fill_sg] index %d, dma address : 0x%llx, dma len : %d, page:0x%lx dma2 :0x%llx", si, addr, sg_len, sg->page_link, page_to_phys(sg_page(sg)));
 		ahci_sg[si].addr = cpu_to_le32(addr & 0xffffffff);
 		ahci_sg[si].addr_hi = cpu_to_le32((addr >> 16) >> 16);
 		ahci_sg[si].flags_size = cpu_to_le32(sg_len - 1);
@@ -1679,8 +1679,57 @@ static unsigned int ahci_fill_sg(struct ata_queued_cmd *qc, void *cmd_tbl)
 
 	return si;
 }
-
 static unsigned int ahci_fill_sg_sgxssd(struct ata_queued_cmd *qc, void *cmd_tbl, unsigned int pid, unsigned int fid, unsigned int offset)
+{
+	struct scatterlist *sg;
+	struct ahci_sg *ahci_sg = cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
+	unsigned int si;
+	dma_addr_t addr;
+	u32 sg_len;
+	static char *buf = NULL;
+
+	VPRINTK("ENTER\n");
+
+	printk("[ahci_fill_sg] qc->n_elem : %d", qc->n_elem);
+
+	/*
+	 * Next, the S/G list.
+	 */
+	for_each_sg(qc->sg, sg, qc->n_elem, si)
+	{
+		addr = sg_dma_address(sg);
+		sg_len = sg_dma_len(sg);
+		printk("[ahci_fill_sg] index %d, dma address : 0x%llx, dma len : %d, page:0x%lx", si, addr, sg_len, sg->page_link);
+		ahci_sg[si].addr = cpu_to_le32(addr & 0xffffffff);
+		ahci_sg[si].addr_hi = cpu_to_le32((addr >> 16) >> 16);
+		ahci_sg[si].flags_size = cpu_to_le32(sg_len - 1);
+	}
+
+	//sgxssd: add new page to the existing data buffer.
+	//void* buf = kmalloc(4096, GFP_KERNEL);	//GFP_DMA??
+	//buf = kmalloc(4096, GFP_KERNEL | GFP_DMA); //GFP_DMA??
+	if (buf == NULL)
+		buf = kmalloc(4096, GFP_NOIO | GFP_DMA | GFP_KERNEL);
+
+	memset(buf, 0, 4096);
+	//int pid = 0x11223344;
+	memcpy(buf, &pid, 4);
+	memcpy(&(buf[4]), &fid, 4);
+	memcpy(&(buf[8]), &offset, 4);
+	printk("[ahci_fill_sg] pid/fid/offset : 0x%x/0x%x/%d", pid, fid, offset);
+
+	addr = page_to_phys(virt_to_page(buf));
+	//sg_len = PAGE_SIZE;
+	sg_len = 512;
+	ahci_sg[si].addr = cpu_to_le32(addr & 0xffffffff);
+	ahci_sg[si].addr_hi = cpu_to_le32((addr >> 16) >> 16);
+	ahci_sg[si].flags_size = cpu_to_le32(sg_len - 1);
+	si++;
+	
+	return si;
+}
+
+static unsigned int ahci_fill_sg_sgxssd2(struct ata_queued_cmd *qc, void *cmd_tbl, unsigned int pid, unsigned int fid, unsigned int offset)
 {
 	struct scatterlist *sg;
 	struct ahci_sg *ahci_sg = cmd_tbl + AHCI_CMD_TBL_HDR_SZ;

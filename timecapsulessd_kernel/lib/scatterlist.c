@@ -293,9 +293,10 @@ int __sg_alloc_table(struct sg_table *table, unsigned int nents,
 	do {
 		unsigned int sg_size, alloc_size = left;
 
+		//max_ents = 128 (페이지단위로 테이블 할당하고 체인으로 연결?)
 		if (alloc_size > max_ents) {
 			alloc_size = max_ents;
-			sg_size = alloc_size - 1;
+			sg_size = alloc_size - 1;	//마지막 페이지는 체인임.
 		} else
 			sg_size = alloc_size;
 
