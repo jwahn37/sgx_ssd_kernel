@@ -56,6 +56,7 @@ enum {
 	AHCI_MAX_PORTS		= 32,
 	AHCI_MAX_CLKS		= 5,
 	//AHCI_MAX_SG		= 168, /* hardware max is 64K */
+	AHCI_MAX_SG_ORG	=168,
 	AHCI_MAX_SG		= 128, /* hardware max is 64K *///modified by SGXSSD key
 	AHCI_DMA_BOUNDARY	= 0xffffffff,
 	AHCI_MAX_CMDS		= 32, //NCQ에는 32개의 명령을 한번에 받아들일 수 있다고 나옴(jasminhe manual)
@@ -64,7 +65,7 @@ enum {
 	AHCI_RX_FIS_SZ		= 256,
 	AHCI_CMD_TBL_CDB	= 0x40,
 	AHCI_CMD_TBL_HDR_SZ	= 0x80,
-	AHCI_CMD_TBL_SZ		= AHCI_CMD_TBL_HDR_SZ + (AHCI_MAX_SG * 16),
+	AHCI_CMD_TBL_SZ		= AHCI_CMD_TBL_HDR_SZ + (AHCI_MAX_SG_ORG * 16),	//sgxssd
 	AHCI_CMD_TBL_AR_SZ	= AHCI_CMD_TBL_SZ * AHCI_MAX_CMDS,
 	AHCI_PORT_PRIV_DMA_SZ	= AHCI_CMD_SLOT_SZ + AHCI_CMD_TBL_AR_SZ +
 				  AHCI_RX_FIS_SZ,
