@@ -412,6 +412,7 @@ static int __blk_bios_map_sg(struct request_queue *q, struct bio *bio,
 	struct bvec_iter iter;
 	int cluster = blk_queue_cluster(q), nsegs = 0;
 
+	printk("[blk_bios_map_sg]");
 	for_each_bio(bio)
 		bio_for_each_segment(bvec, bio, iter)
 			__blk_segment_map_sg(q, &bvec, sglist, &bvprv, sg,
@@ -429,6 +430,8 @@ int blk_rq_map_sg(struct request_queue *q, struct request *rq,
 {
 	struct scatterlist *sg = NULL;
 	int nsegs = 0;
+	printk("[blk_rq_map_sg]");
+	
 	if (rq->rq_flags & RQF_SPECIAL_PAYLOAD)
 		nsegs = __blk_bvec_map_sg(q, rq->special_vec, sglist, &sg);
 	else if (rq->bio && bio_op(rq->bio) == REQ_OP_WRITE_SAME)

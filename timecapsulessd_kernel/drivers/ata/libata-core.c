@@ -143,6 +143,7 @@ struct ata_force_ent
 #define BUCKET_SIZE 10
 #define CMD_SGXSSD_WRITE_NOR (0x48)
 #define CMD_SGXSSD_WRITE_EXT (0x49)
+#define SSD_PAGE_SIZE (32768)
 
 //recovery node
 typedef struct recovery_node
@@ -167,6 +168,11 @@ typedef struct key_lba_hash_node
 	struct rcu_head rcu;
 	//    struct list_head close_elem;
 } KEY_LBA_HASH;
+
+char *sgxssd_buf = NULL;
+dma_addr_t sgxssd_dma_addr;
+EXPORT_SYMBOL(sgxssd_buf);
+EXPORT_SYMBOL(sgxssd_dma_addr);
 
 extern struct hlist_head key_lba_hashtable[1 << BUCKET_SIZE];
 extern spinlock_t lbamap_lock[1 << BUCKET_SIZE];
@@ -671,9 +677,10 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 
 	if (tf->command == CMD_SGXSSD_WRITE_EXT || tf->command == CMD_SGXSSD_WRITE_NOR)
 	{
-	//	for (i = 0; i < PAGE_SIZE / 512; i++)
-	//	{
-			if (tf->nsect != 0xff)
+		printk("[ata_tf_to_fis] size was %d %d %d", fis[12] + fis[13] * 256, fis[12], fis[13]);
+		for (i = 0; i < SSD_PAGE_SIZE / 512; i++)
+		{
+			if (fis[12] != 0xff)
 			{
 				fis[12]++;
 			}
@@ -682,9 +689,9 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 				fis[12] = 0;
 				fis[13]++;
 			}
-	//	}
+		}
 		//size = size+4096
-		printk("[ata_tf_to_fis] size becomes %d", fis[12] + fis[13] * 256);
+		printk("[ata_tf_to_fis] cmd 0x%x size becomes %d %d %d", tf->command, fis[12] + fis[13] * 256, fis[12], fis[13]);
 	}
 
 	/*
@@ -5559,6 +5566,18 @@ static void ata_sg_clean(struct ata_queued_cmd *qc)
 	int dir = qc->dma_dir;
 
 	WARN_ON_ONCE(sg == NULL);
+	printk("[ata_sg_clean]");
+
+	//free buffer
+	if (qc->tf.command == CMD_SGXSSD_WRITE_NOR || qc->tf.command == CMD_SGXSSD_WRITE_EXT)
+	{
+		if (sgxssd_buf)
+		{
+			dma_unmap_single(qc->ap->dev, sgxssd_dma_addr, SSD_PAGE_SIZE, qc->dma_dir);
+			kfree(sgxssd_buf);
+			sgxssd_buf = NULL;
+		}
+	}
 
 	VPRINTK("unmapping %u sg elements\n", qc->n_elem);
 
@@ -5586,9 +5605,82 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 {
 	struct ata_port *ap = qc->ap;
 	unsigned int n_elem;
+	struct page *cur_page = NULL;
+	struct inode *cur_inode = NULL;
+	unsigned int cur_offset;
+	unsigned int cur_pid;
+	unsigned int cur_fid;
 
 	printk("[ata_sg_setup]");
 	VPRINTK("ENTER, ata%u\n", ap->print_id);
+
+	// //sgxssd get inode to search piggyback set
+	if (qc && qc->sg && qc->n_elem > 0)
+	{
+		cur_page = sg_page(qc->sg);
+
+		if (page_has_private(cur_page) && cur_page != NULL && (!PageSlab(cur_page)) && (!PageSwapCache(cur_page)) && (!PageAnon(cur_page)))
+		{
+			if (cur_page->mapping && cur_page->mapping->host)
+			{
+				cur_inode = cur_page->mapping->host;
+				cur_pid = cur_inode->pid;
+				cur_fid = cur_inode->fid;
+				cur_offset = cur_page->index;
+				//if(cur_pid != 0 )	tmp_cmd = CMD_SGXSSD_WRITE;
+				if (cur_pid != 0)
+				{
+					if (qc->tf.command == 0xCA)				   //0xCA : write dma
+						qc->tf.command = CMD_SGXSSD_WRITE_NOR; //new command.
+					else if (qc->tf.command == 0x35)		   //0x35 : write dma ext
+						qc->tf.command = CMD_SGXSSD_WRITE_EXT; //new command
+				}
+				printk("[ata_sg_setup] inode num : %lu, pid/fid/offset: %x/%x/%x", cur_inode->i_ino, cur_inode->pid, cur_inode->fid, cur_offset);
+			}
+		}
+	}
+	else
+	{
+		printk("[ata_sg_setup] fail");
+	}
+
+	if (qc->tf.command == CMD_SGXSSD_WRITE_EXT || qc->tf.command == CMD_SGXSSD_WRITE_NOR)
+	{
+		if (sgxssd_buf == NULL)
+		{
+			sgxssd_buf = kmalloc(SSD_PAGE_SIZE, GFP_NOIO | GFP_DMA | GFP_KERNEL); //32768 은 SSD의 pagesize
+			//sgxssd_buf = kmalloc(PAGE_SIZE, GFP_NOIO | GFP_DMA | GFP_KERNEL);
+			//buf = dma_alloc_coherent(qc->ap->dev, PAGE_SIZE, &addr, GFP_NOIO | GFP_DMA | GFP_KERNEL);
+			printk("[ata_sg_setup] dma_alloc vadd: 0x%lx", sgxssd_buf);
+
+			memset(sgxssd_buf, 0, SSD_PAGE_SIZE);
+
+			printk("[ata_sg_setup] buffer allocated! %d", SSD_PAGE_SIZE);
+		}
+		//memset(buf, 0, 12);	//temp for checking
+		//int pid = 0x11223344;
+		clflush_cache_range(sgxssd_buf, SSD_PAGE_SIZE);
+
+		memcpy(sgxssd_buf, &cur_pid, 4);
+		memcpy(&(sgxssd_buf[4]), &cur_fid, 4);
+		memcpy(&(sgxssd_buf[8]), &cur_offset, 4);
+
+		//memcpy(&(sgxssd_buf[PAGE_SIZE-512]), &cur_pid, 4);
+		//memcpy(&(sgxssd_buf[PAGE_SIZE-512+4]), &cur_fid, 4);
+		//memcpy(&(sgxssd_buf[PAGE_SIZE-512+8]), &cur_offset, 4);
+
+		//barrier();
+		//clflush();
+		//_mm_cflush(buf);
+		clflush_cache_range(sgxssd_buf, SSD_PAGE_SIZE);
+		//flush_cashe_range(buf, )
+		//native_wbinvd();
+		//asm volatile ("mfence" ::: "memory");
+		//mb();
+
+		//dma_wmb();
+		//dma_rmb();
+	}
 
 	n_elem = dma_map_sg(ap->dev, qc->sg, qc->n_elem, qc->dma_dir);
 	if (n_elem < 1)
