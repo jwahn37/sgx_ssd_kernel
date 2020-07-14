@@ -1,1 +1,1 @@
-/home/jinu/TimeCapsuleSSD/timecapsulessd_kernel/scripts/gdb/vmlinux-gdb.py
+/home/jinu/sgx_ssd_kernel/timecapsulessd_kernel/scripts/gdb/vmlinux-gdb.py

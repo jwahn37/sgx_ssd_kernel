@@ -334,10 +334,9 @@
 #define __NR_pkey_alloc 330
 #define __NR_pkey_free 331
 #define __NR_statx 332
-#define __NR_open_key 333
-#define __NR_close_key 334
-#define __NR_read_key 335
-#define __NR_write_key 336
-#define __NR_recovery_key 337
+#define __NR_sgxssd_pm 333
+#define __NR_open_key 334
+#define __NR_close_key 335
+#define __NR_recovery 336
 
 #endif /* _ASM_X86_UNISTD_64_H */

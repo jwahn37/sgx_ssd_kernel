@@ -140,11 +140,11 @@ static DEFINE_MUTEX(rdafwr_lock);
 
 typedef struct PM_param
 {
-//	unsigned int fd;
+	//	unsigned int fd;
 	unsigned char cmd;
-//	unsigned long offset; //여기가 LBA영역에 들어감 6bytes
-	unsigned int size;	  //이건 lba처럼 count영역에 들어가니, 섹터단위일듯.
-//	unsigned int ret_time;
+	//	unsigned long offset; //여기가 LBA영역에 들어감 6bytes
+	unsigned int size; //이건 lba처럼 count영역에 들어가니, 섹터단위일듯.
+	//	unsigned int ret_time;
 } PM_PARAM;
 
 enum spm_cmd
@@ -1276,15 +1276,14 @@ long do_sys_open_key(int dfd, const char __user *filename, int flags, umode_t mo
 
 			printk("do_sys_open_key");
 
-		
-
 			// ///sgxssd
 			// //f->f_inode->pid = 0x11223344;
 			// //f->f_inode->fid = 0x11111111;
 			f->f_inode->pid = pid;
 			f->f_inode->fid = fid;
 
-			printk("do_sys_open inode num : %lu, key: %x, %lx", cur_map->inode_num, cur_map->key, (unsigned long)f->f_inode); //key
+			printk("[do_sys_open] pid : 0x%x, fid: 0x%x", pid, fid);
+			//printk("do_sys_open inode num : %lu, key: %x, %lx", cur_map->inode_num, cur_map->key, (unsigned long)f->f_inode); //key
 
 			//get LBA lists
 			/*
@@ -1650,7 +1649,7 @@ static ssize_t sgxssd_rdafwr(struct file *filp, char __user *buf, size_t len, PM
 	unsigned long temp;
 
 	init_sync_kiocb(&kiocb, filp);
-	kiocb.ki_pos = 0;//*ppos;
+	kiocb.ki_pos = 0; //*ppos;
 
 	//무조건 쓰기임
 	iov_iter_init(&iter, WRITE, &iov, 1, len);
@@ -1658,7 +1657,7 @@ static ssize_t sgxssd_rdafwr(struct file *filp, char __user *buf, size_t len, PM
 
 	//hash table 에 삽입
 	cur_map = vmalloc(sizeof(PID_LBA_HASH));
-	cur_map->lba = 0;//(*ppos) >> 9;
+	cur_map->lba = 0;			 //(*ppos) >> 9;
 	cur_map->fd = pm_param->cmd; //나중에 지움.
 	cur_map->cmd = pm_param->cmd;
 	//cur_map->ret_time = pm_param->ret_time;
@@ -1703,7 +1702,6 @@ static unsigned int raf_rd_time = 0;
 static unsigned int raf_wr_time_ms = 0;
 static unsigned int raf_rd_time_ms = 0;
 
-
 SYSCALL_DEFINE3(sgxssd_pm, char __user *, u_pm_param, char __user *, buf, size_t, count)
 //YSCALL_DEFINE3(enc_rdafwr, char __user *, u_ds_param, char __user *, buf, size_t, count)
 //SYSCALL_DEFINE5(enc_rdafwr, unsigned int, fd, unsigned char, cmd, unsigned long, offset, char __user *, buf, size_t, count)
@@ -1723,7 +1721,7 @@ SYSCALL_DEFINE3(sgxssd_pm, char __user *, u_pm_param, char __user *, buf, size_t
 	//pm_param을 못넘기므로..
 	PM_PARAM *pm_param;
 	pm_param = (PM_PARAM *)vmalloc(sizeof(PM_PARAM));
-	
+
 	struct timespec raf_wr_clk;
 	unsigned int raf_wr_times_s, raf_wr_times_f;
 	unsigned int raf_wr_timen_s, raf_wr_timen_f;

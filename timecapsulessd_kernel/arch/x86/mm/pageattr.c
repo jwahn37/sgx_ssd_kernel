@@ -138,6 +138,7 @@ void clflush_cache_range(void *vaddr, unsigned int size)
 	void *p = (void *)((unsigned long)vaddr & ~(clflush_size - 1));
 	void *vend = vaddr + size;
 
+	printk("[clflush_cache_range]");
 	if (p >= vend)
 		return;
 
@@ -147,6 +148,8 @@ void clflush_cache_range(void *vaddr, unsigned int size)
 		clflushopt(p);
 
 	mb();
+	printk("[clflush_cache_range2]");
+
 }
 EXPORT_SYMBOL_GPL(clflush_cache_range);
 
