@@ -34,10 +34,9 @@
 
 #include "internal.h"
 
-#include <linux/vmalloc.h> //key 
+#include <linux/vmalloc.h>	 //key
 #include <linux/hashtable.h> //key_hashtable
-#include <linux/spinlock.h> //key_table_lock
-
+#include <linux/spinlock.h>	 //key_table_lock
 
 //key
 //KEY_LBA_MAP* key_lba_table = NULL;
@@ -56,68 +55,138 @@
  */
 
 #define BUCKET_SIZE 10
-
+#define KEY_SIZE 16
+#define MAC_SIZE 32
 //for recovery
 //This table sends recovery time to the SATA driver.
-typedef struct recovery_node{
+typedef struct recovery_node
+{
 	unsigned long recovery_time;
-	unsigned long key;	//it is put on LBA space
+	unsigned long key; //it is put on LBA space
 	struct hlist_node elem;
 	struct rcu_head rcu;
-}RECOVERY_HASH;
+} RECOVERY_HASH;
 DEFINE_HASHTABLE(recovery_hashtable, BUCKET_SIZE);
 EXPORT_SYMBOL(recovery_hashtable);
 
-spinlock_t recmap_lock[1<<BUCKET_SIZE]={ [0 ... ((1<< (BUCKET_SIZE)) - 1)] = __SPIN_LOCK_UNLOCKED(recmap_lock)};
+spinlock_t recmap_lock[1 << BUCKET_SIZE] = {[0 ...((1 << (BUCKET_SIZE)) - 1)] = __SPIN_LOCK_UNLOCKED(recmap_lock)};
 EXPORT_SYMBOL(recmap_lock);
 
-void rec_reclaim(struct rcu_head *rp){
+void rec_reclaim(struct rcu_head *rp)
+{
 	RECOVERY_HASH *cmp = container_of(rp, RECOVERY_HASH, rcu);
 	vfree(cmp);
 }
 EXPORT_SYMBOL(rec_reclaim);
 ////////////////
 
+typedef struct key_inode_hash_node
+{
+	unsigned long inode_num;
+	int key;
+	struct hlist_node elem;
+	struct rcu_head rcu;
+} KEY_INODE_HASH;
 
-typedef struct key_inode_hash_node{
-    unsigned long inode_num;
-    int key;
-    struct hlist_node elem;
-    struct rcu_head rcu;
-}KEY_INODE_HASH;
-
-DEFINE_HASHTABLE(key_inode_hashtable,BUCKET_SIZE);
+DEFINE_HASHTABLE(key_inode_hashtable, BUCKET_SIZE);
 EXPORT_SYMBOL(key_inode_hashtable);
 
-spinlock_t keymap_lock[1 << BUCKET_SIZE]={ [0 ... ((1 << (BUCKET_SIZE)) - 1)] = __SPIN_LOCK_UNLOCKED(keymap_lock) };
+spinlock_t keymap_lock[1 << BUCKET_SIZE] = {[0 ...((1 << (BUCKET_SIZE)) - 1)] = __SPIN_LOCK_UNLOCKED(keymap_lock)};
 EXPORT_SYMBOL(keymap_lock);
 ////////////////////////////////////////
-typedef struct key_lba_hash_node{
-    unsigned long lba;
-//    unsigned int size;
-    int key;
-    struct hlist_node elem;
-    struct rcu_head rcu;
-    //    struct list_head close_elem;
-}KEY_LBA_HASH;
-extern struct hlist_head key_lba_hashtable[1<<BUCKET_SIZE];
-extern spinlock_t lbamap_lock[1<<BUCKET_SIZE];
+typedef struct key_lba_hash_node
+{
+	unsigned long lba;
+	//    unsigned int size;
+	int key;
+	struct hlist_node elem;
+	struct rcu_head rcu;
+	//    struct list_head close_elem;
+} KEY_LBA_HASH;
+extern struct hlist_head key_lba_hashtable[1 << BUCKET_SIZE];
+extern spinlock_t lbamap_lock[1 << BUCKET_SIZE];
 ////////////////////////////////////////
-void inode_node_reclaim(struct rcu_head *rp){
-    KEY_INODE_HASH *cmp=container_of(rp,KEY_INODE_HASH,rcu);
-    vfree(cmp);
+void inode_node_reclaim(struct rcu_head *rp)
+{
+	KEY_INODE_HASH *cmp = container_of(rp, KEY_INODE_HASH, rcu);
+	vfree(cmp);
 }
 EXPORT_SYMBOL(inode_node_reclaim);
-void lba_reclaim(struct rcu_head *rp){
-    KEY_LBA_HASH *cmp=container_of(rp,KEY_LBA_HASH, rcu);
-    vfree(cmp);
+void lba_reclaim(struct rcu_head *rp)
+{
+	KEY_LBA_HASH *cmp = container_of(rp, KEY_LBA_HASH, rcu);
+	vfree(cmp);
 }
 EXPORT_SYMBOL(lba_reclaim);
 //////////////////////////////
 
+typedef struct pid_lba_hash_node
+{
+	unsigned long lba;
+	unsigned int fd;
+	unsigned int ret_time;
+	unsigned char cmd;
+	double timer;
+	//    unsigned long value;
+	//    unsigned int call;
+	struct hlist_node elem;
+	struct rcu_head rcu;
+} PID_LBA_HASH;
+DEFINE_HASHTABLE(pid_lba_hashtable, BUCKET_SIZE);
+EXPORT_SYMBOL(pid_lba_hashtable);
+;
+static DEFINE_MUTEX(rdafwr_lock);
+
+typedef struct DS_param
+{
+	unsigned int fd;
+	unsigned char cmd;
+	unsigned long offset; //여기가 LBA영역에 들어감 6bytes
+	unsigned int size;	  //이건 lba처럼 count영역에 들어가니, 섹터단위일듯.
+	unsigned int ret_time;
+} DS_PARAM;
+
+//DISKSHIELD Command type
+enum ds_cmd
+{
+	DS_WR_RANGE_MIN = 0x43,
+	DS_CREATE_WR,
+	DS_OPEN_WR,
+	DS_CLOSE_WR,
+	DS_REMOVE_WR,
+	DS_WRITE_WR,
+	DS_WR_RANGE_MAX,
+	DS_RD_RANGE_MIN,
+	DS_READ_RD,
+	DS_AUTH_RD,
+	DS_CREATE_RD,
+	DS_OPEN_RD,
+	DS_CLOSE_RD,
+	DS_REMOVE_RD,
+	DS_WRITE_RD,
+	DS_RD_RANGE_MAX
+};
+
+enum spm_cmd
+{
+	SPM_CREATE = 0x65,
+	SPM_CHANGE,
+	SPM_DELETE,
+	SPM_RECOVERY
+};
+
+spinlock_t pidmap_lock[1 << BUCKET_SIZE] = {[0 ...((1 << (BUCKET_SIZE)) - 1)] = __SPIN_LOCK_UNLOCKED(pidmap_lock)};
+EXPORT_SYMBOL(pidmap_lock);
+
+void pid_reclaim(struct rcu_head *rp)
+{
+	PID_LBA_HASH *cmp = container_of(rp, PID_LBA_HASH, rcu);
+	vfree(cmp);
+}
+EXPORT_SYMBOL(pid_reclaim);
 
 int do_truncate(struct dentry *dentry, loff_t length, unsigned int time_attrs,
-	struct file *filp)
+				struct file *filp)
 {
 	int ret;
 	struct iattr newattrs;
@@ -128,7 +197,8 @@ int do_truncate(struct dentry *dentry, loff_t length, unsigned int time_attrs,
 
 	newattrs.ia_size = length;
 	newattrs.ia_valid = ATTR_SIZE | time_attrs;
-	if (filp) {
+	if (filp)
+	{
 		newattrs.ia_file = filp;
 		newattrs.ia_valid |= ATTR_FILE;
 	}
@@ -216,16 +286,18 @@ static long do_sys_truncate(const char __user *pathname, loff_t length)
 	struct path path;
 	int error;
 
-	if (length < 0)	/* sorry, but loff_t says... */
+	if (length < 0) /* sorry, but loff_t says... */
 		return -EINVAL;
 
 retry:
 	error = user_path_at(AT_FDCWD, pathname, lookup_flags, &path);
-	if (!error) {
+	if (!error)
+	{
 		error = vfs_truncate(&path, length);
 		path_put(&path);
 	}
-	if (retry_estale(error, lookup_flags)) {
+	if (retry_estale(error, lookup_flags))
+	{
 		lookup_flags |= LOOKUP_REVAL;
 		goto retry;
 	}
@@ -284,7 +356,7 @@ static long do_sys_ftruncate(unsigned int fd, loff_t length, int small)
 	if (!error)
 		error = security_path_truncate(&f.file->f_path);
 	if (!error)
-		error = do_truncate(dentry, length, ATTR_MTIME|ATTR_CTIME, f.file);
+		error = do_truncate(dentry, length, ATTR_MTIME | ATTR_CTIME, f.file);
 	sb_end_write(inode->i_sb);
 out_putf:
 	fdput(f);
@@ -317,7 +389,6 @@ SYSCALL_DEFINE2(ftruncate64, unsigned int, fd, loff_t, length)
 }
 #endif /* BITS_PER_LONG == 32 */
 
-
 int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
 {
 	struct inode *inode = file_inode(file);
@@ -332,27 +403,27 @@ int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
 
 	/* Punch hole and zero range are mutually exclusive */
 	if ((mode & (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_ZERO_RANGE)) ==
-	    (FALLOC_FL_PUNCH_HOLE | FALLOC_FL_ZERO_RANGE))
+		(FALLOC_FL_PUNCH_HOLE | FALLOC_FL_ZERO_RANGE))
 		return -EOPNOTSUPP;
 
 	/* Punch hole must have keep size set */
 	if ((mode & FALLOC_FL_PUNCH_HOLE) &&
-	    !(mode & FALLOC_FL_KEEP_SIZE))
+		!(mode & FALLOC_FL_KEEP_SIZE))
 		return -EOPNOTSUPP;
 
 	/* Collapse range should only be used exclusively. */
 	if ((mode & FALLOC_FL_COLLAPSE_RANGE) &&
-	    (mode & ~FALLOC_FL_COLLAPSE_RANGE))
+		(mode & ~FALLOC_FL_COLLAPSE_RANGE))
 		return -EINVAL;
 
 	/* Insert range should only be used exclusively. */
 	if ((mode & FALLOC_FL_INSERT_RANGE) &&
-	    (mode & ~FALLOC_FL_INSERT_RANGE))
+		(mode & ~FALLOC_FL_INSERT_RANGE))
 		return -EINVAL;
 
 	/* Unshare range should only be used with allocate mode. */
 	if ((mode & FALLOC_FL_UNSHARE_RANGE) &&
-	    (mode & ~(FALLOC_FL_UNSHARE_RANGE | FALLOC_FL_KEEP_SIZE)))
+		(mode & ~(FALLOC_FL_UNSHARE_RANGE | FALLOC_FL_KEEP_SIZE)))
 		return -EINVAL;
 
 	if (!(file->f_mode & FMODE_WRITE))
@@ -420,7 +491,8 @@ SYSCALL_DEFINE4(fallocate, int, fd, int, mode, loff_t, offset, loff_t, len)
 	struct fd f = fdget(fd);
 	int error = -EBADF;
 
-	if (f.file) {
+	if (f.file)
+	{
 		error = vfs_fallocate(f.file, mode, offset, len);
 		fdput(f);
 	}
@@ -441,7 +513,7 @@ SYSCALL_DEFINE3(faccessat, int, dfd, const char __user *, filename, int, mode)
 	int res;
 	unsigned int lookup_flags = LOOKUP_FOLLOW;
 
-	if (mode & ~S_IRWXO)	/* where's F_OK, X_OK, W_OK, R_OK? */
+	if (mode & ~S_IRWXO) /* where's F_OK, X_OK, W_OK, R_OK? */
 		return -EINVAL;
 
 	override_cred = prepare_creds();
@@ -451,7 +523,8 @@ SYSCALL_DEFINE3(faccessat, int, dfd, const char __user *, filename, int, mode)
 	override_cred->fsuid = override_cred->uid;
 	override_cred->fsgid = override_cred->gid;
 
-	if (!issecure(SECURE_NO_SETUID_FIXUP)) {
+	if (!issecure(SECURE_NO_SETUID_FIXUP))
+	{
 		/* Clear the capabilities if we switch to a non-root user */
 		kuid_t root_uid = make_kuid(override_cred->user_ns, 0);
 		if (!uid_eq(override_cred->uid, root_uid))
@@ -469,7 +542,8 @@ retry:
 
 	inode = d_backing_inode(path.dentry);
 
-	if ((mode & MAY_EXEC) && S_ISREG(inode->i_mode)) {
+	if ((mode & MAY_EXEC) && S_ISREG(inode->i_mode))
+	{
 		/*
 		 * MAY_EXEC on regular files is denied if the fs is mounted
 		 * with the "noexec" flag.
@@ -498,7 +572,8 @@ retry:
 
 out_path_release:
 	path_put(&path);
-	if (retry_estale(res, lookup_flags)) {
+	if (retry_estale(res, lookup_flags))
+	{
 		lookup_flags |= LOOKUP_REVAL;
 		goto retry;
 	}
@@ -531,7 +606,8 @@ retry:
 
 dput_and_out:
 	path_put(&path);
-	if (retry_estale(error, lookup_flags)) {
+	if (retry_estale(error, lookup_flags))
+	{
 		lookup_flags |= LOOKUP_REVAL;
 		goto retry;
 	}
@@ -586,7 +662,8 @@ retry:
 	error = 0;
 dput_and_out:
 	path_put(&path);
-	if (retry_estale(error, lookup_flags)) {
+	if (retry_estale(error, lookup_flags))
+	{
 		lookup_flags |= LOOKUP_REVAL;
 		goto retry;
 	}
@@ -614,7 +691,8 @@ retry_deleg:
 	error = notify_change(path->dentry, &newattrs, &delegated_inode);
 out_unlock:
 	inode_unlock(inode);
-	if (delegated_inode) {
+	if (delegated_inode)
+	{
 		error = break_deleg_wait(&delegated_inode);
 		if (!error)
 			goto retry_deleg;
@@ -628,7 +706,8 @@ SYSCALL_DEFINE2(fchmod, unsigned int, fd, umode_t, mode)
 	struct fd f = fdget(fd);
 	int err = -EBADF;
 
-	if (f.file) {
+	if (f.file)
+	{
 		audit_file(f.file);
 		err = chmod_common(&f.file->f_path, mode);
 		fdput(f);
@@ -643,10 +722,12 @@ SYSCALL_DEFINE3(fchmodat, int, dfd, const char __user *, filename, umode_t, mode
 	unsigned int lookup_flags = LOOKUP_FOLLOW;
 retry:
 	error = user_path_at(dfd, filename, lookup_flags, &path);
-	if (!error) {
+	if (!error)
+	{
 		error = chmod_common(&path, mode);
 		path_put(&path);
-		if (retry_estale(error, lookup_flags)) {
+		if (retry_estale(error, lookup_flags))
+		{
 			lookup_flags |= LOOKUP_REVAL;
 			goto retry;
 		}
@@ -672,14 +753,16 @@ static int chown_common(const struct path *path, uid_t user, gid_t group)
 	gid = make_kgid(current_user_ns(), group);
 
 retry_deleg:
-	newattrs.ia_valid =  ATTR_CTIME;
-	if (user != (uid_t) -1) {
+	newattrs.ia_valid = ATTR_CTIME;
+	if (user != (uid_t)-1)
+	{
 		if (!uid_valid(uid))
 			return -EINVAL;
 		newattrs.ia_valid |= ATTR_UID;
 		newattrs.ia_uid = uid;
 	}
-	if (group != (gid_t) -1) {
+	if (group != (gid_t)-1)
+	{
 		if (!gid_valid(gid))
 			return -EINVAL;
 		newattrs.ia_valid |= ATTR_GID;
@@ -693,7 +776,8 @@ retry_deleg:
 	if (!error)
 		error = notify_change(path->dentry, &newattrs, &delegated_inode);
 	inode_unlock(inode);
-	if (delegated_inode) {
+	if (delegated_inode)
+	{
 		error = break_deleg_wait(&delegated_inode);
 		if (!error)
 			goto retry_deleg;
@@ -702,7 +786,7 @@ retry_deleg:
 }
 
 SYSCALL_DEFINE5(fchownat, int, dfd, const char __user *, filename, uid_t, user,
-		gid_t, group, int, flag)
+				gid_t, group, int, flag)
 {
 	struct path path;
 	int error = -EINVAL;
@@ -725,7 +809,8 @@ retry:
 	mnt_drop_write(path.mnt);
 out_release:
 	path_put(&path);
-	if (retry_estale(error, lookup_flags)) {
+	if (retry_estale(error, lookup_flags))
+	{
 		lookup_flags |= LOOKUP_REVAL;
 		goto retry;
 	}
@@ -741,7 +826,7 @@ SYSCALL_DEFINE3(chown, const char __user *, filename, uid_t, user, gid_t, group)
 SYSCALL_DEFINE3(lchown, const char __user *, filename, uid_t, user, gid_t, group)
 {
 	return sys_fchownat(AT_FDCWD, filename, user, group,
-			    AT_SYMLINK_NOFOLLOW);
+						AT_SYMLINK_NOFOLLOW);
 }
 
 SYSCALL_DEFINE3(fchown, unsigned int, fd, uid_t, user, gid_t, group)
@@ -767,7 +852,8 @@ out:
 int open_check_o_direct(struct file *f)
 {
 	/* NB: we're sure to have correct a_ops only after f_op->open */
-	if (f->f_flags & O_DIRECT) {
+	if (f->f_flags & O_DIRECT)
+	{
 		if (!f->f_mapping->a_ops || !f->f_mapping->a_ops->direct_IO)
 			return -EINVAL;
 	}
@@ -775,9 +861,9 @@ int open_check_o_direct(struct file *f)
 }
 
 static int do_dentry_open(struct file *f,
-			  struct inode *inode,
-			  int (*open)(struct inode *, struct file *),
-			  const struct cred *cred)
+						  struct inode *inode,
+						  int (*open)(struct inode *, struct file *),
+						  const struct cred *cred)
 {
 	static const struct file_operations empty_fops = {};
 	int error;
@@ -792,18 +878,21 @@ static int do_dentry_open(struct file *f,
 	/* Ensure that we skip any errors that predate opening of the file */
 	f->f_wb_err = filemap_sample_wb_err(f->f_mapping);
 
-	if (unlikely(f->f_flags & O_PATH)) {
+	if (unlikely(f->f_flags & O_PATH))
+	{
 		f->f_mode = FMODE_PATH;
 		f->f_op = &empty_fops;
 		return 0;
 	}
 
-	if (f->f_mode & FMODE_WRITE && !special_file(inode->i_mode)) {
+	if (f->f_mode & FMODE_WRITE && !special_file(inode->i_mode))
+	{
 		error = get_write_access(inode);
 		if (unlikely(error))
 			goto cleanup_file;
 		error = __mnt_want_write(f->f_path.mnt);
-		if (unlikely(error)) {
+		if (unlikely(error))
+		{
 			put_write_access(inode);
 			goto cleanup_file;
 		}
@@ -815,7 +904,8 @@ static int do_dentry_open(struct file *f,
 		f->f_mode |= FMODE_ATOMIC_POS;
 
 	f->f_op = fops_get(inode->i_fop);
-	if (unlikely(WARN_ON(!f->f_op))) {
+	if (unlikely(WARN_ON(!f->f_op)))
+	{
 		error = -ENODEV;
 		goto cleanup_all;
 	}
@@ -830,7 +920,8 @@ static int do_dentry_open(struct file *f,
 
 	if (!open)
 		open = f->f_op->open;
-	if (open) {
+	if (open)
+	{
 		error = open(inode, f);
 		if (error)
 			goto cleanup_all;
@@ -838,10 +929,10 @@ static int do_dentry_open(struct file *f,
 	if ((f->f_mode & (FMODE_READ | FMODE_WRITE)) == FMODE_READ)
 		i_readcount_inc(inode);
 	if ((f->f_mode & FMODE_READ) &&
-	     likely(f->f_op->read || f->f_op->read_iter))
+		likely(f->f_op->read || f->f_op->read_iter))
 		f->f_mode |= FMODE_CAN_READ;
 	if ((f->f_mode & FMODE_WRITE) &&
-	     likely(f->f_op->write || f->f_op->write_iter))
+		likely(f->f_op->write || f->f_op->write_iter))
 		f->f_mode |= FMODE_CAN_WRITE;
 
 	f->f_write_hint = WRITE_LIFE_NOT_SET;
@@ -853,7 +944,8 @@ static int do_dentry_open(struct file *f,
 
 cleanup_all:
 	fops_put(f->f_op);
-	if (f->f_mode & FMODE_WRITER) {
+	if (f->f_mode & FMODE_WRITER)
+	{
 		put_write_access(inode);
 		__mnt_drop_write(f->f_path.mnt);
 	}
@@ -887,15 +979,15 @@ cleanup_file:
  * Returns zero on success or -errno if the open failed.
  */
 int finish_open(struct file *file, struct dentry *dentry,
-		int (*open)(struct inode *, struct file *),
-		int *opened)
+				int (*open)(struct inode *, struct file *),
+				int *opened)
 {
 	int error;
 	BUG_ON(*opened & FILE_OPENED); /* once it's opened, it's opened */
 
 	file->f_path.dentry = dentry;
 	error = do_dentry_open(file, d_backing_inode(dentry), open,
-			       current_cred());
+						   current_cred());
 	if (!error)
 		*opened |= FILE_OPENED;
 
@@ -937,7 +1029,7 @@ EXPORT_SYMBOL(file_path);
  * @cred: credentials to use
  */
 int vfs_open(const struct path *path, struct file *file,
-	     const struct cred *cred)
+			 const struct cred *cred)
 {
 	struct dentry *dentry = d_real(path->dentry, NULL, file->f_flags, 0);
 
@@ -949,7 +1041,7 @@ int vfs_open(const struct path *path, struct file *file,
 }
 
 struct file *dentry_open(const struct path *path, int flags,
-			 const struct cred *cred)
+						 const struct cred *cred)
 {
 	int error;
 	struct file *f;
@@ -960,17 +1052,22 @@ struct file *dentry_open(const struct path *path, int flags,
 	BUG_ON(!path->mnt);
 
 	f = get_empty_filp();
-	if (!IS_ERR(f)) {
+	if (!IS_ERR(f))
+	{
 		f->f_flags = flags;
 		error = vfs_open(path, f, cred);
-		if (!error) {
+		if (!error)
+		{
 			/* from now on we need fput() to dispose of f */
 			error = open_check_o_direct(f);
-			if (error) {
+			if (error)
+			{
 				fput(f);
 				f = ERR_PTR(error);
 			}
-		} else { 
+		}
+		else
+		{
 			put_filp(f);
 			f = ERR_PTR(error);
 		}
@@ -1007,12 +1104,15 @@ static inline int build_open_flags(int flags, umode_t mode, struct open_flags *o
 	if (flags & __O_SYNC)
 		flags |= O_DSYNC;
 
-	if (flags & __O_TMPFILE) {
+	if (flags & __O_TMPFILE)
+	{
 		if ((flags & O_TMPFILE_MASK) != O_TMPFILE)
 			return -EINVAL;
 		if (!(acc_mode & MAY_WRITE))
 			return -EINVAL;
-	} else if (flags & O_PATH) {
+	}
+	else if (flags & O_PATH)
+	{
 		/*
 		 * If we have O_PATH in the open flag. Then we
 		 * cannot have anything other than the below set of flags
@@ -1036,7 +1136,8 @@ static inline int build_open_flags(int flags, umode_t mode, struct open_flags *o
 
 	op->intent = flags & O_PATH ? 0 : LOOKUP_OPEN;
 
-	if (flags & O_CREAT) {
+	if (flags & O_CREAT)
+	{
 		op->intent |= LOOKUP_CREATE;
 		if (flags & O_EXCL)
 			op->intent |= LOOKUP_EXCL;
@@ -1083,8 +1184,9 @@ struct file *filp_open(const char *filename, int flags, umode_t mode)
 {
 	struct filename *name = getname_kernel(filename);
 	struct file *file = ERR_CAST(name);
-	
-	if (!IS_ERR(name)) {
+
+	if (!IS_ERR(name))
+	{
 		file = file_open_name(name, flags, mode);
 		putname(name);
 	}
@@ -1093,7 +1195,7 @@ struct file *filp_open(const char *filename, int flags, umode_t mode)
 EXPORT_SYMBOL(filp_open);
 
 struct file *file_open_root(struct dentry *dentry, struct vfsmount *mnt,
-			    const char *filename, int flags, umode_t mode)
+							const char *filename, int flags, umode_t mode)
 {
 	struct open_flags op;
 	int err = build_open_flags(flags, mode, &op);
@@ -1114,7 +1216,8 @@ struct file *filp_clone_open(struct file *oldfile)
 
 	file->f_flags = oldfile->f_flags;
 	retval = vfs_open(&oldfile->f_path, file, oldfile->f_cred);
-	if (retval) {
+	if (retval)
+	{
 		put_filp(file);
 		return ERR_PTR(retval);
 	}
@@ -1137,12 +1240,16 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 		return PTR_ERR(tmp);
 
 	fd = get_unused_fd_flags(flags);
-	if (fd >= 0) {
+	if (fd >= 0)
+	{
 		struct file *f = do_filp_open(dfd, tmp, &op);
-		if (IS_ERR(f)) {
+		if (IS_ERR(f))
+		{
 			put_unused_fd(fd);
 			fd = PTR_ERR(f);
-		} else {
+		}
+		else
+		{
 			fsnotify_open(f);
 			fd_install(fd, f);
 		}
@@ -1151,71 +1258,83 @@ long do_sys_open(int dfd, const char __user *filename, int flags, umode_t mode)
 	return fd;
 }
 
-
 //key do_sys_open , add key-inode mapping table here
-long do_sys_open_key(int dfd, const char __user *filename, int flags, umode_t mode, int key)
+long do_sys_open_key(int dfd, const char __user *filename, int flags, umode_t mode, unsigned int pid, unsigned int fid)
 {
-    struct open_flags op;
-    int fd = build_open_flags(flags, mode, &op);
-    struct filename *tmp;
-    //  static int inode_table_num=0;
-    //    KEY_INODE_MAP* cur_map;
-    KEY_INODE_HASH* cur_map=NULL;
-    struct hlist_node* cur_map_tmp=NULL;
-    KEY_LBA_HASH* cur_lba=NULL;
-    struct hlist_node* cur_lba_tmp=NULL;
-    int num,lba_clear=0,inode_clear=0;
-    unsigned long fl;
+	struct open_flags op;
+	int fd = build_open_flags(flags, mode, &op);
+	struct filename *tmp;
+	//  static int inode_table_num=0;
+	//    KEY_INODE_MAP* cur_map;
+	KEY_INODE_HASH *cur_map = NULL;
+	struct hlist_node *cur_map_tmp = NULL;
+	KEY_LBA_HASH *cur_lba = NULL;
+	struct hlist_node *cur_lba_tmp = NULL;
+	int num, lba_clear = 0, inode_clear = 0;
+	unsigned long fl;
 
-    if (fd)
-	return fd;
+	if (fd)
+		return fd;
 
-    tmp = getname(filename);
-    if (IS_ERR(tmp))
-	return PTR_ERR(tmp);
+	tmp = getname(filename);
+	if (IS_ERR(tmp))
+		return PTR_ERR(tmp);
 
-    fd = get_unused_fd_flags(flags);
-    if (fd >= 0) {
-	struct file *f = do_filp_open(dfd, tmp, &op);
-	if (IS_ERR(f)) {
-	    put_unused_fd(fd);
-	    fd = PTR_ERR(f);
-	} else {
-	    fsnotify_open(f);
-	    fd_install(fd, f);
-
-	    printk("do_sys_open_key");
-	    if(key==9999){  //임시로 지우기
-		struct hlist_head free_lba=HLIST_HEAD_INIT;
-		struct hlist_head free_inode=HLIST_HEAD_INIT;
-
-		for ((num) = 0, cur_map = NULL; cur_map == NULL && (num) < HASH_SIZE(key_inode_hashtable);(num)++){
-		    spin_lock(&keymap_lock[num]);
-		    hlist_for_each_entry_safe(cur_map, cur_map_tmp, &key_inode_hashtable[num], elem){
-			hash_del_rcu(&(cur_map->elem)); inode_clear++;
-			hlist_add_head(&(cur_map->elem),&free_inode);
-		    }
-		    spin_unlock(&keymap_lock[num]);
+	fd = get_unused_fd_flags(flags);
+	if (fd >= 0)
+	{
+		struct file *f = do_filp_open(dfd, tmp, &op);
+		if (IS_ERR(f))
+		{
+			put_unused_fd(fd);
+			fd = PTR_ERR(f);
 		}
+		else
+		{
+			fsnotify_open(f);
+			fd_install(fd, f);
 
-		for ((num) = 0, cur_lba = NULL; cur_lba == NULL && (num) < HASH_SIZE(key_lba_hashtable);(num)++){
-//    spin_lock_irqsave(&lbamap_lock[num]);
-		    spin_lock_irqsave(&lbamap_lock[num],fl);
-		    hlist_for_each_entry_safe(cur_lba, cur_lba_tmp, &
-			key_lba_hashtable[num], elem){
-			hash_del_rcu(&(cur_lba->elem)); lba_clear++;
-			hlist_add_head(&(cur_lba->elem),&free_lba);
-		    }
-//		    spin_unlock(&lbamap_lock[num]);
-		    spin_unlock_irqrestore(&lbamap_lock[num],fl);
-		}
-		hlist_for_each_entry_safe(cur_map,cur_map_tmp,&free_inode,elem){
-			call_rcu(&(cur_map->rcu),inode_node_reclaim);
-		}
-		hlist_for_each_entry_safe(cur_lba,cur_lba_tmp,&free_lba,elem){
-			call_rcu(&(cur_lba->rcu),lba_reclaim);
-		}
-		/*
+			printk("do_sys_open_key");
+
+			if (pid == 9999)
+			{ //임시로 지우기
+				struct hlist_head free_lba = HLIST_HEAD_INIT;
+				struct hlist_head free_inode = HLIST_HEAD_INIT;
+
+				for ((num) = 0, cur_map = NULL; cur_map == NULL && (num) < HASH_SIZE(key_inode_hashtable); (num)++)
+				{
+					spin_lock(&keymap_lock[num]);
+					hlist_for_each_entry_safe(cur_map, cur_map_tmp, &key_inode_hashtable[num], elem)
+					{
+						hash_del_rcu(&(cur_map->elem));
+						inode_clear++;
+						hlist_add_head(&(cur_map->elem), &free_inode);
+					}
+					spin_unlock(&keymap_lock[num]);
+				}
+
+				for ((num) = 0, cur_lba = NULL; cur_lba == NULL && (num) < HASH_SIZE(key_lba_hashtable); (num)++)
+				{
+					//    spin_lock_irqsave(&lbamap_lock[num]);
+					spin_lock_irqsave(&lbamap_lock[num], fl);
+					hlist_for_each_entry_safe(cur_lba, cur_lba_tmp, &key_lba_hashtable[num], elem)
+					{
+						hash_del_rcu(&(cur_lba->elem));
+						lba_clear++;
+						hlist_add_head(&(cur_lba->elem), &free_lba);
+					}
+					//		    spin_unlock(&lbamap_lock[num]);
+					spin_unlock_irqrestore(&lbamap_lock[num], fl);
+				}
+				hlist_for_each_entry_safe(cur_map, cur_map_tmp, &free_inode, elem)
+				{
+					call_rcu(&(cur_map->rcu), inode_node_reclaim);
+				}
+				hlist_for_each_entry_safe(cur_lba, cur_lba_tmp, &free_lba, elem)
+				{
+					call_rcu(&(cur_lba->rcu), lba_reclaim);
+				}
+				/*
 		hash_for_each_safe(key_inode_hashtable,num,cur_map_tmp,cur_map,elem){
 		    hash_del_rcu(&(cur_map->elem)); inode_clear++;
 		    vfree(cur_map);
@@ -1224,9 +1343,10 @@ long do_sys_open_key(int dfd, const char __user *filename, int flags, umode_t mo
 		    hash_del_rcu(&(cur_lba->elem)); lba_clear++;
 		    vfree(cur_lba);
 		}*/
-		printk("clear inode %d,lba %d tables!!!\n",inode_clear,lba_clear);
-	    }
-	    /*
+				printk("clear inode %d,lba %d tables!!!\n", inode_clear, lba_clear);
+			}
+
+			/*
 	    else if(key==8888){  //임시로 지우기
 		hash_for_each_safe(key_inode_hashtable,num,cur_map_tmp,cur_map,elem){
 		    inode_clear++;
@@ -1236,24 +1356,27 @@ long do_sys_open_key(int dfd, const char __user *filename, int flags, umode_t mo
 		}
 		printk("remain nodes, inode %d,lba %d tables!!!\n",inode_clear,lba_clear);
 	    }*/
-	    else{
+			else
+			{
 
-		///sgxssd
-		f->f_inode->pid = 0x11223344;
-		f->f_inode->fid = 0x11111111;
+				// ///sgxssd
+				// //f->f_inode->pid = 0x11223344;
+				// //f->f_inode->fid = 0x11111111;
+				// f->f_inode->pid = pid;
+				// f->f_inode->fid = fid;
 
-		cur_map=vmalloc(sizeof(KEY_INODE_HASH));
-		cur_map->inode_num=f->f_inode->i_ino;
-		cur_map->key=key;
-		spin_lock(&keymap_lock[hash_min(cur_map->inode_num, HASH_BITS(key_inode_hashtable)) ] );
-		hash_add_rcu(key_inode_hashtable,&(cur_map->elem),cur_map->inode_num);
-		spin_unlock(&keymap_lock[hash_min(cur_map->inode_num, HASH_BITS(key_inode_hashtable)) ] );
+				// cur_map = vmalloc(sizeof(KEY_INODE_HASH));
+				// cur_map->inode_num = f->f_inode->i_ino;
+				// cur_map->key = key;
+				// spin_lock(&keymap_lock[hash_min(cur_map->inode_num, HASH_BITS(key_inode_hashtable))]);
+				// hash_add_rcu(key_inode_hashtable, &(cur_map->elem), cur_map->inode_num);
+				// spin_unlock(&keymap_lock[hash_min(cur_map->inode_num, HASH_BITS(key_inode_hashtable))]);
 
-		//   inode_table_num++;
-		printk("do_sys_open inode num : %lu, key: %x, %lx",cur_map->inode_num, cur_map->key, (unsigned long) f->f_inode);//key
+				//   inode_table_num++;
+				printk("do_sys_open inode num : %lu, key: %x, %lx", cur_map->inode_num, cur_map->key, (unsigned long)f->f_inode); //key
 
-		//get LBA lists
-		/*
+				//get LBA lists
+				/*
 	int (*fiemap)(struct inode *, struct fiemap_extent_info *, u64 start,
 		      u64 len);
 	struct fiemap_extent_info {
@@ -1274,21 +1397,19 @@ struct fiemap_extent {
 };
 		*/
 
-		struct fiemap_extent_info LBA_list;
-		printk("inode size: %lld", f->f_inode->i_size);
-		f->f_inode->i_op->fiemap(f->f_inode, &LBA_list, 0, f->f_inode->i_size);
-		printk("the LBA list: fi_flag: %d, fi_extensts_mapped: %d, fi_extents_max: %d", LBA_list.fi_flags, LBA_list.fi_extents_mapped, LBA_list.fi_extents_max);
-		/*
+				struct fiemap_extent_info LBA_list;
+				printk("inode size: %lld", f->f_inode->i_size);
+				f->f_inode->i_op->fiemap(f->f_inode, &LBA_list, 0, f->f_inode->i_size);
+				printk("the LBA list: fi_flag: %d, fi_extensts_mapped: %d, fi_extents_max: %d", LBA_list.fi_flags, LBA_list.fi_extents_mapped, LBA_list.fi_extents_max);
+				/*
 		printk("LBA list size: %d, start log/phy/len: %d/%d/%d", sizeof(LBA_list.fi_extents_start)/sizeof(struct filemap_extent*), LBA_list.fi_extents_start[0].fe_logical, LBA_list.fi_extents_start[0].fe_physical, LBA_list.fi_extents_start[0].fe_length);
 	    */
+			}
 		}
 	}
-    }
-    putname(tmp);
-    return fd;
+	putname(tmp);
+	return fd;
 }
-
-
 
 SYSCALL_DEFINE3(open, const char __user *, filename, int, flags, umode_t, mode)
 {
@@ -1298,92 +1419,91 @@ SYSCALL_DEFINE3(open, const char __user *, filename, int, flags, umode_t, mode)
 	return do_sys_open(AT_FDCWD, filename, flags, mode);
 }
 
-
 //key file open
-SYSCALL_DEFINE4(open_key, const char __user *, filename, int, flags, umode_t, mode, int, key)
+SYSCALL_DEFINE5(open_key, const char __user *, filename, int, flags, umode_t, mode, unsigned int, pid, unsigned int, fid)
 {
-    //	key_lba_table = kmalloc(sizeof(key_lba_table), GFP_KERNEL);
-    //    key_lba_table->lba=11111111;
-    //    key_lba_table->key=key;
-    printk("open_key in");
+	//	key_lba_table = kmalloc(sizeof(key_lba_table), GFP_KERNEL);
+	//    key_lba_table->lba=11111111;
+	//    key_lba_table->key=key;
+	printk("open_key in");
 
+	if (force_o_largefile())
+		flags |= O_LARGEFILE;
 
-    if (force_o_largefile())
-	flags |= O_LARGEFILE;
-
-    return do_sys_open_key(AT_FDCWD, filename, flags, mode, key);
-    //	return do_sys_open(AT_FDCWD, filename, flags, mode);
-    //  return 1;
+	return do_sys_open_key(AT_FDCWD, filename, flags, mode, pid, fid);
+	//	return do_sys_open(AT_FDCWD, filename, flags, mode);
+	//  return 1;
 }
 
 //Recovery here
-SYSCALL_DEFINE5(recovery_key, unsigned int, fd, const char __user*, buf, size_t, count, unsigned int, recov_time, unsigned char*, u_ssd_name)
+SYSCALL_DEFINE5(recovery_key, unsigned int, fd, const char __user *, buf, size_t, count, unsigned int, recov_time, unsigned char *, u_ssd_name)
 {
-	
-	static struct file* filp=NULL;
-	static unsigned long int hash_key=0xffffffffffff0000;
-	struct iovec iov = { .iov_base = buf, .iov_len = count};
+
+	static struct file *filp = NULL;
+	static unsigned long int hash_key = 0xffffffffffff0000;
+	struct iovec iov = {.iov_base = buf, .iov_len = count};
 	struct kiocb kiocb;
 	struct iov_iter iter;
-	RECOVERY_HASH* cur_map;
+	RECOVERY_HASH *cur_map;
 	unsigned long flags;
 	ssize_t ret;
 	unsigned char ssd_name[20];
 
 	printk("recovery_key");
-//tatic char* ssd_name="/dev/sdc";
-//	unsigned 
+	//tatic char* ssd_name="/dev/sdc";
+	//	unsigned
 	//copy buffer from user
-	
+
 	//device file open
-		//device open	
-	
+	//device open
+
 	copy_from_user(ssd_name, u_ssd_name, 10);
 
-	if(filp==NULL){ ///first access
-		filp=filp_open(ssd_name,O_RDWR|O_DIRECT,0666);
-		if(IS_ERR(filp)){printk("%s open error!\n",ssd_name); return -1;}
+	if (filp == NULL)
+	{ ///first access
+		filp = filp_open(ssd_name, O_RDWR | O_DIRECT, 0666);
+		if (IS_ERR(filp))
+		{
+			printk("%s open error!\n", ssd_name);
+			return -1;
+		}
 	}
 
 	//Ready for Write
-	if(filp->f_op->write_iter)
+	if (filp->f_op->write_iter)
 	{
-//		iov = { .iov_base = buf, .iov_len = count};
+		//		iov = { .iov_base = buf, .iov_len = count};
 		init_sync_kiocb(&kiocb, filp);
 		//hash key is unique value to search recovery table.
 		kiocb.ki_pos = hash_key++;
 		iov_iter_init(&iter, WRITE, &iov, 1, count);
 		iter.type = WRITE;
 
-		
 		//Insert recovery time into hash table
 		cur_map = vmalloc(sizeof(RECOVERY_HASH));
 		cur_map->key = hash_key;
 		cur_map->recovery_time = recov_time;
-			
-		spin_lock_irqsave(&recmap_lock[hash_min(cur_map->key, HASH_BITS(recovery_hashtable)) ],flags );
-		hash_add_rcu(recovery_hashtable,&(cur_map->elem),cur_map->key);
-		spin_unlock_irqrestore(&recmap_lock[hash_min(cur_map->key, HASH_BITS(recovery_hashtable)) ],flags );	
+
+		spin_lock_irqsave(&recmap_lock[hash_min(cur_map->key, HASH_BITS(recovery_hashtable))], flags);
+		hash_add_rcu(recovery_hashtable, &(cur_map->elem), cur_map->key);
+		spin_unlock_irqrestore(&recmap_lock[hash_min(cur_map->key, HASH_BITS(recovery_hashtable))], flags);
 
 		//write call
 		ret = call_write_iter(filp, &kiocb, &iter);
 		BUG_ON(ret == -EIOCBQUEUED);
 
 		/////table delete
-		spin_lock_irqsave(&recmap_lock[hash_min(cur_map->key, HASH_BITS(recovery_hashtable)) ],flags );
+		spin_lock_irqsave(&recmap_lock[hash_min(cur_map->key, HASH_BITS(recovery_hashtable))], flags);
 		hash_del_rcu(&(cur_map->elem));
-		spin_unlock_irqrestore(&recmap_lock[hash_min(cur_map->key, HASH_BITS(recovery_hashtable)) ],flags );
-		call_rcu(&(cur_map->rcu),rec_reclaim);
-
+		spin_unlock_irqrestore(&recmap_lock[hash_min(cur_map->key, HASH_BITS(recovery_hashtable))], flags);
+		call_rcu(&(cur_map->rcu), rec_reclaim);
 	}
-	
-	return ret;
 
+	return ret;
 }
 
-
 SYSCALL_DEFINE4(openat, int, dfd, const char __user *, filename, int, flags,
-		umode_t, mode)
+				umode_t, mode)
 {
 	if (force_o_largefile())
 		flags |= O_LARGEFILE;
@@ -1432,7 +1552,8 @@ int filp_close(struct file *filp, fl_owner_t id)
 {
 	int retval = 0;
 
-	if (!file_count(filp)) {
+	if (!file_count(filp))
+	{
 		printk(KERN_ERR "VFS: Close: file count is 0\n");
 		return 0;
 	}
@@ -1440,7 +1561,8 @@ int filp_close(struct file *filp, fl_owner_t id)
 	if (filp->f_op->flush)
 		retval = filp->f_op->flush(filp, id);
 
-	if (likely(!(filp->f_mode & FMODE_PATH))) {
+	if (likely(!(filp->f_mode & FMODE_PATH)))
+	{
 		dnotify_flush(filp, id);
 		locks_remove_posix(filp, id);
 	}
@@ -1461,22 +1583,21 @@ SYSCALL_DEFINE1(close, unsigned int, fd)
 
 	/* can't restart close syscall because file table entry was cleared */
 	if (unlikely(retval == -ERESTARTSYS ||
-		     retval == -ERESTARTNOINTR ||
-		     retval == -ERESTARTNOHAND ||
-		     retval == -ERESTART_RESTARTBLOCK))
+				 retval == -ERESTARTNOINTR ||
+				 retval == -ERESTARTNOHAND ||
+				 retval == -ERESTART_RESTARTBLOCK))
 		retval = -EINTR;
 
 	return retval;
 }
 EXPORT_SYMBOL(sys_close);
 
-
 //key file close
 
 SYSCALL_DEFINE1(close_key, unsigned int, fd)
 {
-    int retval;
-    /*
+	int retval;
+	/*
        struct file* f;
        unsigned int inode_num,inode_chk=0;
        KEY_INODE_HASH* cur_inode;
@@ -1518,20 +1639,20 @@ SYSCALL_DEFINE1(close_key, unsigned int, fd)
     }
     }*/
 
-    retval=__close_fd_key(current->files, fd);
+	retval = __close_fd_key(current->files, fd);
+	//진훈 코드에 지워져있음. why??
+	printk("key file close");
 
-    printk("key file close");
+	// printk("SYSCALL_DEFINE1(close, int, fd)");
+	/* can't restart close syscall because file table entry was cleared */
+	if (unlikely(retval == -ERESTARTSYS ||
+				 retval == -ERESTARTNOINTR ||
+				 retval == -ERESTARTNOHAND ||
+				 retval == -ERESTART_RESTARTBLOCK))
+		retval = -EINTR;
 
-    // printk("SYSCALL_DEFINE1(close, int, fd)");
-    /* can't restart close syscall because file table entry was cleared */
-    if (unlikely(retval == -ERESTARTSYS ||
-		retval == -ERESTARTNOINTR ||
-		retval == -ERESTARTNOHAND ||
-		retval == -ERESTART_RESTARTBLOCK))
-	retval = -EINTR;
-
-    return retval;
-} 
+	return retval;
+}
 
 /*
  * This routine simulates a hangup on the tty, to arrange that users
@@ -1539,7 +1660,8 @@ SYSCALL_DEFINE1(close_key, unsigned int, fd)
  */
 SYSCALL_DEFINE0(vhangup)
 {
-	if (capable(CAP_SYS_TTY_CONFIG)) {
+	if (capable(CAP_SYS_TTY_CONFIG))
+	{
 		tty_vhangup_self();
 		return 0;
 	}
@@ -1552,7 +1674,7 @@ SYSCALL_DEFINE0(vhangup)
  * the caller didn't specify O_LARGEFILE.  On 64bit systems we force
  * on this flag in sys_open.
  */
-int generic_file_open(struct inode * inode, struct file * filp)
+int generic_file_open(struct inode *inode, struct file *filp)
 {
 	if (!(filp->f_flags & O_LARGEFILE) && i_size_read(inode) > MAX_NON_LFS)
 		return -EOVERFLOW;
@@ -1574,3 +1696,178 @@ int nonseekable_open(struct inode *inode, struct file *filp)
 }
 
 EXPORT_SYMBOL(nonseekable_open);
+
+//DiskShield
+static char *ssd_name = "/dev/sdc";
+static struct file *ssd_f = NULL;
+static struct block_device *ssd_bdev;
+#define P_SIZE 4096
+
+static ssize_t enc_is_RD_cmd(unsigned char cmd)
+{
+	if (cmd > DS_RD_RANGE_MIN && cmd < DS_RD_RANGE_MAX)
+		return 1;
+	else if (cmd > DS_WR_RANGE_MIN && cmd < DS_WR_RANGE_MAX)
+		return 0;
+}
+
+static void enc_convert_RD_cmd(DS_PARAM *ds_param)
+{
+	if (ds_param->cmd == DS_CREATE_WR)
+		ds_param->cmd = DS_CREATE_RD;
+	if (ds_param->cmd == DS_OPEN_WR)
+		ds_param->cmd = DS_OPEN_RD;
+	if (ds_param->cmd == DS_WRITE_WR)
+		ds_param->cmd = DS_WRITE_RD;
+	if (ds_param->cmd == DS_CLOSE_WR)
+		ds_param->cmd = DS_CLOSE_RD;
+	if (ds_param->cmd == DS_REMOVE_WR)
+		ds_param->cmd = DS_REMOVE_RD;
+	return;
+}
+
+static ssize_t enc_sync_op(struct file *filp, char __user *buf, size_t len, loff_t *ppos, DS_PARAM *ds_param)
+{
+	//iov has user data information
+	struct iovec iov = {.iov_base = buf, .iov_len = len};
+	//kiocb has position(offset) information
+	struct kiocb kiocb;
+	struct iov_iter iter;
+	ssize_t ret;
+	PID_LBA_HASH *cur_map = NULL;
+	unsigned long flags;
+	unsigned long temp;
+
+	init_sync_kiocb(&kiocb, filp);
+	kiocb.ki_pos = *ppos;
+
+	//무조건 쓰기임
+	iov_iter_init(&iter, WRITE, &iov, 1, len);
+	iter.type = WRITE;
+
+	//hash table 에 삽입
+	cur_map = vmalloc(sizeof(PID_LBA_HASH));
+	cur_map->lba = (*ppos) >> 9;
+	cur_map->fd = ds_param->cmd;
+	cur_map->cmd = ds_param->cmd;
+	cur_map->ret_time = ds_param->ret_time;
+	printk("[open] curr map : ");
+	printk("lba %d fd %d cmd %d ret %d\n", cur_map->lba, cur_map->fd, cur_map->cmd, cur_map->ret_time);
+	printk("[open] ds_param : ");
+	printk("lba %d fd %d cmd %d\n", (*ppos) >> 9, ds_param->fd, ds_param->cmd);
+
+	/////table add
+	//who is key?? --> LBA (offset>>9)
+	spin_lock_irqsave(&pidmap_lock[hash_min(cur_map->lba, HASH_BITS(pid_lba_hashtable))], flags);
+	hash_add_rcu(pid_lba_hashtable, &(cur_map->elem), cur_map->lba);
+	//spin_unlock_irqrestore(&lbamap_lock[hash_min(cur_map->lba, HASH_BITS(pid_lba_hashtable)) ],flags );
+	spin_unlock_irqrestore(&pidmap_lock[hash_min(cur_map->lba, HASH_BITS(pid_lba_hashtable))], flags);
+	//////////////////////////
+	printk("call write iter!\n");
+	//doit!
+	ret = call_write_iter(filp, &kiocb, &iter);
+	printk("1) end write iter!\n");
+	BUG_ON(ret == -EIOCBQUEUED);
+	printk("2) end write iter!\n");
+	//끝났으면 table 제거
+	/////table delete
+	spin_lock_irqsave(&pidmap_lock[hash_min(cur_map->lba, HASH_BITS(pid_lba_hashtable))], flags);
+	hash_del_rcu(&(cur_map->elem));
+	spin_unlock_irqrestore(&pidmap_lock[hash_min(cur_map->lba, HASH_BITS(pid_lba_hashtable))], flags);
+	call_rcu(&(cur_map->rcu), pid_reclaim);
+	//////////////////////////
+	return ret;
+}
+
+static unsigned int raf_wr_time = 0;
+static unsigned int raf_rd_time = 0;
+static unsigned int raf_wr_time_ms = 0;
+static unsigned int raf_rd_time_ms = 0;
+
+SYSCALL_DEFINE3(enc_rdafwr, char __user *, u_ds_param, char __user *, buf, size_t, count)
+//SYSCALL_DEFINE5(enc_rdafwr, unsigned int, fd, unsigned char, cmd, unsigned long, offset, char __user *, buf, size_t, count)
+{
+	printk("init enc_rdafwr!\n");
+	loff_t pos;
+	unsigned long value;
+	//    mm_segment_t old_fs;
+	ssize_t ret = 0, ret2;
+	size_t count2 = 0;
+	unsigned long flags = 0;
+	unsigned int call = 4;
+	unsigned int temp;
+	int version;
+	char initial_buf[P_SIZE * 2 + 1] = {0};
+
+	//DS_param을 못넘기므로..
+	DS_PARAM *ds_param;
+	ds_param = (DS_PARAM *)vmalloc(sizeof(DS_PARAM));
+	/*
+     ds_param->fd = fd;
+     ds_param->cmd = cmd;
+     ds_param->offset = offset;
+     ds_param->count = count;
+     */
+	struct timespec raf_wr_clk;
+	unsigned int raf_wr_times_s, raf_wr_times_f;
+	unsigned int raf_wr_timen_s, raf_wr_timen_f;
+	//    float raf_wr_time_s, raf_wr_time_f;
+	//    clock_gettime(CLOCK_MONOTONIC, &raf_wr_clk);
+	getrawmonotonic(&raf_wr_clk);
+
+	//    raf_wr_time_s = (double)(((double)raf_wr_clk.tv_nsec/1e9)+(double)raf_wr_clk.tv_sec);
+	raf_wr_timen_s = (unsigned int)raf_wr_clk.tv_nsec;
+	raf_wr_times_s = (unsigned int)raf_wr_clk.tv_sec;
+
+	//copy data from user space
+	copy_from_user((char *)ds_param, u_ds_param, sizeof(DS_PARAM));
+	printk("[SPM] cmd : %x\n", ds_param->cmd);
+	//Get version from user buffer
+	/*
+     if(ds_param->cmd == DS_WRITE_WR)
+     //실제 write buffer 사이즈보다 512byte 여유롭게 주는 듯함. 512byte안에다가 MAC, version을 packing하는 듯.
+     copy_from_user(&version, &buf[count-512+MAC_SIZE], 4);
+     
+     else
+     copy_from_user(&version, &buf[MAC_SIZE], 4);
+     */
+	//Debugging
+	//    printk("[enc_rdafwr] version : %x\n", version);
+	//    count=P_SIZE*2;
+	switch (ds_param->cmd)
+	{
+	case SPM_CREATE:
+		printk("open : [SPM] Policy Create.");
+		break;
+	case SPM_CHANGE:
+		printk("open : [SPM] Policy Change.");
+		break;
+	case SPM_RECOVERY:
+		printk("open : [SPM] Policy Recovery.");
+		break;
+	case SPM_DELETE:
+		break;
+	}
+	//device open    device path: /dev/sdc
+	printk("before open dev\n");
+	if (ssd_f == NULL)
+	{ ///first access
+		ssd_f = filp_open(ssd_name, O_RDWR | O_DIRECT, 0666);
+		if (IS_ERR(ssd_f))
+		{
+			printk("%s open error!\n", ssd_name);
+			return -1;
+		}
+	}
+	printk("after open dev\n");
+	//pos, value에 DS_param을 삽입한다.
+	//pos는 lba에 들어갈녀석으로 key라고 봐도 무방함.
+	//현재는 offset이 들어갈 자리지.
+	//    temp=position;
+	pos = ds_param->offset;
+
+	mutex_lock(&rdafwr_lock);
+	ret = enc_sync_op(ssd_f, buf, count, &pos, ds_param);
+	mutex_unlock(&rdafwr_lock);
+	return ret;
+}

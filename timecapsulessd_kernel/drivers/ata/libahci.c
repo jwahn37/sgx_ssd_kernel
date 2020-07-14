@@ -51,8 +51,8 @@
 #define CMD_SGXSSD_WRITE_EXT (0x49)
 #define SSD_PAGE_SIZE (32768)
 
-extern char *sgxssd_buf;
-extern dma_addr_t sgxssd_dma_addr;
+//extern char *sgxssd_buf;
+//extern dma_addr_t sgxssd_dma_addr;
 //EXPORT_SYMBOL(sgxssd_buf);
 
 static int ahci_skip_host_reset;
@@ -1705,14 +1705,16 @@ static unsigned int ahci_fill_sg_sgxssd(struct ata_queued_cmd *qc, void *cmd_tbl
 
 	// printk("[ahci_fill_sg]: %x %x %x %x %x %x %x %x", sgxssd_buf[0], sgxssd_buf[1], sgxssd_buf[2], sgxssd_buf[3], sgxssd_buf[4], sgxssd_buf[5], sgxssd_buf[6], sgxssd_buf[7], sgxssd_buf[8]);
 
+/*
 	memcpy(&pid, sgxssd_buf, 4);
 	memcpy(&fid, &(sgxssd_buf[4]), 4);
 	memcpy(&offset, &(sgxssd_buf[8]), 4);
 	printk("[ahci_fill_sg] pid/fid/offset : 0x%x/0x%x/%d", pid, fid, offset);
 	//addr = page_to_phys(virt_to_page(buf)); //둘다 잘 돌아간다.
-	addr = dma_map_single(qc->ap->dev, sgxssd_buf, SSD_PAGE_SIZE, qc->dma_dir);
-	//addr = sgxssd_dma_addr;
-	printk("[ahci_fill_sg] addr: 0x%lx, vaddr: 0x%lx", addr, sgxssd_buf);
+	//addr = dma_map_single(qc->ap->dev, sgxssd_buf, SSD_PAGE_SIZE, qc->dma_dir);
+*/
+	addr = qc->sgxssd_addr;
+	printk("[ahci_fill_sg] addr: 0x%lx, vaddr: 0x%lx", addr, qc->sgxssd_buf);
 
 	sg_len = SSD_PAGE_SIZE;
 	///sg_len = PAGE_SIZE;
@@ -1798,74 +1800,74 @@ static unsigned int ahci_fill_sg_sgxssd(struct ata_queued_cmd *qc, void *cmd_tbl
 	return si;
 }
 
-static unsigned int ahci_fill_sg_sgxssd2(struct ata_queued_cmd *qc, void *cmd_tbl, unsigned int pid, unsigned int fid, unsigned int offset)
-{
-	struct scatterlist *sg;
-	struct ahci_sg *ahci_sg = cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
-	unsigned int si;
-	dma_addr_t addr;
-	u32 sg_len;
-	static char *buf = NULL;
+// static unsigned int ahci_fill_sg_sgxssd2(struct ata_queued_cmd *qc, void *cmd_tbl, unsigned int pid, unsigned int fid, unsigned int offset)
+// {
+// 	struct scatterlist *sg;
+// 	struct ahci_sg *ahci_sg = cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
+// 	unsigned int si;
+// 	dma_addr_t addr;
+// 	u32 sg_len;
+// 	static char *buf = NULL;
 
-	VPRINTK("ENTER\n");
+// 	VPRINTK("ENTER\n");
 
-	printk("[ahci_fill_sg] qc->n_elem : %d", qc->n_elem);
+// 	printk("[ahci_fill_sg] qc->n_elem : %d", qc->n_elem);
 
-	//sgxssd: add new page to the existing data buffer.
-	//void* buf = kmalloc(4096, GFP_KERNEL);	//GFP_DMA??
-	//buf = kmalloc(4096, GFP_KERNEL | GFP_DMA); //GFP_DMA??
-	if (buf == NULL)
-		buf = kmalloc(4096, GFP_NOIO | GFP_DMA | GFP_KERNEL);
+// 	//sgxssd: add new page to the existing data buffer.
+// 	//void* buf = kmalloc(4096, GFP_KERNEL);	//GFP_DMA??
+// 	//buf = kmalloc(4096, GFP_KERNEL | GFP_DMA); //GFP_DMA??
+// 	if (buf == NULL)
+// 		buf = kmalloc(4096, GFP_NOIO | GFP_DMA | GFP_KERNEL);
 
-	memset(buf, 0, 4096);
-	//int pid = 0x11223344;
-	memcpy(buf, &pid, 4);
-	memcpy(&(buf[4]), &fid, 4);
-	memcpy(&(buf[8]), &offset, 4);
-	printk("[ahci_fill_sg] pid/fid/offset : 0x%x/0x%x/%d", pid, fid, offset);
+// 	memset(buf, 0, 4096);
+// 	//int pid = 0x11223344;
+// 	memcpy(buf, &pid, 4);
+// 	memcpy(&(buf[4]), &fid, 4);
+// 	memcpy(&(buf[8]), &offset, 4);
+// 	printk("[ahci_fill_sg] pid/fid/offset : 0x%x/0x%x/%d", pid, fid, offset);
 
-	/*
-	 * Next, the S/G list.
-	 */
+// 	/*
+// 	 * Next, the S/G list.
+// 	 */
 
-	for_each_sg(qc->sg, sg, qc->n_elem, si)
-	{
-		addr = sg_dma_address(sg);
-		sg_len = sg_dma_len(sg);
-		printk("[ahci_fill_sg] index %d, dma address : 0x%llx, dma len : %d, page:0x%lx", si, addr, sg_len, sg->page_link);
-		ahci_sg[si].addr = cpu_to_le32(addr & 0xffffffff);
-		ahci_sg[si].addr_hi = cpu_to_le32((addr >> 16) >> 16);
-		ahci_sg[si].flags_size = cpu_to_le32(sg_len - 1);
+// 	for_each_sg(qc->sg, sg, qc->n_elem, si)
+// 	{
+// 		addr = sg_dma_address(sg);
+// 		sg_len = sg_dma_len(sg);
+// 		printk("[ahci_fill_sg] index %d, dma address : 0x%llx, dma len : %d, page:0x%lx", si, addr, sg_len, sg->page_link);
+// 		ahci_sg[si].addr = cpu_to_le32(addr & 0xffffffff);
+// 		ahci_sg[si].addr_hi = cpu_to_le32((addr >> 16) >> 16);
+// 		ahci_sg[si].flags_size = cpu_to_le32(sg_len - 1);
 
-		if (sg_is_last(sg))
-		{
-			printk("[ahci_fill_sg] insert buffer in tail of sg");
+// 		if (sg_is_last(sg))
+// 		{
+// 			printk("[ahci_fill_sg] insert buffer in tail of sg");
 
-			sg_unmark_end(sg);
-			sg = sg_next(sg);	//temp
-			if (!virt_addr_valid(buf))
-			{
-				printk("[ahci_fill_sg]virt addr Invalid");
-			}
-			//sg_set_page(sg, virt_to_page(buf), 512, 0); //Is it okay?
-			sg_set_page(sg, virt_to_page(buf), 4096, 0);
-			if (sg)
-			{
-				sg_mark_end(sg);
-				si++;
-				addr = sg_dma_address(sg);
-				sg_len = sg_dma_len(sg);
-				printk("[ahci_fill_sg] index %d, dma address : 0x%llx, dma len : %d, page:0x%lx", si, addr, sg_len, sg->page_link);
-				ahci_sg[si].addr = cpu_to_le32(addr & 0xffffffff);
-				ahci_sg[si].addr_hi = cpu_to_le32((addr >> 16) >> 16);
-				ahci_sg[si].flags_size = cpu_to_le32(sg_len - 1);
-			}
-		}
-	}
-	printk("[ahci_fill_sg] si: %d", si);
+// 			sg_unmark_end(sg);
+// 			sg = sg_next(sg);	//temp
+// 			if (!virt_addr_valid(buf))
+// 			{
+// 				printk("[ahci_fill_sg]virt addr Invalid");
+// 			}
+// 			//sg_set_page(sg, virt_to_page(buf), 512, 0); //Is it okay?
+// 			sg_set_page(sg, virt_to_page(buf), 4096, 0);
+// 			if (sg)
+// 			{
+// 				sg_mark_end(sg);
+// 				si++;
+// 				addr = sg_dma_address(sg);
+// 				sg_len = sg_dma_len(sg);
+// 				printk("[ahci_fill_sg] index %d, dma address : 0x%llx, dma len : %d, page:0x%lx", si, addr, sg_len, sg->page_link);
+// 				ahci_sg[si].addr = cpu_to_le32(addr & 0xffffffff);
+// 				ahci_sg[si].addr_hi = cpu_to_le32((addr >> 16) >> 16);
+// 				ahci_sg[si].flags_size = cpu_to_le32(sg_len - 1);
+// 			}
+// 		}
+// 	}
+// 	printk("[ahci_fill_sg] si: %d", si);
 
-	return si;
-}
+// 	return si;
+// }
 
 static int ahci_pmp_qc_defer(struct ata_queued_cmd *qc)
 {

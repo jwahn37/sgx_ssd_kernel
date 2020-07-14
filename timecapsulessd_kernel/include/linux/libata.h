@@ -661,6 +661,9 @@ struct ata_queued_cmd {
 
 	void			*private_data;
 	void			*lldd_task;
+
+	dma_addr_t sgxssd_addr;
+	char *sgxssd_buf;
 };
 
 struct ata_port_stats {

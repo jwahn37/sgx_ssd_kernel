@@ -169,10 +169,10 @@ typedef struct key_lba_hash_node
 	//    struct list_head close_elem;
 } KEY_LBA_HASH;
 
-char *sgxssd_buf = NULL;
-dma_addr_t sgxssd_dma_addr;
-EXPORT_SYMBOL(sgxssd_buf);
-EXPORT_SYMBOL(sgxssd_dma_addr);
+//char *sgxssd_buf = NULL;
+//dma_addr_t sgxssd_dma_addr;
+//EXPORT_SYMBOL(sgxssd_buf);
+//EXPORT_SYMBOL(sgxssd_dma_addr);
 
 extern struct hlist_head key_lba_hashtable[1 << BUCKET_SIZE];
 extern spinlock_t lbamap_lock[1 << BUCKET_SIZE];
@@ -187,6 +187,50 @@ extern spinlock_t lbamap_lock[1 << BUCKET_SIZE];
 ////////////////////////
 extern void lba_reclaim(struct rcu_head *rp);
 ///////////////////
+typedef struct pid_lba_hash_node
+{
+    unsigned long lba;
+    unsigned int fd;
+    unsigned int ret_time;
+    unsigned char cmd;
+    double timer;
+    //    unsigned long value;
+    //    unsigned int call;
+    struct hlist_node elem;
+    struct rcu_head rcu;
+} PID_LBA_HASH;
+
+extern struct hlist_head pid_lba_hashtable[1 << BUCKET_SIZE];
+extern spinlock_t pidmap_lock[1 << BUCKET_SIZE];
+
+//DISKSHIELD Command type
+enum ds_cmd
+{
+    DS_WR_RANGE_MIN = 0x43,
+    DS_CREATE_WR,
+    DS_OPEN_WR,
+    DS_CLOSE_WR,
+    DS_REMOVE_WR,
+    DS_WRITE_WR,
+    DS_WR_RANGE_MAX,
+    DS_RD_RANGE_MIN,
+    DS_READ_RD,
+    DS_AUTH_RD,
+    DS_CREATE_RD,
+    DS_OPEN_RD,
+    DS_CLOSE_RD,
+    DS_REMOVE_RD,
+    DS_WRITE_RD,
+    DS_RD_RANGE_MAX
+};
+
+enum spm_cmd
+{
+    SPM_CREATE = 0x65,
+    SPM_CHANGE,
+    SPM_DELETE,
+    SPM_RECOVERY
+};
 
 static struct ata_force_ent *ata_force_tbl;
 static int ata_force_tbl_size;
@@ -637,9 +681,15 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 	//    KEY_LBA_MAP* cur_map;//key
 	KEY_LBA_HASH *lba_map = NULL;
 	RECOVERY_HASH *rec_map = NULL;
+	PID_LBA_HASH *cur_map = NULL;
+    unsigned long DS_lba;
+    int pid_chk = 0;	
 	int lba_chk = 0;
 	int rec_chk = 0;
+	unsigned int fd;
+    unsigned char cmd;
 	unsigned int recovery_time;
+    int pid = -1;
 	unsigned long flags;
 	static int fair_lio = 0;
 	static int key = 0;
@@ -773,6 +823,26 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 		}
 		rcu_read_unlock();
 
+		  rcu_read_lock();
+        hash_for_each_possible_rcu(pid_lba_hashtable, cur_map, elem, DS_lba)
+        {
+            if (cur_map->lba == DS_lba)
+            {
+                printk("pid_chk\n");
+                pid_chk = 1;
+				//fd is cmd
+                cmd = cur_map->fd;
+                fd = cur_map->fd;
+                //double kernel_t;
+                //struct timerspec kernel_clk;
+                //clock_gettime(CLOCK_MONOTONIC, &kernel_clk);
+                //kernel_t = (double)(((double)kernel_clk.tv_nsec/1e9)+(double)kernel_clk.tv_sec);
+                //printk("TIME!!!!:::::: %.9lf\n", kernel_t - cur_map->timer);
+                break;
+            }
+        }
+        rcu_read_unlock();
+
 		printk("[ata_tf_to_fis] cmd: %x, lba : 0x%lx, size: nsect-%d, hobnsect-%d", tf->command, lba, fis[12], fis[13]);
 
 		if (lba_chk)
@@ -786,6 +856,58 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 			fis[18] = (key >> 16) & 0xff;
 			fis[19] = (key >> 24) & 0xff;
 		}
+		else if (pid_chk)
+        {
+            printk("[ata] cmd %d\n", cmd);
+            switch (cmd)
+            {
+            case SPM_CREATE:
+                printk("ata : [SPM] Policy Create.");
+                break;
+            case SPM_CHANGE:
+                printk("ata : [SPM] Policy Change.");
+                break;
+            case SPM_RECOVERY:
+                printk("ata : [SPM] Policy Recovery.");
+                break;
+            case SPM_DELETE:
+                break;
+            default:
+                printk("ata : invalid command");
+                return;
+            }
+
+            //diskshield code
+            //offset을 집어넣는다.
+            fis[4] = lba & 255;
+            lba >>= 8;
+            fis[5] = lba & 255;
+            lba >>= 8;
+            fis[6] = lba & 255;
+            lba >>= 8;
+
+            fis[8] = lba & 255;
+            lba >>= 8;
+            fis[9] = lba & 255;
+            lba >>= 8;
+            fis[10] = lba & 255;
+            lba >>= 8;
+
+            //printk("fis familiy : %d %d %d %d %d %d\n", fis[10], fis[9], fis[8], fis[6], fis[5], fis[4]);
+
+            fis[2] = cmd;
+            printk("fid[2] : %d\n", fis[2]);
+
+            //fd 집어넣는다.
+            fis[16] = fd & 255;
+            fd >>= 8;
+            fis[17] = fd & 255;
+            fd >>= 8;
+            fis[18] = fd & 255;
+            fd >>= 8;
+            fis[19] = fd & 255;
+            fd >>= 8;
+        }
 		else if (tf->command == 0xCA || tf->command == 0x61 || tf->command == 0x60 || tf->command == 0xC8)
 		{
 			;
@@ -5546,6 +5668,8 @@ void ata_sg_init(struct ata_queued_cmd *qc, struct scatterlist *sg,
 	qc->sg = sg;
 	qc->n_elem = n_elem;
 	qc->cursg = qc->sg;
+	qc->sgxssd_buf = NULL; //sgxssd
+	qc->sgxssd_addr = NULL;
 }
 
 #ifdef CONFIG_HAS_DMA
@@ -5571,11 +5695,11 @@ static void ata_sg_clean(struct ata_queued_cmd *qc)
 	//free buffer
 	if (qc->tf.command == CMD_SGXSSD_WRITE_NOR || qc->tf.command == CMD_SGXSSD_WRITE_EXT)
 	{
-		if (sgxssd_buf)
+		if (qc->sgxssd_buf)
 		{
-			dma_unmap_single(qc->ap->dev, sgxssd_dma_addr, SSD_PAGE_SIZE, qc->dma_dir);
-			kfree(sgxssd_buf);
-			sgxssd_buf = NULL;
+			dma_unmap_single(qc->ap->dev, qc->sgxssd_addr, SSD_PAGE_SIZE, qc->dma_dir);
+			kfree(qc->sgxssd_buf);
+			qc->sgxssd_buf = NULL;
 		}
 	}
 
@@ -5646,24 +5770,25 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 
 	if (qc->tf.command == CMD_SGXSSD_WRITE_EXT || qc->tf.command == CMD_SGXSSD_WRITE_NOR)
 	{
-		if (sgxssd_buf == NULL)
+		if (qc->sgxssd_buf == NULL)
 		{
-			sgxssd_buf = kmalloc(SSD_PAGE_SIZE, GFP_NOIO | GFP_DMA | GFP_KERNEL); //32768 은 SSD의 pagesize
+			qc->sgxssd_buf = kmalloc(SSD_PAGE_SIZE, GFP_NOIO | GFP_DMA | GFP_KERNEL); //32768 은 SSD의 pagesize
 			//sgxssd_buf = kmalloc(PAGE_SIZE, GFP_NOIO | GFP_DMA | GFP_KERNEL);
 			//buf = dma_alloc_coherent(qc->ap->dev, PAGE_SIZE, &addr, GFP_NOIO | GFP_DMA | GFP_KERNEL);
-			printk("[ata_sg_setup] dma_alloc vadd: 0x%lx", sgxssd_buf);
+			printk("[ata_sg_setup] dma_alloc vadd: 0x%lx", qc->sgxssd_buf);
 
-			memset(sgxssd_buf, 0, SSD_PAGE_SIZE);
+			memset(qc->sgxssd_buf, 0, SSD_PAGE_SIZE);
 
 			printk("[ata_sg_setup] buffer allocated! %d", SSD_PAGE_SIZE);
+			qc->sgxssd_addr = dma_map_single(qc->ap->dev, qc->sgxssd_buf, SSD_PAGE_SIZE, qc->dma_dir);
 		}
 		//memset(buf, 0, 12);	//temp for checking
 		//int pid = 0x11223344;
-		clflush_cache_range(sgxssd_buf, SSD_PAGE_SIZE);
+		clflush_cache_range(qc->sgxssd_buf, SSD_PAGE_SIZE);
 
-		memcpy(sgxssd_buf, &cur_pid, 4);
-		memcpy(&(sgxssd_buf[4]), &cur_fid, 4);
-		memcpy(&(sgxssd_buf[8]), &cur_offset, 4);
+		memcpy(qc->sgxssd_buf, &cur_pid, 4);
+		memcpy(&(qc->sgxssd_buf[4]), &cur_fid, 4);
+		memcpy(&(qc->sgxssd_buf[8]), &cur_offset, 4);
 
 		//memcpy(&(sgxssd_buf[PAGE_SIZE-512]), &cur_pid, 4);
 		//memcpy(&(sgxssd_buf[PAGE_SIZE-512+4]), &cur_fid, 4);
@@ -5672,7 +5797,7 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 		//barrier();
 		//clflush();
 		//_mm_cflush(buf);
-		clflush_cache_range(sgxssd_buf, SSD_PAGE_SIZE);
+		clflush_cache_range(qc->sgxssd_buf, SSD_PAGE_SIZE);
 		//flush_cashe_range(buf, )
 		//native_wbinvd();
 		//asm volatile ("mfence" ::: "memory");
