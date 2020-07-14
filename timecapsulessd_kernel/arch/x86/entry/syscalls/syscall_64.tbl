@@ -340,11 +340,10 @@
 331	common	pkey_free		sys_pkey_free
 332	common	statx			sys_statx
 
-333 common	open_key	sys_open_key
-334 common	close_key	sys_close_key
-335 common	read_key	sys_read_key
-336 common	write_key	sys_write_key
-337 common	recovery	sys_recovery_key
+333 common	sgxssd_pm	sys_sgxssd_pm
+334 common	open_key	sys_open_key
+335 common	close_key	sys_close_key
+336 common	recovery	sys_recovery_key
 
 #
 # x32-specific system call numbers start at 512 to avoid cache impact

@@ -679,10 +679,10 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 	unsigned long lba;
 	//int key;//key
 	//    KEY_LBA_MAP* cur_map;//key
-	KEY_LBA_HASH *lba_map = NULL;
+	// KEY_LBA_HASH *lba_map = NULL;
 	RECOVERY_HASH *rec_map = NULL;
 	PID_LBA_HASH *cur_map = NULL;
-    unsigned long DS_lba;
+    //unsigned long DS_lba;
     int pid_chk = 0;	
 	int lba_chk = 0;
 	int rec_chk = 0;
@@ -794,22 +794,22 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 	if (1)
 	{
 
-		lba_chk = 0;
+	//	lba_chk = 0;
 		rec_chk = 0;
-
+		pid_chk = 0;
 		//Search key_lba hashtable to get retention time
 		//here, key is retention time(will be modifieed soon)
-		rcu_read_lock();
-		hash_for_each_possible_rcu(key_lba_hashtable, lba_map, elem, lba)
-		{
-			if (lba_map->lba == lba)
-			{
-				lba_chk = 1;
-				key = lba_map->key;
-				break;
-			}
-		}
-		rcu_read_unlock();
+		// rcu_read_lock();
+		// hash_for_each_possible_rcu(key_lba_hashtable, lba_map, elem, lba)
+		// {
+		// 	if (lba_map->lba == lba)
+		// 	{
+		// 		lba_chk = 1;
+		// 		key = lba_map->key;
+		// 		break;
+		// 	}
+		// }
+		// rcu_read_unlock();
 
 		rcu_read_lock();
 		hash_for_each_possible_rcu(recovery_hashtable, rec_map, elem, key)
@@ -823,16 +823,17 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 		}
 		rcu_read_unlock();
 
-		  rcu_read_lock();
-        hash_for_each_possible_rcu(pid_lba_hashtable, cur_map, elem, DS_lba)
+		rcu_read_lock();
+        hash_for_each_possible_rcu(pid_lba_hashtable, cur_map, elem, lba)
         {
-            if (cur_map->lba == DS_lba)
+            if (cur_map->lba == lba)
             {
                 printk("pid_chk\n");
                 pid_chk = 1;
 				//fd is cmd
                 cmd = cur_map->fd;
                 fd = cur_map->fd;
+				printk("[ata_tf_to_fis] cmd: 0x%x, fd: 0x%x", cur_map->cmd, fd);
                 //double kernel_t;
                 //struct timerspec kernel_clk;
                 //clock_gettime(CLOCK_MONOTONIC, &kernel_clk);
@@ -845,18 +846,18 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 
 		printk("[ata_tf_to_fis] cmd: %x, lba : 0x%lx, size: nsect-%d, hobnsect-%d", tf->command, lba, fis[12], fis[13]);
 
-		if (lba_chk)
-		{
-			//printk("ata_tf_to_fis! cmd: %x, dev : %x, lba : %lx, key : %x(hexa),%d(int),||.%02x,%02x,%02x,%02x,..%02x,%02x,%02x,%x,"
-			//,tf->command,fis[7],lba,key,key,fis[13],fis[10],fis[9],fis[8],  fis[6],fis[5],fis[4],fis[7]&15);
-			printk("lbachk: ata_tf_to_fis! cmd: %x, dev : %x, lba : %lx(hexa), %ld(int), key : %x(hexa),%d(int), size: %d, nsect-%d(%x), hobnsect-%d(%x)", tf->command, fis[7], lba, lba, key, key, fis[12] + fis[13] * 256, fis[12], fis[12], fis[13], fis[13]);
-			//put key and send to sata
-			fis[16] = key & 0xff;
-			fis[17] = (key >> 8) & 0xff;
-			fis[18] = (key >> 16) & 0xff;
-			fis[19] = (key >> 24) & 0xff;
-		}
-		else if (pid_chk)
+		// if (lba_chk)
+		// {
+		// 	//printk("ata_tf_to_fis! cmd: %x, dev : %x, lba : %lx, key : %x(hexa),%d(int),||.%02x,%02x,%02x,%02x,..%02x,%02x,%02x,%x,"
+		// 	//,tf->command,fis[7],lba,key,key,fis[13],fis[10],fis[9],fis[8],  fis[6],fis[5],fis[4],fis[7]&15);
+		// 	printk("lbachk: ata_tf_to_fis! cmd: %x, dev : %x, lba : %lx(hexa), %ld(int), key : %x(hexa),%d(int), size: %d, nsect-%d(%x), hobnsect-%d(%x)", tf->command, fis[7], lba, lba, key, key, fis[12] + fis[13] * 256, fis[12], fis[12], fis[13], fis[13]);
+		// 	//put key and send to sata
+		// 	fis[16] = key & 0xff;
+		// 	fis[17] = (key >> 8) & 0xff;
+		// 	fis[18] = (key >> 16) & 0xff;
+		// 	fis[19] = (key >> 24) & 0xff;
+		// }
+		if (pid_chk)
         {
             printk("[ata] cmd %d\n", cmd);
             switch (cmd)
@@ -899,14 +900,14 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
             printk("fid[2] : %d\n", fis[2]);
 
             //fd 집어넣는다.
-            fis[16] = fd & 255;
-            fd >>= 8;
-            fis[17] = fd & 255;
-            fd >>= 8;
-            fis[18] = fd & 255;
-            fd >>= 8;
-            fis[19] = fd & 255;
-            fd >>= 8;
+            // fis[16] = fd & 255;
+            // fd >>= 8;
+            // fis[17] = fd & 255;
+            // fd >>= 8;
+            // fis[18] = fd & 255;
+            // fd >>= 8;
+            // fis[19] = fd & 255;
+            // fd >>= 8;
         }
 		else if (tf->command == 0xCA || tf->command == 0x61 || tf->command == 0x60 || tf->command == 0xC8)
 		{

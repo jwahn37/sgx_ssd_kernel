@@ -132,40 +132,20 @@ typedef struct pid_lba_hash_node
 	struct hlist_node elem;
 	struct rcu_head rcu;
 } PID_LBA_HASH;
+
 DEFINE_HASHTABLE(pid_lba_hashtable, BUCKET_SIZE);
 EXPORT_SYMBOL(pid_lba_hashtable);
 ;
 static DEFINE_MUTEX(rdafwr_lock);
 
-typedef struct DS_param
+typedef struct PM_param
 {
-	unsigned int fd;
+//	unsigned int fd;
 	unsigned char cmd;
-	unsigned long offset; //여기가 LBA영역에 들어감 6bytes
+//	unsigned long offset; //여기가 LBA영역에 들어감 6bytes
 	unsigned int size;	  //이건 lba처럼 count영역에 들어가니, 섹터단위일듯.
-	unsigned int ret_time;
-} DS_PARAM;
-
-//DISKSHIELD Command type
-enum ds_cmd
-{
-	DS_WR_RANGE_MIN = 0x43,
-	DS_CREATE_WR,
-	DS_OPEN_WR,
-	DS_CLOSE_WR,
-	DS_REMOVE_WR,
-	DS_WRITE_WR,
-	DS_WR_RANGE_MAX,
-	DS_RD_RANGE_MIN,
-	DS_READ_RD,
-	DS_AUTH_RD,
-	DS_CREATE_RD,
-	DS_OPEN_RD,
-	DS_CLOSE_RD,
-	DS_REMOVE_RD,
-	DS_WRITE_RD,
-	DS_RD_RANGE_MAX
-};
+//	unsigned int ret_time;
+} PM_PARAM;
 
 enum spm_cmd
 {
@@ -1296,87 +1276,18 @@ long do_sys_open_key(int dfd, const char __user *filename, int flags, umode_t mo
 
 			printk("do_sys_open_key");
 
-			if (pid == 9999)
-			{ //임시로 지우기
-				struct hlist_head free_lba = HLIST_HEAD_INIT;
-				struct hlist_head free_inode = HLIST_HEAD_INIT;
+		
 
-				for ((num) = 0, cur_map = NULL; cur_map == NULL && (num) < HASH_SIZE(key_inode_hashtable); (num)++)
-				{
-					spin_lock(&keymap_lock[num]);
-					hlist_for_each_entry_safe(cur_map, cur_map_tmp, &key_inode_hashtable[num], elem)
-					{
-						hash_del_rcu(&(cur_map->elem));
-						inode_clear++;
-						hlist_add_head(&(cur_map->elem), &free_inode);
-					}
-					spin_unlock(&keymap_lock[num]);
-				}
+			// ///sgxssd
+			// //f->f_inode->pid = 0x11223344;
+			// //f->f_inode->fid = 0x11111111;
+			f->f_inode->pid = pid;
+			f->f_inode->fid = fid;
 
-				for ((num) = 0, cur_lba = NULL; cur_lba == NULL && (num) < HASH_SIZE(key_lba_hashtable); (num)++)
-				{
-					//    spin_lock_irqsave(&lbamap_lock[num]);
-					spin_lock_irqsave(&lbamap_lock[num], fl);
-					hlist_for_each_entry_safe(cur_lba, cur_lba_tmp, &key_lba_hashtable[num], elem)
-					{
-						hash_del_rcu(&(cur_lba->elem));
-						lba_clear++;
-						hlist_add_head(&(cur_lba->elem), &free_lba);
-					}
-					//		    spin_unlock(&lbamap_lock[num]);
-					spin_unlock_irqrestore(&lbamap_lock[num], fl);
-				}
-				hlist_for_each_entry_safe(cur_map, cur_map_tmp, &free_inode, elem)
-				{
-					call_rcu(&(cur_map->rcu), inode_node_reclaim);
-				}
-				hlist_for_each_entry_safe(cur_lba, cur_lba_tmp, &free_lba, elem)
-				{
-					call_rcu(&(cur_lba->rcu), lba_reclaim);
-				}
-				/*
-		hash_for_each_safe(key_inode_hashtable,num,cur_map_tmp,cur_map,elem){
-		    hash_del_rcu(&(cur_map->elem)); inode_clear++;
-		    vfree(cur_map);
-		}
-		hash_for_each_safe(key_lba_hashtable,num,cur_lba_tmp,cur_lba,elem){
-		    hash_del_rcu(&(cur_lba->elem)); lba_clear++;
-		    vfree(cur_lba);
-		}*/
-				printk("clear inode %d,lba %d tables!!!\n", inode_clear, lba_clear);
-			}
+			printk("do_sys_open inode num : %lu, key: %x, %lx", cur_map->inode_num, cur_map->key, (unsigned long)f->f_inode); //key
 
+			//get LBA lists
 			/*
-	    else if(key==8888){  //임시로 지우기
-		hash_for_each_safe(key_inode_hashtable,num,cur_map_tmp,cur_map,elem){
-		    inode_clear++;
-		}
-		hash_for_each_safe(key_lba_hashtable,num,cur_lba_tmp,cur_lba,elem){
-		    lba_clear++;
-		}
-		printk("remain nodes, inode %d,lba %d tables!!!\n",inode_clear,lba_clear);
-	    }*/
-			else
-			{
-
-				// ///sgxssd
-				// //f->f_inode->pid = 0x11223344;
-				// //f->f_inode->fid = 0x11111111;
-				// f->f_inode->pid = pid;
-				// f->f_inode->fid = fid;
-
-				// cur_map = vmalloc(sizeof(KEY_INODE_HASH));
-				// cur_map->inode_num = f->f_inode->i_ino;
-				// cur_map->key = key;
-				// spin_lock(&keymap_lock[hash_min(cur_map->inode_num, HASH_BITS(key_inode_hashtable))]);
-				// hash_add_rcu(key_inode_hashtable, &(cur_map->elem), cur_map->inode_num);
-				// spin_unlock(&keymap_lock[hash_min(cur_map->inode_num, HASH_BITS(key_inode_hashtable))]);
-
-				//   inode_table_num++;
-				printk("do_sys_open inode num : %lu, key: %x, %lx", cur_map->inode_num, cur_map->key, (unsigned long)f->f_inode); //key
-
-				//get LBA lists
-				/*
 	int (*fiemap)(struct inode *, struct fiemap_extent_info *, u64 start,
 		      u64 len);
 	struct fiemap_extent_info {
@@ -1397,14 +1308,13 @@ struct fiemap_extent {
 };
 		*/
 
-				struct fiemap_extent_info LBA_list;
-				printk("inode size: %lld", f->f_inode->i_size);
-				f->f_inode->i_op->fiemap(f->f_inode, &LBA_list, 0, f->f_inode->i_size);
-				printk("the LBA list: fi_flag: %d, fi_extensts_mapped: %d, fi_extents_max: %d", LBA_list.fi_flags, LBA_list.fi_extents_mapped, LBA_list.fi_extents_max);
-				/*
+			struct fiemap_extent_info LBA_list;
+			printk("inode size: %lld", f->f_inode->i_size);
+			f->f_inode->i_op->fiemap(f->f_inode, &LBA_list, 0, f->f_inode->i_size);
+			printk("the LBA list: fi_flag: %d, fi_extensts_mapped: %d, fi_extents_max: %d", LBA_list.fi_flags, LBA_list.fi_extents_mapped, LBA_list.fi_extents_max);
+			/*
 		printk("LBA list size: %d, start log/phy/len: %d/%d/%d", sizeof(LBA_list.fi_extents_start)/sizeof(struct filemap_extent*), LBA_list.fi_extents_start[0].fe_logical, LBA_list.fi_extents_start[0].fe_physical, LBA_list.fi_extents_start[0].fe_length);
 	    */
-			}
 		}
 	}
 	putname(tmp);
@@ -1703,30 +1613,31 @@ static struct file *ssd_f = NULL;
 static struct block_device *ssd_bdev;
 #define P_SIZE 4096
 
-static ssize_t enc_is_RD_cmd(unsigned char cmd)
-{
-	if (cmd > DS_RD_RANGE_MIN && cmd < DS_RD_RANGE_MAX)
-		return 1;
-	else if (cmd > DS_WR_RANGE_MIN && cmd < DS_WR_RANGE_MAX)
-		return 0;
-}
+// static ssize_t enc_is_RD_cmd(unsigned char cmd)
+// {
+// 	if (cmd > DS_RD_RANGE_MIN && cmd < DS_RD_RANGE_MAX)
+// 		return 1;
+// 	else if (cmd > DS_WR_RANGE_MIN && cmd < DS_WR_RANGE_MAX)
+// 		return 0;
+// }
 
-static void enc_convert_RD_cmd(DS_PARAM *ds_param)
-{
-	if (ds_param->cmd == DS_CREATE_WR)
-		ds_param->cmd = DS_CREATE_RD;
-	if (ds_param->cmd == DS_OPEN_WR)
-		ds_param->cmd = DS_OPEN_RD;
-	if (ds_param->cmd == DS_WRITE_WR)
-		ds_param->cmd = DS_WRITE_RD;
-	if (ds_param->cmd == DS_CLOSE_WR)
-		ds_param->cmd = DS_CLOSE_RD;
-	if (ds_param->cmd == DS_REMOVE_WR)
-		ds_param->cmd = DS_REMOVE_RD;
-	return;
-}
+// static void enc_convert_RD_cmd(DS_PARAM *ds_param)
+// {
+// 	if (ds_param->cmd == DS_CREATE_WR)
+// 		ds_param->cmd = DS_CREATE_RD;
+// 	if (ds_param->cmd == DS_OPEN_WR)
+// 		ds_param->cmd = DS_OPEN_RD;
+// 	if (ds_param->cmd == DS_WRITE_WR)
+// 		ds_param->cmd = DS_WRITE_RD;
+// 	if (ds_param->cmd == DS_CLOSE_WR)
+// 		ds_param->cmd = DS_CLOSE_RD;
+// 	if (ds_param->cmd == DS_REMOVE_WR)
+// 		ds_param->cmd = DS_REMOVE_RD;
+// 	return;
+// }
 
-static ssize_t enc_sync_op(struct file *filp, char __user *buf, size_t len, loff_t *ppos, DS_PARAM *ds_param)
+static ssize_t sgxssd_rdafwr(struct file *filp, char __user *buf, size_t len, PM_PARAM *pm_param)
+//static ssize_t enc_sync_op(struct file *filp, char __user *buf, size_t len, loff_t *ppos, DS_PARAM *ds_param)
 {
 	//iov has user data information
 	struct iovec iov = {.iov_base = buf, .iov_len = len};
@@ -1739,7 +1650,7 @@ static ssize_t enc_sync_op(struct file *filp, char __user *buf, size_t len, loff
 	unsigned long temp;
 
 	init_sync_kiocb(&kiocb, filp);
-	kiocb.ki_pos = *ppos;
+	kiocb.ki_pos = 0;//*ppos;
 
 	//무조건 쓰기임
 	iov_iter_init(&iter, WRITE, &iov, 1, len);
@@ -1747,14 +1658,14 @@ static ssize_t enc_sync_op(struct file *filp, char __user *buf, size_t len, loff
 
 	//hash table 에 삽입
 	cur_map = vmalloc(sizeof(PID_LBA_HASH));
-	cur_map->lba = (*ppos) >> 9;
-	cur_map->fd = ds_param->cmd;
-	cur_map->cmd = ds_param->cmd;
-	cur_map->ret_time = ds_param->ret_time;
+	cur_map->lba = 0;//(*ppos) >> 9;
+	cur_map->fd = pm_param->cmd; //나중에 지움.
+	cur_map->cmd = pm_param->cmd;
+	//cur_map->ret_time = pm_param->ret_time;
 	printk("[open] curr map : ");
 	printk("lba %d fd %d cmd %d ret %d\n", cur_map->lba, cur_map->fd, cur_map->cmd, cur_map->ret_time);
-	printk("[open] ds_param : ");
-	printk("lba %d fd %d cmd %d\n", (*ppos) >> 9, ds_param->fd, ds_param->cmd);
+	printk("[open] pm_param : ");
+	printk("lba %d cmd %d\n", 0, pm_param->cmd);
 
 	/////table add
 	//who is key?? --> LBA (offset>>9)
@@ -1770,6 +1681,14 @@ static ssize_t enc_sync_op(struct file *filp, char __user *buf, size_t len, loff
 	BUG_ON(ret == -EIOCBQUEUED);
 	printk("2) end write iter!\n");
 	//끝났으면 table 제거
+
+	//read after write code 추가해주세요.
+	/*
+
+
+
+	*/
+
 	/////table delete
 	spin_lock_irqsave(&pidmap_lock[hash_min(cur_map->lba, HASH_BITS(pid_lba_hashtable))], flags);
 	hash_del_rcu(&(cur_map->elem));
@@ -1784,10 +1703,12 @@ static unsigned int raf_rd_time = 0;
 static unsigned int raf_wr_time_ms = 0;
 static unsigned int raf_rd_time_ms = 0;
 
-SYSCALL_DEFINE3(enc_rdafwr, char __user *, u_ds_param, char __user *, buf, size_t, count)
+
+SYSCALL_DEFINE3(sgxssd_pm, char __user *, u_pm_param, char __user *, buf, size_t, count)
+//YSCALL_DEFINE3(enc_rdafwr, char __user *, u_ds_param, char __user *, buf, size_t, count)
 //SYSCALL_DEFINE5(enc_rdafwr, unsigned int, fd, unsigned char, cmd, unsigned long, offset, char __user *, buf, size_t, count)
 {
-	printk("init enc_rdafwr!\n");
+	printk("init policy management!\n");
 	loff_t pos;
 	unsigned long value;
 	//    mm_segment_t old_fs;
@@ -1799,15 +1720,10 @@ SYSCALL_DEFINE3(enc_rdafwr, char __user *, u_ds_param, char __user *, buf, size_
 	int version;
 	char initial_buf[P_SIZE * 2 + 1] = {0};
 
-	//DS_param을 못넘기므로..
-	DS_PARAM *ds_param;
-	ds_param = (DS_PARAM *)vmalloc(sizeof(DS_PARAM));
-	/*
-     ds_param->fd = fd;
-     ds_param->cmd = cmd;
-     ds_param->offset = offset;
-     ds_param->count = count;
-     */
+	//pm_param을 못넘기므로..
+	PM_PARAM *pm_param;
+	pm_param = (PM_PARAM *)vmalloc(sizeof(PM_PARAM));
+	
 	struct timespec raf_wr_clk;
 	unsigned int raf_wr_times_s, raf_wr_times_f;
 	unsigned int raf_wr_timen_s, raf_wr_timen_f;
@@ -1820,8 +1736,8 @@ SYSCALL_DEFINE3(enc_rdafwr, char __user *, u_ds_param, char __user *, buf, size_
 	raf_wr_times_s = (unsigned int)raf_wr_clk.tv_sec;
 
 	//copy data from user space
-	copy_from_user((char *)ds_param, u_ds_param, sizeof(DS_PARAM));
-	printk("[SPM] cmd : %x\n", ds_param->cmd);
+	copy_from_user((char *)pm_param, u_pm_param, sizeof(PM_PARAM));
+	printk("[SPM] cmd : %x\n", pm_param->cmd);
 	//Get version from user buffer
 	/*
      if(ds_param->cmd == DS_WRITE_WR)
@@ -1834,7 +1750,7 @@ SYSCALL_DEFINE3(enc_rdafwr, char __user *, u_ds_param, char __user *, buf, size_
 	//Debugging
 	//    printk("[enc_rdafwr] version : %x\n", version);
 	//    count=P_SIZE*2;
-	switch (ds_param->cmd)
+	switch (pm_param->cmd)
 	{
 	case SPM_CREATE:
 		printk("open : [SPM] Policy Create.");
@@ -1864,10 +1780,10 @@ SYSCALL_DEFINE3(enc_rdafwr, char __user *, u_ds_param, char __user *, buf, size_
 	//pos는 lba에 들어갈녀석으로 key라고 봐도 무방함.
 	//현재는 offset이 들어갈 자리지.
 	//    temp=position;
-	pos = ds_param->offset;
+	//pos = 0;//pm_param->offset;
 
 	mutex_lock(&rdafwr_lock);
-	ret = enc_sync_op(ssd_f, buf, count, &pos, ds_param);
+	ret = sgxssd_rdafwr(ssd_f, buf, count, pm_param);
 	mutex_unlock(&rdafwr_lock);
 	return ret;
 }

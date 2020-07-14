@@ -944,7 +944,7 @@ asmlinkage long sys_statx(int dfd, const char __user *path, unsigned flags,
 
 
 asmlinkage long sys_open_key(const char __user *filename,
-				int flags, umode_t mode, int key);
+				int flags, umode_t mode, unsigned int pid, unsigned int fid);
 
 asmlinkage long sys_close_key(unsigned int fd);
 
