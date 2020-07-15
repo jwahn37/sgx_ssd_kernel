@@ -57,7 +57,7 @@ int main(int *argc, char **argv)
    //     for (i=0; i<1; i++)
     {
         ;
-    //writen = write(fd_key, bufS, 512);
+    	writen = write(fd_key, bufS, 512);
         //writen = syscall(WRITE_KEY, fd_key, bufS, 512);
         // lseek(fd_key, 0, SEEK_SET);
         //  fsync(fd_key);
