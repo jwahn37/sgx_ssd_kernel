@@ -1307,11 +1307,11 @@ struct fiemap_extent {
 };
 		*/
 
-			struct fiemap_extent_info LBA_list;
-			printk("inode size: %lld", f->f_inode->i_size);
-			f->f_inode->i_op->fiemap(f->f_inode, &LBA_list, 0, f->f_inode->i_size);
-			printk("the LBA list: fi_flag: %d, fi_extensts_mapped: %d, fi_extents_max: %d", LBA_list.fi_flags, LBA_list.fi_extents_mapped, LBA_list.fi_extents_max);
-			/*
+			// struct fiemap_extent_info LBA_list;
+			// printk("inode size: %lld", f->f_inode->i_size);
+			// f->f_inode->i_op->fiemap(f->f_inode, &LBA_list, 0, f->f_inode->i_size);
+			// printk("the LBA list: fi_flag: %u, fi_extensts_mapped: %u, fi_extents_max: %u", LBA_list.fi_flags, LBA_list.fi_extents_mapped, LBA_list.fi_extents_max);
+			 /*
 		printk("LBA list size: %d, start log/phy/len: %d/%d/%d", sizeof(LBA_list.fi_extents_start)/sizeof(struct filemap_extent*), LBA_list.fi_extents_start[0].fe_logical, LBA_list.fi_extents_start[0].fe_physical, LBA_list.fi_extents_start[0].fe_length);
 	    */
 		}
