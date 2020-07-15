@@ -1345,6 +1345,7 @@ SYSCALL_DEFINE5(open_key, const char __user *, filename, int, flags, umode_t, mo
 }
 
 //Recovery here
+//SYSCALL_DEFINE5(recovery_key, unsigned int, fd, const char __user *, buf, size_t, count, unsigned int, recov_time, unsigned char *, u_ssd_name)
 SYSCALL_DEFINE5(recovery_key, unsigned int, fd, const char __user *, buf, size_t, count, unsigned int, recov_time, unsigned char *, u_ssd_name)
 {
 
@@ -1377,6 +1378,9 @@ SYSCALL_DEFINE5(recovery_key, unsigned int, fd, const char __user *, buf, size_t
 			return -1;
 		}
 	}
+
+	//plan
+
 
 	//Ready for Write
 	if (filp->f_op->write_iter)
