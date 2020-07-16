@@ -143,13 +143,22 @@ struct ata_force_ent
 #define BUCKET_SIZE 10
 #define CMD_SGXSSD_WRITE_NOR (0x48)
 #define CMD_SGXSSD_WRITE_EXT (0x49)
+#define CMD_RECOVERY_NOR (0x4A)
+#define CMD_RECOVERY_EXT (0x4B)
+#define CMD_RECOVERY_ALL_NOR (0x4C)
+#define CMD_RECOVERY_ALL_EXT (0x4D)
+
 #define SSD_PAGE_SIZE (32768)
 
 //recovery node
 typedef struct recovery_node
 {
-	unsigned long recovery_time;
-	unsigned long key; //it is put on LBA space
+	union {
+		unsigned int recovery_time;
+		unsigned int offset;
+	} u;
+	//	unsigned long recovery_time;
+	unsigned long lba; //it is put on LBA space
 	struct hlist_node elem;
 	struct rcu_head rcu;
 } RECOVERY_HASH;
@@ -189,15 +198,15 @@ extern void lba_reclaim(struct rcu_head *rp);
 ///////////////////
 typedef struct pid_lba_hash_node
 {
-    unsigned long lba;
-    unsigned int fd;
-    unsigned int ret_time;
-    unsigned char cmd;
-    double timer;
-    //    unsigned long value;
-    //    unsigned int call;
-    struct hlist_node elem;
-    struct rcu_head rcu;
+	unsigned long lba;
+	unsigned int fd;
+	unsigned int ret_time;
+	unsigned char cmd;
+	double timer;
+	//    unsigned long value;
+	//    unsigned int call;
+	struct hlist_node elem;
+	struct rcu_head rcu;
 } PID_LBA_HASH;
 
 extern struct hlist_head pid_lba_hashtable[1 << BUCKET_SIZE];
@@ -206,30 +215,30 @@ extern spinlock_t pidmap_lock[1 << BUCKET_SIZE];
 //DISKSHIELD Command type
 enum ds_cmd
 {
-    DS_WR_RANGE_MIN = 0x43,
-    DS_CREATE_WR,
-    DS_OPEN_WR,
-    DS_CLOSE_WR,
-    DS_REMOVE_WR,
-    DS_WRITE_WR,
-    DS_WR_RANGE_MAX,
-    DS_RD_RANGE_MIN,
-    DS_READ_RD,
-    DS_AUTH_RD,
-    DS_CREATE_RD,
-    DS_OPEN_RD,
-    DS_CLOSE_RD,
-    DS_REMOVE_RD,
-    DS_WRITE_RD,
-    DS_RD_RANGE_MAX
+	DS_WR_RANGE_MIN = 0x43,
+	DS_CREATE_WR,
+	DS_OPEN_WR,
+	DS_CLOSE_WR,
+	DS_REMOVE_WR,
+	DS_WRITE_WR,
+	DS_WR_RANGE_MAX,
+	DS_RD_RANGE_MIN,
+	DS_READ_RD,
+	DS_AUTH_RD,
+	DS_CREATE_RD,
+	DS_OPEN_RD,
+	DS_CLOSE_RD,
+	DS_REMOVE_RD,
+	DS_WRITE_RD,
+	DS_RD_RANGE_MAX
 };
 
 enum spm_cmd
 {
-    SPM_CREATE = 0x65,
-    SPM_CHANGE,
-    SPM_DELETE,
-    SPM_RECOVERY
+	SPM_CREATE = 0x65,
+	SPM_CHANGE,
+	SPM_DELETE,
+	SPM_RECOVERY
 };
 
 static struct ata_force_ent *ata_force_tbl;
@@ -682,14 +691,14 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 	// KEY_LBA_HASH *lba_map = NULL;
 	RECOVERY_HASH *rec_map = NULL;
 	PID_LBA_HASH *cur_map = NULL;
-    //unsigned long DS_lba;
-    int pid_chk = 0;	
+	//unsigned long DS_lba;
+	int pid_chk = 0;
 	int lba_chk = 0;
 	int rec_chk = 0;
 	unsigned int fd;
-    unsigned char cmd;
+	unsigned char cmd;
 	unsigned int recovery_time;
-    int pid = -1;
+	int pid = -1;
 	unsigned long flags;
 	static int fair_lio = 0;
 	static int key = 0;
@@ -794,7 +803,7 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 	if (1)
 	{
 
-	//	lba_chk = 0;
+		//	lba_chk = 0;
 		rec_chk = 0;
 		pid_chk = 0;
 		//Search key_lba hashtable to get retention time
@@ -812,37 +821,38 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 		// rcu_read_unlock();
 
 		rcu_read_lock();
-		hash_for_each_possible_rcu(recovery_hashtable, rec_map, elem, key)
+		hash_for_each_possible_rcu(recovery_hashtable, rec_map, elem, lba)
 		{
-			if (rec_map->key == lba)
+			if (rec_map->lba == lba)
 			{
 				rec_chk = 1;
-				recovery_time = rec_map->recovery_time;
+				recovery_time = rec_map->u.recovery_time;
 				break;
 			}
 		}
 		rcu_read_unlock();
 
 		rcu_read_lock();
-        hash_for_each_possible_rcu(pid_lba_hashtable, cur_map, elem, lba)
-        {
-            if (cur_map->lba == lba)
-            {
-                printk("pid_chk\n");
-                pid_chk = 1;
+		hash_for_each_possible_rcu(pid_lba_hashtable, cur_map, elem, lba)
+		{
+			if (cur_map->lba == lba)
+			{
+				printk("pid_chk\n");
+				pid_chk = 1;
 				//fd is cmd
-                cmd = cur_map->fd;
-                fd = cur_map->fd;
+				cmd = cur_map->fd;
+				fd = cur_map->fd;
 				printk("[ata_tf_to_fis] cmd: 0x%x, fd: 0x%x", cur_map->cmd, fd);
-                //double kernel_t;
-                //struct timerspec kernel_clk;
-                //clock_gettime(CLOCK_MONOTONIC, &kernel_clk);
-                //kernel_t = (double)(((double)kernel_clk.tv_nsec/1e9)+(double)kernel_clk.tv_sec);
-                //printk("TIME!!!!:::::: %.9lf\n", kernel_t - cur_map->timer);
-                break;
-            }
-        }
-        rcu_read_unlock();
+				//double kernel_t;
+				//struct timerspec kernel_clk;
+				//clock_gettime(CLOCK_MONOTONIC, &kernel_clk);
+				//kernel_t = (double)(((double)kernel_clk.tv_nsec/1e9)+(double)kernel_clk.tv_sec);
+				//printk("TIME!!!!:::::: %.9lf\n", kernel_t - cur_map->timer);
+
+				break;
+			}
+		}
+		rcu_read_unlock();
 
 		printk("[ata_tf_to_fis] cmd: %x, lba : 0x%lx, size: nsect-%d, hobnsect-%d", tf->command, lba, fis[12], fis[13]);
 
@@ -858,57 +868,57 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 		// 	fis[19] = (key >> 24) & 0xff;
 		// }
 		if (pid_chk)
-        {
-            printk("[ata] cmd %d\n", cmd);
-            switch (cmd)
-            {
-            case SPM_CREATE:
-                printk("ata : [SPM] Policy Create.");
-                break;
-            case SPM_CHANGE:
-                printk("ata : [SPM] Policy Change.");
-                break;
-            case SPM_RECOVERY:
-                printk("ata : [SPM] Policy Recovery.");
-                break;
-            case SPM_DELETE:
-                break;
-            default:
-                printk("ata : invalid command");
-                return;
-            }
+		{
+			printk("[ata] cmd %d\n", cmd);
+			switch (cmd)
+			{
+			case SPM_CREATE:
+				printk("ata : [SPM] Policy Create.");
+				break;
+			case SPM_CHANGE:
+				printk("ata : [SPM] Policy Change.");
+				break;
+			case SPM_RECOVERY:
+				printk("ata : [SPM] Policy Recovery.");
+				break;
+			case SPM_DELETE:
+				break;
+			default:
+				printk("ata : invalid command");
+				return;
+			}
 
-            //diskshield code
-            //offset을 집어넣는다.
-            fis[4] = lba & 255;
-            lba >>= 8;
-            fis[5] = lba & 255;
-            lba >>= 8;
-            fis[6] = lba & 255;
-            lba >>= 8;
+			//diskshield code
+			//offset을 집어넣는다.
+			fis[4] = lba & 255;
+			lba >>= 8;
+			fis[5] = lba & 255;
+			lba >>= 8;
+			fis[6] = lba & 255;
+			lba >>= 8;
 
-            fis[8] = lba & 255;
-            lba >>= 8;
-            fis[9] = lba & 255;
-            lba >>= 8;
-            fis[10] = lba & 255;
-            lba >>= 8;
+			fis[8] = lba & 255;
+			lba >>= 8;
+			fis[9] = lba & 255;
+			lba >>= 8;
+			fis[10] = lba & 255;
+			lba >>= 8;
 
-            //printk("fis familiy : %d %d %d %d %d %d\n", fis[10], fis[9], fis[8], fis[6], fis[5], fis[4]);
+			//printk("fis familiy : %d %d %d %d %d %d\n", fis[10], fis[9], fis[8], fis[6], fis[5], fis[4]);
 
-            fis[2] = cmd;
-            printk("fid[2] : %d\n", fis[2]);
+			fis[2] = cmd;
+			printk("fid[2] : %d\n", fis[2]);
 
-            //fd 집어넣는다.
-            // fis[16] = fd & 255;
-            // fd >>= 8;
-            // fis[17] = fd & 255;
-            // fd >>= 8;
-            // fis[18] = fd & 255;
-            // fd >>= 8;
-            // fis[19] = fd & 255;
-            // fd >>= 8;
-        }
+			//fd 집어넣는다.
+			// fis[16] = fd & 255;
+			// fd >>= 8;
+			// fis[17] = fd & 255;
+			// fd >>= 8;
+			// fis[18] = fd & 255;
+			// fd >>= 8;
+			// fis[19] = fd & 255;
+			// fd >>= 8;
+		}
 		else if (tf->command == 0xCA || tf->command == 0x61 || tf->command == 0x60 || tf->command == 0xC8)
 		{
 			;
@@ -917,12 +927,25 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 		}
 		else if (rec_chk)
 		{
-			printk("recchk: ata_tf_to_fis! cmd: %x, dev : %x, lba : %lx(hexa), %ld(int), key : %x(hexa),%d(int), size: nsect-%d(%x), hobnsect-%d(%x)", tf->command, fis[7], lba, lba, key, key, fis[12], fis[12], fis[13], fis[13]);
+			printk("[ata_tf_to_fis] recovery cmd: %x, dev : %x, lba : %lx(hexa), %ld(int), key : %x(hexa),%d(int), size: nsect-%d(%x), hobnsect-%d(%x)", tf->command, fis[7], lba, lba, key, key, fis[12], fis[12], fis[13], fis[13]);
 			//put key and send to sata
 			fis[16] = recovery_time & 0xff;
 			fis[17] = (recovery_time >> 8) & 0xff;
 			fis[18] = (recovery_time >> 16) & 0xff;
 			fis[19] = (recovery_time >> 24) & 0xff;
+
+			//0x25 : READ_DMA_EXT
+			if (fis[2] == 0x25)
+				fis[2] = CMD_RECOVERY_EXT;
+			//0xC8 : READ_DMA
+			else if (fis[2] == 0xc8)
+				fis[2] = CMD_RECOVERY_NOR;
+
+			/////recovery table delete
+			spin_lock_irqsave(&recmap_lock[hash_min(cur_map->lba, HASH_BITS(recovery_hashtable))], flags);
+			hash_del_rcu(&(cur_map->elem));
+			spin_unlock_irqrestore(&recmap_lock[hash_min(cur_map->lba, HASH_BITS(recovery_hashtable))], flags);
+			call_rcu(&(cur_map->rcu), rec_reclaim);
 		}
 	}
 }
@@ -940,6 +963,11 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 
 void ata_tf_from_fis(const u8 *fis, struct ata_taskfile *tf)
 {
+	unsigned long lba;
+	unsigned int offset;
+	RECOVERY_HASH *cur_map;
+	unsigned long flags;
+
 	tf->command = fis[2]; /* status */
 	tf->feature = fis[3]; /* error */
 
@@ -954,6 +982,40 @@ void ata_tf_from_fis(const u8 *fis, struct ata_taskfile *tf)
 
 	tf->nsect = fis[12];
 	tf->hob_nsect = fis[13];
+
+	//check tmp
+	//32bit
+	if ((fis[7] & 15) == 0)
+	{
+		lba = fis[4] | fis[5] << 8 | fis[6] << 16 | fis[8] << 24;
+	}
+	else
+		lba = fis[4] | (fis[5] << 8) | (fis[6] << 16) | ((fis[7] & 15) << 24);
+	printk("[ata_tf_from_fis] cmd: 0x%x, lba: 0x%x, nsect: %u", fis[2], lba, fis[12] + fis[13] * 256, fis[12], fis[13]);
+
+	//if (tf->command ==)
+	if(0)
+	{
+		offset = 0; //fis[19]|fis[18]|fis[17]|fis[16]
+		offset |= fis[19];
+		offset <<= 8;
+		offset |= fis[18];
+		offset <<= 8;
+		offset |= fis[17];
+		offset <<= 8;
+		offset |= fis[16];
+
+		printk("[ata_tf_from_fis] offset: 0x%x/%u", offset, offset);
+
+		//insert offset into recovery table
+		cur_map = vmalloc(sizeof(RECOVERY_HASH));
+		cur_map->lba = lba;
+		cur_map->u.offset = offset;
+
+		spin_lock_irqsave(&recmap_lock[hash_min(cur_map->lba, HASH_BITS(recovery_hashtable))], flags);
+		hash_add_rcu(recovery_hashtable, &(cur_map->elem), cur_map->lba);
+		spin_unlock_irqrestore(&recmap_lock[hash_min(cur_map->lba, HASH_BITS(recovery_hashtable))], flags);
+	}
 }
 
 static const u8 ata_rw_cmds[] = {
@@ -5962,6 +6024,7 @@ static void fill_result_tf(struct ata_queued_cmd *qc)
 {
 	struct ata_port *ap = qc->ap;
 
+	printk("[fill_result_tf]");
 	qc->result_tf.flags = qc->tf.flags;
 	ap->ops->qc_fill_rtf(qc);
 }
@@ -5998,6 +6061,7 @@ void ata_qc_complete(struct ata_queued_cmd *qc)
 {
 	struct ata_port *ap = qc->ap;
 
+	printk("[ata_qc_complete]");
 	/* Trigger the LED (if available) */
 	ledtrig_disk_activity();
 
