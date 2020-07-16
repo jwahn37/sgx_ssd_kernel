@@ -952,6 +952,5 @@ asmlinkage long sys_read_key(unsigned int fd, char __user *buf, size_t count);
 
 asmlinkage long sys_write_key(unsigned int fd, const char __user *buf, size_t count);
 
-asmlinkage long sys_recovery_key(unsigned int fd, const char __user *buf, size_t count, unsigned int recov_time, unsigned char *ssd_name);
 
 #endif
