@@ -57,15 +57,18 @@
 #define BUCKET_SIZE 10
 #define KEY_SIZE 16
 #define MAC_SIZE 32
+#define SSD_PAGE_SIZE (32768)
+
 //for recovery
 //This table sends recovery time to the SATA driver.
 typedef struct recovery_node
 {
-	union {
-		unsigned int recovery_time;
-		unsigned int offset;
-	} u;
-	//	unsigned long recovery_time;
+	// union {
+	// 	unsigned int recovery_time;
+	// 	unsigned int offset;
+	// } u;
+	unsigned long recovery_time;
+	unsigned int fid;
 	unsigned long lba; //it is put on LBA space
 	struct hlist_node elem;
 	struct rcu_head rcu;
@@ -1350,13 +1353,12 @@ SYSCALL_DEFINE5(open_key, const char __user *, filename, int, flags, umode_t, mo
 
 //Recovery here
 //SYSCALL_DEFINE5(recovery_key, unsigned int, fd, const char __user *, buf, size_t, count, unsigned int, recov_time, unsigned char *, u_ssd_name)
-SYSCALL_DEFINE6(recovery_key, const char __user *, buf, unsigned int *, u_offset, unsigned int, lba, unsigned int, size, unsigned int, recovery_time, unsigned char *, u_ssd_name)
+SYSCALL_DEFINE6(recovery_key, const char __user *, buf, unsigned int, fid, unsigned int, lba, unsigned int, size, unsigned int, recovery_time, unsigned char *, u_ssd_name)
 //syscall(RECOVERY_KEY, rec_buf, &cur_offset, fd, cur_lbn, cur_size, recovery_time, dev_file);
 {
 
 	static struct file *filp = NULL;
-	static unsigned long int hash_key = 0xffffffffffff0000;
-	struct iovec iov = {.iov_base = buf, .iov_len = size};
+	struct iovec iov = {.iov_base = buf, .iov_len = size + SSD_PAGE_SIZE};	//ssd_page_size is additional data buffer for getting offset
 	struct kiocb kiocb;
 	struct iov_iter iter;
 
@@ -1367,7 +1369,6 @@ SYSCALL_DEFINE6(recovery_key, const char __user *, buf, unsigned int *, u_offset
 
 	unsigned int offset;
 
-	printk("[recovery_key]");
 	//tatic char* ssd_name="/dev/sdc";
 	//	unsigned
 	//copy buffer from user
@@ -1394,7 +1395,8 @@ SYSCALL_DEFINE6(recovery_key, const char __user *, buf, unsigned int *, u_offset
 		//Insert recovery time into recovey table
 		cur_map = vmalloc(sizeof(RECOVERY_HASH));
 		cur_map->lba = lba;
-		cur_map->u.recovery_time = recovery_time;
+		cur_map->recovery_time = recovery_time;
+		cur_map->fid = fid;
 
 		spin_lock_irqsave(&recmap_lock[hash_min(cur_map->lba, HASH_BITS(recovery_hashtable))], flags);
 		hash_add_rcu(recovery_hashtable, &(cur_map->elem), cur_map->lba);
@@ -1403,13 +1405,16 @@ SYSCALL_DEFINE6(recovery_key, const char __user *, buf, unsigned int *, u_offset
 		//read recovered data from SSD.
 		//	iov = { .iov_base = buf, .iov_len = size};
 		init_sync_kiocb(&kiocb, filp);
-		kiocb.ki_pos = lba;
-		iov_iter_init(&iter, READ, &iov, 1, size);
+		kiocb.ki_pos = (long long)lba*512;
+		iov_iter_init(&iter, READ, &iov, 1, size + SSD_PAGE_SIZE);
 		iter.type = READ;
+
+		printk("[recovery_key] lba: 0x%lx size: %d", lba, size+SSD_PAGE_SIZE);
 
 		ret = call_read_iter(filp, &kiocb, &iter);
 		BUG_ON(ret == -EIOCBQUEUED);
 
+		/*
 		//get offset from recovery table
 		rcu_read_lock();
 		hash_for_each_possible_rcu(recovery_hashtable, cur_map, elem, lba)
@@ -1432,15 +1437,14 @@ SYSCALL_DEFINE6(recovery_key, const char __user *, buf, unsigned int *, u_offset
 			}
 		}
 		rcu_read_unlock();
+		*/
 
-		/////recovery table delete
-		spin_lock_irqsave(&recmap_lock[hash_min(cur_map->lba, HASH_BITS(recovery_hashtable))], flags);
-		hash_del_rcu(&(cur_map->elem));
-		spin_unlock_irqrestore(&recmap_lock[hash_min(cur_map->lba, HASH_BITS(recovery_hashtable))], flags);
-		call_rcu(&(cur_map->rcu), rec_reclaim);
+		// /////recovery table delete (already deleted in ata_tf_to_fis)
+		// spin_lock_irqsave(&recmap_lock[hash_min(cur_map->lba, HASH_BITS(recovery_hashtable))], flags);
+		// hash_del_rcu(&(cur_map->elem));
+		// spin_unlock_irqrestore(&recmap_lock[hash_min(cur_map->lba, HASH_BITS(recovery_hashtable))], flags);
+		// call_rcu(&(cur_map->rcu), rec_reclaim);
 	}
-
-	
 	return ret;
 }
 

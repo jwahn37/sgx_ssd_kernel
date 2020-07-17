@@ -412,7 +412,7 @@ static int __blk_bios_map_sg(struct request_queue *q, struct bio *bio,
 	struct bvec_iter iter;
 	int cluster = blk_queue_cluster(q), nsegs = 0;
 
-	printk("[blk_bios_map_sg]");
+//	printk("[blk_bios_map_sg]");
 	for_each_bio(bio)
 		bio_for_each_segment(bvec, bio, iter)
 			__blk_segment_map_sg(q, &bvec, sglist, &bvprv, sg,
@@ -430,7 +430,7 @@ int blk_rq_map_sg(struct request_queue *q, struct request *rq,
 {
 	struct scatterlist *sg = NULL;
 	int nsegs = 0;
-	printk("[blk_rq_map_sg]");
+	//printk("[blk_rq_map_sg]");
 	
 	if (rq->rq_flags & RQF_SPECIAL_PAYLOAD)
 		nsegs = __blk_bvec_map_sg(q, rq->special_vec, sglist, &sg);
@@ -452,7 +452,7 @@ int blk_rq_map_sg(struct request_queue *q, struct request *rq,
 		if (op_is_write(req_op(rq)))
 			memset(q->dma_drain_buffer, 0, q->dma_drain_size);
 		
-		printk("[blk_rq_map_sg] : dma size, offset : %d, %ld", q->dma_drain_size, ((unsigned long)q->dma_drain_buffer) &(PAGE_SIZE - 1));
+	//	printk("[blk_rq_map_sg] : dma size, offset : %d, %ld", q->dma_drain_size, ((unsigned long)q->dma_drain_buffer) &(PAGE_SIZE - 1));
 
 		sg_unmark_end(sg);
 		sg = sg_next(sg);

@@ -18,16 +18,17 @@ fibmap 참조, 특히 hdparm 코드
 
 //#define PATH_MAX 30
 #define SECTOR_SIZE 512
+#define SECTOR_BIT 9
 #define BUF_SIZE 16384 * 4
 #define BUF_ELE_SIZE 12
 #define BUF_LBA_SIZE 8
 #define NUM_LBA 16384 * 4
 #define RECOVERY_KEY 336
 
-#define SSD_PAGESIZE (32 * 1024)
-#define SECTORS_PER_PAGE (SSD_PAGESIZE / SECTOR_SIZE)
+#define SSD_PAGE_SIZE (32 * 1024)
+#define SECTORS_PER_PAGE (SSD_PAGE_SIZE / SECTOR_SIZE)
 
-int frecovery(int fd, unsigned int recovery_time);
+int frecovery(int fd, unsigned int recovery_time, unsigned int fid);
 static void recovery_request(int fd, unsigned int recovery_time, int rec_fd);
 static void recovery(int fd, unsigned int recovery_time, unsigned int lba, unsigned int num_sectors, int rec_fd);
 static int make_recfile(int file_size);
@@ -48,9 +49,13 @@ typedef struct
 LBA_LIST lba_list[NUM_LBA];
 int lba_num = 0;
 char dev_file[PATH_MAX];
-char rec_buf[SSD_PAGESIZE];
+//char rec_buf[SSD_PAGESIZE + SSD_PAGESIZE];
+char *rec_buf;
+char *rec_buf_;
+unsigned int fid;
+unsigned int recovery_time;
 
-int frecovery(int fd, unsigned int recovery_time)
+int frecovery(int fd, unsigned int recovery_time_, unsigned int fid_)
 {
 	unsigned int blkcnt;
 	unsigned int blocksize;
@@ -65,7 +70,10 @@ int frecovery(int fd, unsigned int recovery_time)
 	//int lba_num;
 	//unsigned char lba_list[BUF_SIZE];
 
-	printf("frecovery (%d %d)\n", fd, recovery_time);
+	printf("frecovery (%x %x)\n", fid_, recovery_time_);
+
+	fid = fid_;
+	recovery_time = recovery_time_;
 
 	if (ioctl(fd, FIGETBSZ, &blocksize))
 	{
@@ -136,10 +144,17 @@ int frecovery(int fd, unsigned int recovery_time)
 
 	print_buf(lba_list);
 
+	
+	//direct i/o 할 버퍼는 반드시 512BYTE단위로 주소를 초기화해야함.
+	rec_buf_ = (char*)malloc(sizeof(char)*SSD_PAGE_SIZE*2 + SECTOR_SIZE);
+	rec_buf = (char*) ((((unsigned long)rec_buf_ + SECTOR_SIZE -1 ) >> SECTOR_BIT)<<SECTOR_BIT);
+
 	int rec_fd = make_recfile(st.st_size);
 	recovery_request(fd, recovery_time, rec_fd);
 	fsync(rec_fd);
 	close(rec_fd);
+
+	free(rec_buf_);
 }
 
 static void recovery_request(int fd, unsigned int recovery_time, int rec_fd)
@@ -157,7 +172,7 @@ static void recovery(int fd, unsigned int recovery_time, unsigned int lba, unsig
 	unsigned int lpn, sect_offset, num_sectors_to_recovery;
 	unsigned int remain_sects;
 	unsigned int cur_lbn, cur_size, cur_offset;
-
+	//unsigned int fid;
 
 
 	lpn = lba / SECTORS_PER_PAGE;
@@ -165,8 +180,9 @@ static void recovery(int fd, unsigned int recovery_time, unsigned int lba, unsig
 	remain_sects = num_sectors;
 
 	//eval code(temp)
-	for(int i=0; i<SSD_PAGESIZE; i++)
-		rec_buf[i] = 0x55;
+	//emcpy(rec_buf, &, 4);
+	//for(int i=SSD_PAGE_SIZE; i<SSD_PAGESIZE*2; i++)
+	//	rec_buf[i] = 0x55;
 	cur_offset = 0;
 
 	//페이지 (이하) 단위로 복구 요청
@@ -186,10 +202,17 @@ static void recovery(int fd, unsigned int recovery_time, unsigned int lba, unsig
 		cur_lbn = lpn * SECTORS_PER_PAGE + sect_offset;
 		cur_size = num_sectors_to_recovery * SECTOR_SIZE;
 
-		syscall(RECOVERY_KEY, rec_buf, &cur_offset, fd, cur_lbn, cur_size, recovery_time, dev_file);
-	
+		if(( (unsigned long)rec_buf & 0x01ff) != 0)
+		{
+			printf("ERROR : wrong I/O buffer address\n");
+		}
+
+		printf("[RECOVERY_KEY] cur_lbn: 0x%lx, cur_size: %u\n", cur_lbn, cur_size);
+		syscall(RECOVERY_KEY, rec_buf, fid, cur_lbn, cur_size, recovery_time, dev_file);
+		memcpy(&cur_offset, rec_buf, 4);
+		printf("[RECOVERY_KEY] offset : 0x%x\n", cur_offset);
 		
-		write_recfile(rec_fd, rec_buf, cur_offset, cur_size);
+		write_recfile(rec_fd, rec_buf+SSD_PAGE_SIZE, cur_offset, cur_size);
 	//	cur_offset += cur_size;	//eval_code
 
 		sect_offset = 0;

@@ -1922,7 +1922,7 @@ static blk_qc_t blk_queue_bio(struct request_queue *q, struct bio *bio)
 	struct request *req, *free;
 	unsigned int request_count = 0;
 	unsigned int wb_acct;
-	printk("[blk_queue_bio] : make_request_fn");
+	//printk("[blk_queue_bio] : make_request_fn");
 	/*
 	 * low level driver can indicate that it wants pages above a
 	 * certain limit bounced to low memory (ie for highmem, or even

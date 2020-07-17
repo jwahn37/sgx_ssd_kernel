@@ -58,7 +58,8 @@ int main(int *argc, char **argv)
     {
         ;
     	writen = write(fd_key, bufS, 512);
-        //writen = syscall(WRITE_KEY, fd_key, bufS, 512);
+     //   readn = read(fd_key, bufR, 512);
+
         // lseek(fd_key, 0, SEEK_SET);
         //  fsync(fd_key);
     }
@@ -88,7 +89,9 @@ int main(int *argc, char **argv)
     fsync(fd_key);
 
     //recovery
-    frecovery(fd_key, 3);
+    unsigned int r_recovery_time = 0x11111111;
+    unsigned int r_fid = 0x22222222;
+    frecovery(fd_key, r_recovery_time, r_fid);
     
     close = syscall(CLOSE_KEY, fd_key);
     clock_gettime(CLOCK_MONOTONIC, &clock_e);

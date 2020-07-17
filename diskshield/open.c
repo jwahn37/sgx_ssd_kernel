@@ -62,6 +62,7 @@ typedef struct key_lba_hash_node{
 }KEY_LBA_HASH;
 DEFINE_HASHTABLE(key_lba_hashtable,BUCKET_SIZE);
 EXPORT_SYMBOL(key_lba_hashtable);;
+
 static DEFINE_MUTEX(rdafwr_lock);
 
 // DISKSHIELD Parameter

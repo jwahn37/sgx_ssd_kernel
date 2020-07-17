@@ -1284,7 +1284,7 @@ static int ata_scsi_dev_config(struct scsi_device *sdev,
 
 		/* configure draining */
 		buf = kmalloc(ATAPI_MAX_DRAIN, q->bounce_gfp | GFP_KERNEL);
-		printk("[ata_scsi_dev_config] %d 0x%x 0x%x",ATAPI_MAX_DRAIN, q->bounce_gfp, q->bounce_gfp | GFP_KERNEL);
+		//printk("[ata_scsi_dev_config] %d 0x%x 0x%x",ATAPI_MAX_DRAIN, q->bounce_gfp, q->bounce_gfp | GFP_KERNEL);
 
 		if (!buf) {
 			ata_dev_err(dev, "drain buffer allocation failed\n");
@@ -1993,7 +1993,7 @@ static int ata_scsi_translate(struct ata_device *dev, struct scsi_cmnd *cmd,
 	int rc;
 
 	VPRINTK("ENTER\n");
-	printk("[ata_scsi_translate]");
+//	printk("[ata_scsi_translate]");
 	qc = ata_scsi_qc_new(dev, cmd);
 	if (!qc)
 		goto err_mem;
@@ -2812,7 +2812,7 @@ static void atapi_request_sense(struct ata_queued_cmd *qc)
 
 	DPRINTK("ATAPI request sense\n");
 
-	printk("[atapi_request_sense]");
+//	printk("[atapi_request_sense]");
 
 	memset(cmd->sense_buffer, 0, SCSI_SENSE_BUFFERSIZE);
 
