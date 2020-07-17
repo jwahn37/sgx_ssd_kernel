@@ -740,7 +740,7 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 
 	if (tf->command == CMD_SGXSSD_WRITE_EXT || tf->command == CMD_SGXSSD_WRITE_NOR)
 	{
-		printk("[ata_tf_to_fis] size was %d %d %d", fis[12] + fis[13] * 256, fis[12], fis[13]);
+		//printk("[ata_tf_to_fis] size was %d %d %d", fis[12] + fis[13] * 256, fis[12], fis[13]);
 		for (i = 0; i < SSD_PAGE_SIZE / 512; i++)
 		{
 			if (fis[12] != 0xff)
@@ -754,7 +754,7 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 			}
 		}
 		//size = size+4096
-		printk("[ata_tf_to_fis] cmd 0x%x size becomes %d %d %d", tf->command, fis[12] + fis[13] * 256, fis[12], fis[13]);
+		//printk("[ata_tf_to_fis] cmd 0x%x size becomes %d %d %d", tf->command, fis[12] + fis[13] * 256, fis[12], fis[13]);
 	}
 
 	/*
@@ -855,7 +855,7 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 				//fd is cmd
 				cmd = cur_map->fd;
 				fd = cur_map->fd;
-				printk("[ata_tf_to_fis] cmd: 0x%x, fd: 0x%x", cur_map->cmd, fd);
+				//printk("[ata_tf_to_fis] cmd: 0x%x, fd: 0x%x", cur_map->cmd, fd);
 				//double kernel_t;
 				//struct timerspec kernel_clk;
 				//clock_gettime(CLOCK_MONOTONIC, &kernel_clk);
@@ -867,7 +867,7 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 		}
 		rcu_read_unlock();
 
-		printk("![ata_tf_to_fis] cmd: %x, lba : 0x%lx, size: nsect-%d, hobnsect-%d", tf->command, lba, fis[12], fis[13]);
+		//printk("![ata_tf_to_fis] cmd: %x, lba : 0x%lx, size: nsect-%d, hobnsect-%d", tf->command, lba, fis[12], fis[13]);
 
 		// if (lba_chk)
 		// {
@@ -5774,7 +5774,7 @@ static void ata_sg_clean(struct ata_queued_cmd *qc)
 	int dir = qc->dma_dir;
 
 	WARN_ON_ONCE(sg == NULL);
-	printk("[ata_sg_clean]");
+//	printk("[ata_sg_clean]");
 
 	//free buffer
 	if (qc->tf.command == CMD_SGXSSD_WRITE_NOR || qc->tf.command == CMD_SGXSSD_WRITE_EXT)
@@ -5843,7 +5843,7 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 					else if (qc->tf.command == 0x35)		   //0x35 : write dma ext
 						qc->tf.command = CMD_SGXSSD_WRITE_EXT; //new command
 				}
-				printk("[ata_sg_setup] inode num : %lu, pid/fid/offset: %x/%x/%x", cur_inode->i_ino, cur_inode->pid, cur_inode->fid, cur_offset);
+			//	printk("[ata_sg_setup] inode num : %lu, pid/fid/offset: %x/%x/%x", cur_inode->i_ino, cur_inode->pid, cur_inode->fid, cur_offset);
 			}
 		}
 	}
@@ -6045,7 +6045,7 @@ static void fill_result_tf(struct ata_queued_cmd *qc)
 {
 	struct ata_port *ap = qc->ap;
 
-	printk("[fill_result_tf]");
+	//printk("[fill_result_tf]");
 	qc->result_tf.flags = qc->tf.flags;
 	ap->ops->qc_fill_rtf(qc);
 }
@@ -6083,7 +6083,7 @@ void ata_qc_complete(struct ata_queued_cmd *qc)
 	unsigned int offset;
 	struct ata_port *ap = qc->ap;
 
-	printk("[ata_qc_complete]");
+	//printk("[ata_qc_complete]");
 	/* Trigger the LED (if available) */
 	ledtrig_disk_activity();
 

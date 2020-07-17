@@ -157,6 +157,9 @@ struct ata_port_operations ahci_ops = {
 	.qc_issue = ahci_qc_issue,
 	.qc_fill_rtf = ahci_qc_fill_rtf,
 
+	//sgxssd
+	//.get_recovery_offset = get_recovery_offset,
+
 	.freeze = ahci_freeze,
 	.thaw = ahci_thaw,
 	.softreset = ahci_softreset,
@@ -1667,7 +1670,7 @@ static unsigned int ahci_fill_sg(struct ata_queued_cmd *qc, void *cmd_tbl)
 
 	VPRINTK("ENTER\n");
 
-	printk("[ahci_fill_sg] qc->n_elem : %d", qc->n_elem);
+	//printk("[ahci_fill_sg] qc->n_elem : %d", qc->n_elem);
 
 	/*
 	 * Next, the S/G list.
@@ -1696,7 +1699,7 @@ static unsigned int ahci_fill_sg_sgxssd(struct ata_queued_cmd *qc, void *cmd_tbl
 
 	VPRINTK("ENTER\n");
 
-	printk("[ahci_fill_sg] qc->n_elem : %d", qc->n_elem);
+	//printk("[ahci_fill_sg] qc->n_elem : %d", qc->n_elem);
 
 	/*
 	 * Next, the S/G list.
@@ -1714,7 +1717,7 @@ static unsigned int ahci_fill_sg_sgxssd(struct ata_queued_cmd *qc, void *cmd_tbl
 	//addr = dma_map_single(qc->ap->dev, sgxssd_buf, SSD_PAGE_SIZE, qc->dma_dir);
 */
 	addr = qc->sgxssd_addr;
-	printk("[ahci_fill_sg] addr: 0x%lx, vaddr: 0x%lx", addr, qc->sgxssd_buf);
+//	printk("[ahci_fill_sg] addr: 0x%lx, vaddr: 0x%lx", addr, qc->sgxssd_buf);
 
 	sg_len = SSD_PAGE_SIZE;
 	///sg_len = PAGE_SIZE;
@@ -1901,7 +1904,7 @@ static void ahci_qc_prep(struct ata_queued_cmd *qc)
 	 */
 	cmd_tbl = pp->cmd_tbl + qc->tag * AHCI_CMD_TBL_SZ;
 
-	printk("[ahci_qc_prep]");
+//	printk("[ahci_qc_prep]");
 
 	// // //sgxssd get inode to search piggyback set
 	// if (qc && qc->sg && qc->n_elem > 0)
@@ -2358,12 +2361,62 @@ unsigned int ahci_qc_issue(struct ata_queued_cmd *qc)
 }
 EXPORT_SYMBOL_GPL(ahci_qc_issue);
 
+
+// static unsigned int get_recovery_offset(struct ata_queued_cmd *qc)
+// {
+// 	struct ahci_port_priv *pp = qc->ap->private_data;
+// 	u8 *rx_fis = pp->rx_fis;
+// 	u8 *fis;
+// 	unsigned int lba, offset;
+
+// 	if (pp->fbs_enabled)
+// 		rx_fis += qc->dev->link->pmp * AHCI_RX_FIS_SZ;
+
+// 	//ata_tf_from_fis(rx_fis + RX_FIS_D2H_REG);
+// 	fis = rx_fis + RX_FIS_D2H_REG;
+// 		//check tmp
+
+// 	//32bits
+// 	if ((fis[7] & 15) == 0)
+// 	{
+// 		lba = fis[4] | fis[5] << 8 | fis[6] << 16 | fis[8] << 24;
+// 	}
+// 	else
+// 		lba = fis[4] | (fis[5] << 8) | (fis[6] << 16) | ((fis[7] & 15) << 24);
+// 	printk("[get_recovery_offset] type: 0x%x, cmd: 0x%x, lba: 0x%lx, nsect: %u", fis[0], fis[2], lba, fis[12] + fis[13] * 256);
+
+// 	//if (tf->command ==)
+// 	// if(0)
+// 	// {
+// 		offset = 0; //fis[19]|fis[18]|fis[17]|fis[16]
+// 		offset |= fis[19];
+// 		offset <<= 8;
+// 		offset |= fis[18];
+// 		offset <<= 8;
+// 		offset |= fis[17];
+// 		offset <<= 8;
+// 		offset |= fis[16];
+
+// 		printk("[get_recovery_offset] offset: 0x%x/%u", offset, offset);
+
+// 	// 	//insert offset into recovery table
+// 	// 	cur_map = vmalloc(sizeof(RECOVERY_HASH));
+// 	// 	cur_map->lba = lba;
+// 	// 	cur_map->u.offset = offset;
+
+// 	// 	spin_lock_irqsave(&recmap_lock[hash_min(cur_map->lba, HASH_BITS(recovery_hashtable))], flags);
+// 	// 	hash_add_rcu(recovery_hashtable, &(cur_map->elem), cur_map->lba);
+// 	// 	spin_unlock_irqrestore(&recmap_lock[hash_min(cur_map->lba, HASH_BITS(recovery_hashtable))], flags);
+// 	// }
+// }
+//EXPORT_SYMBOL(get_recovery_offset);
+
 static bool ahci_qc_fill_rtf(struct ata_queued_cmd *qc)
 {
 	struct ahci_port_priv *pp = qc->ap->private_data;
 	u8 *rx_fis = pp->rx_fis;
 
-	printk("[ahci_qc_fill_rtf]");
+	///printk("[ahci_qc_fill_rtf]");
 	if (pp->fbs_enabled)
 		rx_fis += qc->dev->link->pmp * AHCI_RX_FIS_SZ;
 
@@ -2725,7 +2778,7 @@ static int ahci_port_start(struct ata_port *ap)
 		dma_sz = AHCI_PORT_PRIV_DMA_SZ;
 		rx_fis_sz = AHCI_RX_FIS_SZ;
 	}
-	printk("[ahci_port_start] dma alloc: %d", dma_sz);
+	//printk("[ahci_port_start] dma alloc: %d", dma_sz);
 	mem = dmam_alloc_coherent(dev, dma_sz, &mem_dma, GFP_KERNEL);
 	if (!mem)
 		return -ENOMEM;
