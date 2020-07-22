@@ -753,7 +753,7 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 				fis[13]++;
 			}
 		}
-		//size = size+4096
+		//size = size+32768
 		//printk("[ata_tf_to_fis] cmd 0x%x size becomes %d %d %d", tf->command, fis[12] + fis[13] * 256, fis[12], fis[13]);
 	}
 
@@ -5825,21 +5825,23 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 	printk("[ata_sg_setup] dev: 0x%x", qc->tf.device);
 
 	//this is for block i/o evaluation code
-	if (qc->tf.device == 0xe0)
+	if (0)
 	{
-		if (qc->tf.command == 0xCA)				   //0xCA : write dma
-			qc->tf.command = CMD_SGXSSD_WRITE_NOR; //new command.
-		else if (qc->tf.command == 0x35)		   //0x35 : write dma ext
-			qc->tf.command = CMD_SGXSSD_WRITE_EXT; //new command
+		if (qc->tf.device == 0xe0)
+		{
+			if (qc->tf.command == 0xCA)				   //0xCA : write dma
+				qc->tf.command = CMD_SGXSSD_WRITE_NOR; //new command.
+			else if (qc->tf.command == 0x35)		   //0x35 : write dma ext
+				qc->tf.command = CMD_SGXSSD_WRITE_EXT; //new command
 
-		cur_pid = 0x11223344;
-		cur_fid = 0x11111111;
-		cur_offset = 0x22222222;
+			cur_pid = 0x11223344;
+			cur_fid = 0x11111111;
+			cur_offset = 0x22222222;
+		}
 	}
-
 	// //sgxssd get inode to search piggyback set
 	//this is real code
-	if (0)
+	if (1)
 	{
 		if (qc && qc->sg && qc->n_elem > 0)
 		{
@@ -5870,7 +5872,7 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 			printk("[ata_sg_setup] fail");
 		}
 	}
-	
+
 	if (qc->tf.command == CMD_SGXSSD_WRITE_EXT || qc->tf.command == CMD_SGXSSD_WRITE_NOR)
 	{
 		if (qc->sgxssd_buf == NULL)
