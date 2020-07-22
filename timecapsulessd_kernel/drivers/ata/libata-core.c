@@ -5822,8 +5822,10 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 	//	printk("[ata_sg_setup]");
 	VPRINTK("ENTER, ata%u\n", ap->print_id);
 
+	printk("[ata_sg_setup] dev: 0x%x", qc->tf.device);
+
 	//this is for block i/o evaluation code
-	if (1)
+	if (qc->tf.device == 0xe0)
 	{
 		if (qc->tf.command == 0xCA)				   //0xCA : write dma
 			qc->tf.command = CMD_SGXSSD_WRITE_NOR; //new command.
