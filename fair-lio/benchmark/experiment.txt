@@ -1,0 +1,88 @@
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdc: 7353663488 233.77 MB/s
+total: 7353663488 233.77 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdc: 7643070464 242.97 MB/s
+total: 7643070464 242.97 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdc: 7719616512 245.40 MB/s
+total: 7719616512 245.40 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdc: 7756316672 246.57 MB/s
+total: 7756316672 246.57 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: random read
+random offset seed: 1595388141
+request size: 1048576 bytes
+
+M /dev/sdc: 7316963328 232.60 MB/s
+total: 7316963328 232.60 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: random read
+random offset seed: 1595388171
+request size: 1048576 bytes
+
+M /dev/sdc: 7542407168 239.77 MB/s
+total: 7542407168 239.77 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: random read
+random offset seed: 1595388202
+request size: 1048576 bytes
+
+M /dev/sdc: 7573864448 240.77 MB/s
+total: 7573864448 240.77 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: random read
+random offset seed: 1595388232
+request size: 1048576 bytes
+
+M /dev/sdc: 7659847680 243.50 MB/s
+total: 7659847680 243.50 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdc: 1671430144 53.13 MB/s
+total: 1671430144 53.13 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdc: 1859125248 59.10 MB/s
+total: 1859125248 59.10 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdc: 1989148672 63.23 MB/s
+total: 1989148672 63.23 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdc: 2135949312 67.90 MB/s
+total: 2135949312 67.90 MB/s skew 0.00 MB/s

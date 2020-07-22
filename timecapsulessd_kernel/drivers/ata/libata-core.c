@@ -783,15 +783,15 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 		lba = fis[4] | fis[5] << 8 | fis[6] << 16 | fis[8] << 24;
 		//rec_lba = fis[4] | (fis[5]<<8) | ((unsigned long)fis[8]<<24) | (unsigned long)fis[9]<<32 | ((unsigned long)fis[10]<<40);
 		//printk("[ata_tf_to_fis] lba, rec_lba : 0x%x 0x%x", lba, rec_lba);
-
 	}
 	else
 	{
 		lba = fis[4] | (fis[5] << 8) | (fis[6] << 16) | ((fis[7] & 15) << 24);
 		//rec_lba = lba;
 		//printk("[ata_tf_to_fis] lba2 : 0x%x", lba);
-
 	}
+
+	printk("[ata_tf_to_fis] cmd: 0x%x, lba:0x%lx, size: %d", tf->command, lba, fis[12] + fis[13] * 256);
 	//    if(tf->command==0xCA || tf->command==0x61)  //only write
 	//    {
 
@@ -944,10 +944,10 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 			// fis[19] = (recovery_time >> 24) & 0xff;
 
 			fis[16] = recovery_time & 0xff;
-			fis[17] = (recovery_time>>8) & 0xff;
+			fis[17] = (recovery_time >> 8) & 0xff;
 
 			fis[18] = fid & 0xff;
-			fis[19] = (fid>>8) & 0xff; 
+			fis[19] = (fid >> 8) & 0xff;
 
 			//0x25 : READ_DMA_EXT
 			if (fis[2] == 0x25)
@@ -2057,7 +2057,7 @@ unsigned ata_exec_internal_sg(struct ata_device *dev,
 
 	spin_lock_irqsave(ap->lock, flags);
 
-//	printk("[ata_exec_internal_sg]");
+	//	printk("[ata_exec_internal_sg]");
 	/* no internal command while frozen */
 	if (ap->pflags & ATA_PFLAG_FROZEN)
 	{
@@ -2116,7 +2116,7 @@ unsigned ata_exec_internal_sg(struct ata_device *dev,
 */
 		for_each_sg(sgl, sg, n_elem, i)
 			buflen += sg->length;
-	//	printk("[ata_exec_internal_sg] buflen : %d, n_elem: %d", buflen, n_elem);
+		//	printk("[ata_exec_internal_sg] buflen : %d, n_elem: %d", buflen, n_elem);
 		ata_sg_init(qc, sgl, n_elem);
 		qc->nbytes = buflen;
 	}
@@ -2242,13 +2242,13 @@ unsigned ata_exec_internal(struct ata_device *dev,
 {
 	struct scatterlist *psg = NULL, sg;
 	unsigned int n_elem = 0;
-//	printk("[ata_exec_internal]");
+	//	printk("[ata_exec_internal]");
 
 	if (dma_dir != DMA_NONE)
 	{
 		WARN_ON(!buf);
 
-//		printk("[ata_exec_internal] buflen : %d", buflen);
+		//		printk("[ata_exec_internal] buflen : %d", buflen);
 		sg_init_one(&sg, buf, buflen);
 		psg = &sg;
 		n_elem++;
@@ -5774,7 +5774,7 @@ static void ata_sg_clean(struct ata_queued_cmd *qc)
 	int dir = qc->dma_dir;
 
 	WARN_ON_ONCE(sg == NULL);
-//	printk("[ata_sg_clean]");
+	//	printk("[ata_sg_clean]");
 
 	//free buffer
 	if (qc->tf.command == CMD_SGXSSD_WRITE_NOR || qc->tf.command == CMD_SGXSSD_WRITE_EXT)
@@ -5819,39 +5819,56 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 	unsigned int cur_pid;
 	unsigned int cur_fid;
 
-//	printk("[ata_sg_setup]");
+	//	printk("[ata_sg_setup]");
 	VPRINTK("ENTER, ata%u\n", ap->print_id);
 
-	// //sgxssd get inode to search piggyback set
-	if (qc && qc->sg && qc->n_elem > 0)
+	//this is for block i/o evaluation code
+	if (1)
 	{
-		cur_page = sg_page(qc->sg);
+		if (qc->tf.command == 0xCA)				   //0xCA : write dma
+			qc->tf.command = CMD_SGXSSD_WRITE_NOR; //new command.
+		else if (qc->tf.command == 0x35)		   //0x35 : write dma ext
+			qc->tf.command = CMD_SGXSSD_WRITE_EXT; //new command
 
-		if (page_has_private(cur_page) && cur_page != NULL && (!PageSlab(cur_page)) && (!PageSwapCache(cur_page)) && (!PageAnon(cur_page)))
+		cur_pid = 0x11223344;
+		cur_fid = 0x11111111;
+		cur_offset = 0x22222222;
+	}
+
+	// //sgxssd get inode to search piggyback set
+	//this is real code
+	if (0)
+	{
+		if (qc && qc->sg && qc->n_elem > 0)
 		{
-			if (cur_page->mapping && cur_page->mapping->host)
+			cur_page = sg_page(qc->sg);
+
+			if (page_has_private(cur_page) && cur_page != NULL && (!PageSlab(cur_page)) && (!PageSwapCache(cur_page)) && (!PageAnon(cur_page)))
 			{
-				cur_inode = cur_page->mapping->host;
-				cur_pid = cur_inode->pid;
-				cur_fid = cur_inode->fid;
-				cur_offset = cur_page->index;
-				//if(cur_pid != 0 )	tmp_cmd = CMD_SGXSSD_WRITE;
-				if (cur_pid != 0)
+				if (cur_page->mapping && cur_page->mapping->host)
 				{
-					if (qc->tf.command == 0xCA)				   //0xCA : write dma
-						qc->tf.command = CMD_SGXSSD_WRITE_NOR; //new command.
-					else if (qc->tf.command == 0x35)		   //0x35 : write dma ext
-						qc->tf.command = CMD_SGXSSD_WRITE_EXT; //new command
+					cur_inode = cur_page->mapping->host;
+					cur_pid = cur_inode->pid;
+					cur_fid = cur_inode->fid;
+					cur_offset = cur_page->index;
+					//if(cur_pid != 0 )	tmp_cmd = CMD_SGXSSD_WRITE;
+					if (cur_pid != 0)
+					{
+						if (qc->tf.command == 0xCA)				   //0xCA : write dma
+							qc->tf.command = CMD_SGXSSD_WRITE_NOR; //new command.
+						else if (qc->tf.command == 0x35)		   //0x35 : write dma ext
+							qc->tf.command = CMD_SGXSSD_WRITE_EXT; //new command
+					}
+					//	printk("[ata_sg_setup] inode num : %lu, pid/fid/offset: %x/%x/%x", cur_inode->i_ino, cur_inode->pid, cur_inode->fid, cur_offset);
 				}
-			//	printk("[ata_sg_setup] inode num : %lu, pid/fid/offset: %x/%x/%x", cur_inode->i_ino, cur_inode->pid, cur_inode->fid, cur_offset);
 			}
 		}
+		else
+		{
+			printk("[ata_sg_setup] fail");
+		}
 	}
-	else
-	{
-		printk("[ata_sg_setup] fail");
-	}
-
+	
 	if (qc->tf.command == CMD_SGXSSD_WRITE_EXT || qc->tf.command == CMD_SGXSSD_WRITE_NOR)
 	{
 		if (qc->sgxssd_buf == NULL)
@@ -5859,11 +5876,11 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 			qc->sgxssd_buf = kmalloc(SSD_PAGE_SIZE, GFP_NOIO | GFP_DMA | GFP_KERNEL); //32768 은 SSD의 pagesize
 			//sgxssd_buf = kmalloc(PAGE_SIZE, GFP_NOIO | GFP_DMA | GFP_KERNEL);
 			//buf = dma_alloc_coherent(qc->ap->dev, PAGE_SIZE, &addr, GFP_NOIO | GFP_DMA | GFP_KERNEL);
-		//	printk("[ata_sg_setup] dma_alloc vadd: 0x%lx", qc->sgxssd_buf);
+			//	printk("[ata_sg_setup] dma_alloc vadd: 0x%lx", qc->sgxssd_buf);
 
 			memset(qc->sgxssd_buf, 0, SSD_PAGE_SIZE);
 
-		//	printk("[ata_sg_setup] buffer allocated! %d", SSD_PAGE_SIZE);
+			//	printk("[ata_sg_setup] buffer allocated! %d", SSD_PAGE_SIZE);
 			qc->sgxssd_addr = dma_map_single(qc->ap->dev, qc->sgxssd_buf, SSD_PAGE_SIZE, qc->dma_dir);
 		}
 		//memset(buf, 0, 12);	//temp for checking
@@ -6108,7 +6125,6 @@ void ata_qc_complete(struct ata_queued_cmd *qc)
 	// 	//offset = get_recovery_offset(qc);
 
 	// }
-	
 
 	if (ap->ops->error_handler)
 	{
@@ -6260,7 +6276,7 @@ void ata_qc_issue(struct ata_queued_cmd *qc)
 	struct ata_link *link = qc->dev->link;
 	u8 prot = qc->tf.protocol;
 
-//	printk("[ata_qc_issue]");
+	//	printk("[ata_qc_issue]");
 	/* Make sure only one non-NCQ command is outstanding.  The
 	 * check is skipped for old EH because it reuses active qc to
 	 * request ATAPI sense.

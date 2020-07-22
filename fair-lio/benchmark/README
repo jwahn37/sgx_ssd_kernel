@@ -1,0 +1,157 @@
+
+*********************************************************
+#OLCF Block I/O Benchmark Suite Remarks and Instructions*
+*********************************************************
+
+There are seven files included in this benchmarking suite: 
+
+1) The fair-lio.c source file
+2) The Makefile to build the fair-lio.c source file
+3) The block-io-single-host-full-run.sh script
+4) The block-io-single-host-scale-up.sh script
+5) The block-io-ssu-scale-up.sh script
+6) The block-io-ssu-degraded.sh script
+7) This README file
+
+Of these, the Offeror shall use the Makefile script to build the required
+fair-lio binary from the provided fair-lio.c source file.
+
+The Offeror shall NOT modify the contents of fair-lio.c source file.
+
+The Offeror CAN modify the contents of the Makefile to fit for their test
+system.
+
+The block-io-single-host-full-run.sh, block-io-single-host-scale-up.sh,
+block-io-ssu-scale-up.sh scripts, and block-io-ssu-degraded.sh scripts have
+Offeror modifiable variables.  These variables are clearly located between the
+"BEGIN OF MODIFIABLE VARIABLES AND PARAMETERS" and the "END OF MODIFIABLE
+VARIABLES AND PARAMETERS" labels at the beginning of the script.
+
+The Offeror shall NOT modify any other sections of any other scripts for any
+reasons.
+
+All these four scripts (items 3-6 in the above list) require pdsh and dshbak
+utilities to execute. These two utilities are quite common in HPC environments,
+but if your test system does not have these two utilities, please install and
+configure these utilities in order to execute the scripts. The pdsh utility and
+more info can be found at: http://sourceforge.net/projects/pdsh/. Also, these
+scripts require passwordless ssh root access from the head node to the test 
+servers as well as between test servers. 
+
+To build the fair-lio binary, the Offeror shall execute the  "make" command in a
+directory where the fair-lio.c and Makefile script lives.
+
+Upon the successful generation of the fair-lio binary the Offeror shall then
+execute the below steps:
+
+1) Modify the block-io-single-host-full-run.sh script. Here, Offeror modifiable
+parameters are the target host name (i.e. target_host variable) and a single
+target SCSI disk block device (sd device) (i.e. DEV variable) configured on the
+target host. 
+
+2) Execute the block-io-single-host-full-run.sh script. This script will run a
+randomized set of sequential and random write and read I/O benchmarks using the
+fair-lio binary for various block and queue sizes for the sd device declare  in
+Step 1 for multiple iterations on the single test host exercising the single
+test block device.
+
+The total run time of the test will be (720 tests * 45 seconds), or in other
+words 9 hours.
+
+The script will generate a .summary file capturing the STDOUT of the script
+with some additional information, and a .csv (comma separated values) results
+file capturing detailed results of the tests and derived statistics of the
+results. The script will also create a subdirectory located at the parent
+directory where the script was launched and write individual raw test results
+in separate files in this new directory. Upon completion of the test the Offeror
+shall tar the Makefile, block-io-single-host-full-run.sh script, the summary
+file, the csv output file, and the raw results subdirectory. 
+
+3) The Offeror shall modify the block-io-single-host-scale-up.sh script. Here,
+Offeror modifiable parameters are the target host name (i.e. target_host
+variable) and a set of target SCSI disk block devices (sd device) (i.e. DEV
+variable) configured on the target host. 
+
+4) Execute the block-io-single-host-scale-up.sh script. This script will run a 
+randomized set of sequential and random write and read I/O benchmarks using the
+fair-lio binary for various block and queue sizes for all sd devices declared in
+Step 4 for multiple iterations on the single test host.
+
+The total run time of the test will be at least (log2(number of target test
+devices)) * (144 tests * 45 seconds), or in other words  at least 1.8 hours for
+(log2(number of target test devices)).  As an example, if every test host has 5
+target test devices, the total run time will be 7.2 hours. 
+
+The script will generate a .summary file capturing the STDOUT of the script
+with some additional information, and a .csv (comma separated values) results
+file capturing detailed results of the tests and derived statistics of the
+results. The script will also create a subdirectory located at the parent
+directory where the script was launched and write individual raw test results
+in separate files in this new directory. Upon completion of the test the Offeror
+shall tar the Makefile, block-io-single-host-scale-up.sh script, the summary
+file, the csv output file, and the raw results subdirectory.
+
+5) The Offeror shall modify the block-io-ssu-scale-up.sh script. Here, Offeror
+modifiable parameters are target host names (i.e. target_host variable) and a
+set of target SCSI disk block devices (sd device) (i.e. DEV variable)
+configured on the target host.  The script expects homogeneous device names on
+all test hosts (e.g. /dev/sda and /dev/sdb on all hosts). If your test system
+is configured in such a manner, please homogeneous symbolic links for test
+target devices on all test hosts.
+
+6) Execute the block-io-ssu-scale-up.sh  script. This script will exercise all
+configured SCSI block devices on all configured test hosts on the scalable test
+unit to gather the maximum obtainable performance of the scalable test cluster.
+This script will run a randomized set of sequential and random write and read
+I/O benchmarks using the fair-lio binary for various block and queue sizes for
+all sd devices declared in Step 7 for multiple iterations on the single test
+host. 
+
+The total run time of the test will be at least (log2(number of target test 
+devices)) * (144 tests * 45 seconds), or in other words  at least 1.8 hours for
+(log2(number of target test devices)).  As an example, if every test host has 5
+target test devices, the total run time will be 7.2 hours.
+
+The script will generate a .summary file capturing the STDOUT of the script
+with some additional information, and a .csv (comma separated values) results
+file capturing detailed results of the tests and derived statistics of the
+results. The script will also create a subdirectory located at the parent
+directory where the script was launched and write individual raw test results
+in separate files in this new directory. Upon completion of the test the
+Offeror shall tar the Makefile, block-io-ssu-scale-up.sh script, the summary
+file, the csv output file, and the raw results subdirectory.
+
+7) Ensure that 10% of the LUNs on all hosts are in degraded mode. Document the
+status of all LUNs on all test hosts clearly indicating degraded and helaty
+ones. 
+
+8) Execute the block-io-ssu-degraded.sh script. This script  will exercise all
+LUNs on all test hosts and provide the performance profile of the SSU when 10%
+of the LUNs are being rebuilt. Before running this script the Offeror shall
+document all LUNs on all test hosts, clearly indicating degraded LUNs and
+rebuild start times. Further, the Offeror shall make sure that there are at
+least 10% of the LUNs are in active rebuild state for the entire execution of
+the block-io-ssu-degraded.sh script.  This script will run a randomized set of
+sequential and random write and read I/O benchmarks using the fair-lio binary
+for various block and queue sizes for all sd devices.
+
+The total run time of the test will be (144 tests * 45 seconds), or in other
+words 1.8 hours.
+
+The script will generate a .summary file capturing the STDOUT of the script
+with some additional information, and a .csv (comma separated values) results
+file capturing detailed results of the tests and derived statistics of the
+results. The script will also create a subdirectory located at the parent
+directory where the script was launched and write individual raw test results
+in separate files in this new directory. Upon completion of the test the
+Offeror shall tar the Makefile, block-io-ssu-degraded.sh script, the summary
+file, the csv output file, and the raw results subdirectory.
+
+The complete set of used scripts, binaries, outputs shall be tarred by the
+Offeror at the end of the test cycle and delivered to the ORNL Subcontract
+Administrator.
+
+The benchmark suite requires passwordless root level ssh capability from the
+head node to the OSSes.
+
+For questions or comments please refer to the ORNL Subcontract Administrator.

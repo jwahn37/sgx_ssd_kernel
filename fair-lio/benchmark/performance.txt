@@ -1,0 +1,696 @@
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 7532969984 239.47 MB/s
+total: 7532969984 239.47 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 7833911296 249.03 MB/s
+total: 7833911296 249.03 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 7912554496 251.53 MB/s
+total: 7912554496 251.53 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 7934574592 252.23 MB/s
+total: 7934574592 252.23 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: random read
+random offset seed: 1500799741
+request size: 1048576 bytes
+
+M /dev/sdb1: 7980711936 253.70 MB/s
+total: 7980711936 253.70 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: random read
+random offset seed: 1500799802
+request size: 1048576 bytes
+
+M /dev/sdb1: 8017412096 254.87 MB/s
+total: 8017412096 254.87 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: random read
+random offset seed: 1500799863
+request size: 1048576 bytes
+
+M /dev/sdb1: 7963934720 253.17 MB/s
+total: 7963934720 253.17 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: random read
+random offset seed: 1500799924
+request size: 1048576 bytes
+
+M /dev/sdb1: 8043626496 255.70 MB/s
+total: 8043626496 255.70 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 7522484224 239.13 MB/s
+total: 7522484224 239.13 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 7838105600 249.17 MB/s
+total: 7838105600 249.17 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 7872708608 250.27 MB/s
+total: 7872708608 250.27 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 7896825856 251.03 MB/s
+total: 7896825856 251.03 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 244318208 7.77 MB/s
+total: 244318208 7.77 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 442499072 14.07 MB/s
+total: 442499072 14.07 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 729808896 23.20 MB/s
+total: 729808896 23.20 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 1098907648 34.93 MB/s
+total: 1098907648 34.93 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5810159616 184.70 MB/s
+total: 5810159616 184.70 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5884608512 187.07 MB/s
+total: 5884608512 187.07 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5792333824 184.13 MB/s
+total: 5792333824 184.13 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5894045696 187.37 MB/s
+total: 5894045696 187.37 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 244318208 7.77 MB/s
+total: 244318208 7.77 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 432013312 13.73 MB/s
+total: 432013312 13.73 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 734003200 23.33 MB/s
+total: 734003200 23.33 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 1107296256 35.20 MB/s
+total: 1107296256 35.20 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5802819584 184.47 MB/s
+total: 5802819584 184.47 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5875171328 186.77 MB/s
+total: 5875171328 186.77 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5873074176 186.70 MB/s
+total: 5873074176 186.70 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5886705664 187.13 MB/s
+total: 5886705664 187.13 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: random read
+random offset seed: 1500801208
+request size: 1048576 bytes
+
+M /dev/sdb1: 7587495936 241.20 MB/s
+total: 7587495936 241.20 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: random read
+random offset seed: 1500801269
+request size: 1048576 bytes
+
+M /dev/sdb1: 7774142464 247.13 MB/s
+total: 7774142464 247.13 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: random read
+random offset seed: 1500801330
+request size: 1048576 bytes
+
+M /dev/sdb1: 7779385344 247.30 MB/s
+total: 7779385344 247.30 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: random read
+random offset seed: 1500801392
+request size: 1048576 bytes
+
+M /dev/sdb1: 7785676800 247.50 MB/s
+total: 7785676800 247.50 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5793382400 184.17 MB/s
+total: 5793382400 184.17 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5868879872 186.57 MB/s
+total: 5868879872 186.57 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5872025600 186.67 MB/s
+total: 5872025600 186.67 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5878317056 186.87 MB/s
+total: 5878317056 186.87 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: random read
+random offset seed: 1500801697
+request size: 1048576 bytes
+
+M /dev/sdb1: 7688159232 244.40 MB/s
+total: 7688159232 244.40 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: random read
+random offset seed: 1500801758
+request size: 1048576 bytes
+
+M /dev/sdb1: 7790919680 247.67 MB/s
+total: 7790919680 247.67 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: random read
+random offset seed: 1500801819
+request size: 1048576 bytes
+
+M /dev/sdb1: 7848591360 249.50 MB/s
+total: 7848591360 249.50 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: random read
+random offset seed: 1500801880
+request size: 1048576 bytes
+
+M /dev/sdb1: 7826571264 248.80 MB/s
+total: 7826571264 248.80 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5797576704 184.30 MB/s
+total: 5797576704 184.30 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5873074176 186.70 MB/s
+total: 5873074176 186.70 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5875171328 186.77 MB/s
+total: 5875171328 186.77 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5877268480 186.83 MB/s
+total: 5877268480 186.83 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 241172480 7.67 MB/s
+total: 241172480 7.67 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 434110464 13.80 MB/s
+total: 434110464 13.80 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 734003200 23.33 MB/s
+total: 734003200 23.33 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 1107296256 35.20 MB/s
+total: 1107296256 35.20 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5794430976 184.20 MB/s
+total: 5794430976 184.20 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5872025600 186.67 MB/s
+total: 5872025600 186.67 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5873074176 186.70 MB/s
+total: 5873074176 186.70 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5877268480 186.83 MB/s
+total: 5877268480 186.83 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 241172480 7.67 MB/s
+total: 241172480 7.67 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 434110464 13.80 MB/s
+total: 434110464 13.80 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 734003200 23.33 MB/s
+total: 734003200 23.33 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 1107296256 35.20 MB/s
+total: 1107296256 35.20 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5790236672 184.07 MB/s
+total: 5790236672 184.07 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5869928448 186.60 MB/s
+total: 5869928448 186.60 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5870977024 186.63 MB/s
+total: 5870977024 186.63 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5876219904 186.80 MB/s
+total: 5876219904 186.80 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: random read
+random offset seed: 1500803164
+request size: 1048576 bytes
+
+M /dev/sdb1: 7733248000 245.83 MB/s
+total: 7733248000 245.83 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: random read
+random offset seed: 1500803225
+request size: 1048576 bytes
+
+M /dev/sdb1: 7756316672 246.57 MB/s
+total: 7756316672 246.57 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: random read
+random offset seed: 1500803286
+request size: 1048576 bytes
+
+M /dev/sdb1: 7818182656 248.53 MB/s
+total: 7818182656 248.53 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: random read
+random offset seed: 1500803347
+request size: 1048576 bytes
+
+M /dev/sdb1: 7811891200 248.33 MB/s
+total: 7811891200 248.33 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5791285248 184.10 MB/s
+total: 5791285248 184.10 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5869928448 186.60 MB/s
+total: 5869928448 186.60 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5873074176 186.70 MB/s
+total: 5873074176 186.70 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5878317056 186.87 MB/s
+total: 5878317056 186.87 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: random read
+random offset seed: 1500803653
+request size: 1048576 bytes
+
+M /dev/sdb1: 7707033600 245.00 MB/s
+total: 7707033600 245.00 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: random read
+random offset seed: 1500803714
+request size: 1048576 bytes
+
+M /dev/sdb1: 7794065408 247.77 MB/s
+total: 7794065408 247.77 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: random read
+random offset seed: 1500803775
+request size: 1048576 bytes
+
+M /dev/sdb1: 7812939776 248.37 MB/s
+total: 7812939776 248.37 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: random read
+random offset seed: 1500803836
+request size: 1048576 bytes
+
+M /dev/sdb1: 7827619840 248.83 MB/s
+total: 7827619840 248.83 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5801771008 184.43 MB/s
+total: 5801771008 184.43 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5870977024 186.63 MB/s
+total: 5870977024 186.63 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5872025600 186.67 MB/s
+total: 5872025600 186.67 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5878317056 186.87 MB/s
+total: 5878317056 186.87 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 241172480 7.67 MB/s
+total: 241172480 7.67 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 442499072 14.07 MB/s
+total: 442499072 14.07 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 721420288 22.93 MB/s
+total: 721420288 22.93 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 1107296256 35.20 MB/s
+total: 1107296256 35.20 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5804916736 184.53 MB/s
+total: 5804916736 184.53 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5870977024 186.63 MB/s
+total: 5870977024 186.63 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5872025600 186.67 MB/s
+total: 5872025600 186.67 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5877268480 186.83 MB/s
+total: 5877268480 186.83 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 241172480 7.67 MB/s
+total: 241172480 7.67 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 440401920 14.00 MB/s
+total: 440401920 14.00 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 721420288 22.93 MB/s
+total: 721420288 22.93 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdb1: 1107296256 35.20 MB/s
+total: 1107296256 35.20 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5797576704 184.30 MB/s
+total: 5797576704 184.30 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5872025600 186.67 MB/s
+total: 5872025600 186.67 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5877268480 186.83 MB/s
+total: 5877268480 186.83 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: sequential read
+request size: 1048576 bytes
+
+M /dev/sdb1: 5880414208 186.93 MB/s
+total: 5880414208 186.93 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 1
+operation: random read
+random offset seed: 1500805120
+request size: 1048576 bytes
+
+M /dev/sdb1: 7735345152 245.90 MB/s
+total: 7735345152 245.90 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 2
+operation: random read
+random offset seed: 1500805181
+request size: 1048576 bytes
+
+M /dev/sdb1: 7804551168 248.10 MB/s
+total: 7804551168 248.10 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 4
+operation: random read
+random offset seed: 1500805242
+request size: 1048576 bytes
+
+M /dev/sdb1: 7828668416 248.87 MB/s
+total: 7828668416 248.87 MB/s skew 0.00 MB/s
+run time: 30.000000 seconds
+queue depth: 8
+operation: random read
+random offset seed: 1500805303
+request size: 1048576 bytes
+
+M /dev/sdb1: 7813988352 248.40 MB/s
+total: 7813988352 248.40 MB/s skew 0.00 MB/s
