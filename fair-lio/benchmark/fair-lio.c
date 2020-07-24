@@ -531,12 +531,12 @@ int main(int argc, char **argv)
 		printf("finish,,,,\n");
 
 
-	if (end_of_device) {
+	//if (end_of_device) {
 		actual_time = now.tv_nsec - start.tv_nsec;
-		actual_time /= 10e9;
+		actual_time /= 1e9;
 		actual_time += now.tv_sec - start.tv_sec;
-	} else
-		actual_time = run_time;
+	//} else
+	//	actual_time = run_time;
 
 	/* Ok, test time is finished, drain outstanding requests
 	 */

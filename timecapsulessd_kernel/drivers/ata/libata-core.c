@@ -791,7 +791,7 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 		//printk("[ata_tf_to_fis] lba2 : 0x%x", lba);
 	}
 
-	printk("[ata_tf_to_fis] cmd: 0x%x, lba:0x%lx, size: %d", tf->command, lba, fis[12] + fis[13] * 256);
+	//printk("[ata_tf_to_fis] cmd: 0x%x, lba:0x%lx, size: %d", tf->command, lba, fis[12] + fis[13] * 256);
 	//    if(tf->command==0xCA || tf->command==0x61)  //only write
 	//    {
 
@@ -5822,7 +5822,7 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 	//	printk("[ata_sg_setup]");
 	VPRINTK("ENTER, ata%u\n", ap->print_id);
 
-	printk("[ata_sg_setup] dev: 0x%x", qc->tf.device);
+	//printk("[ata_sg_setup] dev: 0x%x", qc->tf.device);
 
 	//this is for block i/o evaluation code
 	if (0)

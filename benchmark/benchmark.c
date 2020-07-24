@@ -26,7 +26,7 @@ int main(int *argc, char **argv)
     char *bufW = "fklsdjfklsjdfkldsjflkjsdlkf";
     int i = 0;
     char file_path[3][20] = {"/SSD/foo7.txt", "/SSD/foo8.txt", "/SSD/foo9.txt"};
-    char bufS[512];
+    char bufS[4096];
 
     struct timespec clock_s, clock_e;
     double time_s, time_e;
@@ -53,11 +53,12 @@ int main(int *argc, char **argv)
         bufS[i] = 0x55;
 
     //	for(i=0; i<64*1024*16; i++)
-    for (i = 0; i < 1024 * 16; i++)
+    	for(i=0; i<128*1024; i++)
+    //for (i = 0; i < 1024 * 16; i++)
    //     for (i=0; i<1; i++)
     {
         ;
-    	writen = write(fd_key, bufS, 512);
+    	writen = write(fd_key, bufS, 4096);
      //   readn = read(fd_key, bufR, 512);
 
         // lseek(fd_key, 0, SEEK_SET);
@@ -91,12 +92,12 @@ int main(int *argc, char **argv)
     //recovery
     unsigned int r_recovery_time = 0x11111111;
     unsigned int r_fid = 0x22222222;
-    frecovery(fd_key, r_recovery_time, r_fid);
+    //frecovery(fd_key, r_recovery_time, r_fid);
     
     close = syscall(CLOSE_KEY, fd_key);
     clock_gettime(CLOCK_MONOTONIC, &clock_e);
-    time_s = (clock_s.tv_nsec / 10e9) + clock_s.tv_sec;
-    time_e = (clock_e.tv_nsec / 10e9) + clock_e.tv_sec;
+    time_s = (clock_s.tv_nsec / 1e9) + clock_s.tv_sec;
+    time_e = (clock_e.tv_nsec / 1e9) + clock_e.tv_sec;
     printf("time: %.9lf ~ %.9lf = %.9lf\n", time_s, time_e, time_e - time_s);
 
     //  printf("key close file return : %d\n", close);

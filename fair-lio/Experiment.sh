@@ -3,7 +3,7 @@ EXP_FILE="experiment.txt"
 DISK_PATH="/dev/sdc"
 FAIR_LIO="./fair-lio"
 MODE=":--random:-w:-w  --random"
-QNUM="1:2:4:8"
+QNUM="1:2:4:8:16"
 
 for mode in $MODE
 do

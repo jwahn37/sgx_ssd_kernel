@@ -1281,7 +1281,7 @@ long do_sys_open_key(int dfd, const char __user *filename, int flags, umode_t mo
 			fsnotify_open(f);
 			fd_install(fd, f);
 
-			printk("do_sys_open_key");
+		//	printk("do_sys_open_key");
 
 			// ///sgxssd
 			// //f->f_inode->pid = 0x11223344;
@@ -1289,7 +1289,7 @@ long do_sys_open_key(int dfd, const char __user *filename, int flags, umode_t mo
 			f->f_inode->pid = pid;
 			f->f_inode->fid = fid;
 
-			printk("[do_sys_open] pid : 0x%x, fid: 0x%x", pid, fid);
+		//	printk("[do_sys_open] pid : 0x%x, fid: 0x%x", pid, fid);
 			//printk("do_sys_open inode num : %lu, key: %x, %lx", cur_map->inode_num, cur_map->key, (unsigned long)f->f_inode); //key
 
 			//get LBA lists
@@ -1341,7 +1341,7 @@ SYSCALL_DEFINE5(open_key, const char __user *, filename, int, flags, umode_t, mo
 	//	key_lba_table = kmalloc(sizeof(key_lba_table), GFP_KERNEL);
 	//    key_lba_table->lba=11111111;
 	//    key_lba_table->key=key;
-	printk("open_key in");
+	//printk("open_key in");
 
 	if (force_o_largefile())
 		flags |= O_LARGEFILE;
@@ -1587,7 +1587,7 @@ SYSCALL_DEFINE1(close_key, unsigned int, fd)
 
 	retval = __close_fd_key(current->files, fd);
 	//진훈 코드에 지워져있음. why??
-	printk("key file close");
+	//printk("key file close");
 
 	// printk("SYSCALL_DEFINE1(close, int, fd)");
 	/* can't restart close syscall because file table entry was cleared */
