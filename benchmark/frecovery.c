@@ -230,7 +230,7 @@ static void write_recfile(int rec_fd, char* rec_buf, int offset, int size)
 
 static int make_recfile(int file_size)
 {
-	int fd = open("recovery_file.txt", O_RDWR | O_CREAT, 0); //O_RDONLY, O_WRONLY
+	int fd = open("recovery_file1.txt", O_RDWR | O_CREAT, 0); //O_RDONLY, O_WRONLY
 	if (fd == -1)
 		printf("rec FD ERROR!! \n");
 	else

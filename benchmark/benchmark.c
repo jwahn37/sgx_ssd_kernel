@@ -37,7 +37,7 @@ int main(int *argc, char **argv)
     fid = 0x99999999;
     //key=11223344;
     //key file open
-    fd_key = syscall(OPEN_KEY, "/home/jinu/SSD/foo7.txt", O_RDWR | O_CREAT, 0, pid, fid);
+    fd_key = syscall(OPEN_KEY, "/home/jinu/SSD/foo1.txt", O_RDWR | O_CREAT, 0, pid, fid);
     //      fd_key = syscall(OPEN_KEY, file_path[i++], O_RDWR|O_CREAT, 0, key);
     //    fd_key = syscall(OPEN_KEY, "foo.txt", O_RDWR, 0, key);
     printf("pid, fid is 0x%x 0x%x\n", pid, fid);
@@ -49,12 +49,12 @@ int main(int *argc, char **argv)
     //write
     clock_gettime(CLOCK_MONOTONIC, &clock_s);
 
-    for (i = 0; i < 512; i++)
+    for (i = 0; i < 4096; i++)
         bufS[i] = 0x55;
 
     //	for(i=0; i<64*1024*16; i++)
-    	for(i=0; i<128*1024; i++)
-    //for (i = 0; i < 1024 * 16; i++)
+    //	for(i=0; i<128*1024; i++)
+    for (i = 0; i < 1024 * 1; i++)
    //     for (i=0; i<1; i++)
     {
         ;
@@ -92,7 +92,7 @@ int main(int *argc, char **argv)
     //recovery
     unsigned int r_recovery_time = 0x11111111;
     unsigned int r_fid = 0x22222222;
-    //frecovery(fd_key, r_recovery_time, r_fid);
+    frecovery(fd_key, r_recovery_time, r_fid);
     
     close = syscall(CLOSE_KEY, fd_key);
     clock_gettime(CLOCK_MONOTONIC, &clock_e);

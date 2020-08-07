@@ -43,9 +43,12 @@
 
 #define SSD_PAGESIZE (32768)
 //#define SSD_CAPACITY (30*1024*1024*1024)
-unsigned long SSD_CAPACITY = 32212254720;	//30GB
+// unsigned long SSD_CAPACITY = 32212254720;	//30GB
+// unsigned long SSD_CAPACITY = 26843545600;	//25GB
+unsigned long SSD_CAPACITY = 5368709120;	//5GB
 #define SECTOR_SIZE (512)
-#define DAY_SIZE (1073741824)//(1024*1024*1024)
+// #define DAY_SIZE (1073741824)//(800MB*1024*1024)
+#define DAY_SIZE (536870912)// (512MB)
 /* CLOCK_MONOTONIC_HR is not widely available, but we want to use it if we can.
  */
 #ifndef CLOCK_MONOTONIC_HR
@@ -185,7 +188,7 @@ int main(int argc, char **argv)
 	struct iocb **iolist;
 	struct iocb **iolist_ptr;
 	struct io_event *events;
-	struct timespec start, now;
+	struct timespec start, now, prev_day, cur_day;
 	unsigned long total_data, total_writes, total_count;
 	int min_data, max_data;
 	io_context_t ioctx;
@@ -204,6 +207,7 @@ int main(int argc, char **argv)
 		{ NULL }
 	};
 
+	//호스트가 1MB만큼 write요청을 할거임.
 	req_size = 1024 * 1024;
 	//req_size = SSD_PAGESIZE;
 	write_pct = 0.0;
@@ -428,15 +432,11 @@ int main(int argc, char **argv)
 		arena += req_size;
 	}
 
-	printf("timer start!\n");
-	clock_gettime(CLOCK_MONOTONIC_HR, &now);
 //	end.tv_sec = now.tv_sec + run_time;
 //	end.tv_nsec = now.tv_nsec;
 
 	devs[0].replace = 0;
 	in_flight = 0;
-	clock_gettime(CLOCK_MONOTONIC_HR, &start);
-
 	/* Prime the IO pump with our prepared requests
 	 */
 	rc = io_submit(ioctx, ios_ready, iolist);
@@ -459,6 +459,10 @@ int main(int argc, char **argv)
 	int day=0;
 	int day_boundary = DAY_SIZE / req_size;
 	//while (time_before(&now, &end) && !end_of_device) {
+	printf("timer start!\n");
+	clock_gettime(CLOCK_MONOTONIC_HR, &now);
+	clock_gettime(CLOCK_MONOTONIC_HR, &start);
+	clock_gettime(CLOCK_MONOTONIC_HR, &prev_day);
 	while(1)
 	{
 		count = io_getevents(ioctx, 1, in_flight, events, NULL);
@@ -473,11 +477,26 @@ int main(int argc, char **argv)
 			struct dev_info *dev = iocb->data;
 
 			//printf("i : %d\n", i);
-			printf("device offset/lba: 0x%lx 0x%lx\n", dev->offset, dev->offset/SECTOR_SIZE);
+			// printf("device offset/lba: 0x%lx 0x%lx\n", dev->offset, dev->offset/SECTOR_SIZE);
 			//if(cnt%32768==0)
-			if(cnt%(day_boundary)==0)
-				printf("Today is %d\n", day++);
-			printf("cnt : %d\n", ++cnt);
+
+			if(cnt%(day_boundary)==0) {
+				clock_gettime(CLOCK_MONOTONIC_HR, &cur_day);
+				
+				if (day != 0) {			
+					printf("DAY%d\t", day);
+					actual_time = cur_day.tv_nsec - prev_day.tv_nsec;
+					actual_time /= 1e9;
+					actual_time += cur_day.tv_sec - prev_day.tv_sec;
+					printf("%.6f s\n", actual_time);
+				}
+
+				prev_day = cur_day;
+				day++;
+			}
+
+			cnt++;
+			// printf("cnt : %d\n", ++cnt);
 
 			if (events[i].res2) {
 				fprintf(stderr, "%s: got error for %s:"

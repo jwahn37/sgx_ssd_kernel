@@ -791,7 +791,7 @@ void ata_tf_to_fis(const struct ata_taskfile *tf, u8 pmp, int is_cmd, u8 *fis)
 		//printk("[ata_tf_to_fis] lba2 : 0x%x", lba);
 	}
 
-	printk("[ata_tf_to_fis] cmd: 0x%x, lba:0x%lx, size: %d", tf->command, lba, fis[12] + fis[13] * 256);
+	// printk("[ata_tf_to_fis] dev: 0x%x, cmd: 0x%x, lba:0x%lx, size: %d", tf->device, tf->command, lba, fis[12] + fis[13] * 256);
 	//    if(tf->command==0xCA || tf->command==0x61)  //only write
 	//    {
 
@@ -5809,6 +5809,7 @@ static void ata_sg_clean(struct ata_queued_cmd *qc)
  *	Zero on success, negative on error.
  *
  */
+int cnt_fuck=0;
 static int ata_sg_setup(struct ata_queued_cmd *qc)
 {
 	struct ata_port *ap = qc->ap;
@@ -5825,23 +5826,32 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 	//printk("[ata_sg_setup] dev: 0x%x", qc->tf.device);
 
 	//this is for block i/o evaluation code
-	if (0)
+	if (1)
 	{
-		if (qc->tf.device == 0xe0)
-		{
+		//sgx-ssd일경우 versioning ratio=0.2임.
+		if (qc->tf.device == 0xe0) {
 			if (qc->tf.command == 0xCA)				   //0xCA : write dma
 				qc->tf.command = CMD_SGXSSD_WRITE_NOR; //new command.
 			else if (qc->tf.command == 0x35)		   //0x35 : write dma ext
 				qc->tf.command = CMD_SGXSSD_WRITE_EXT; //new command
 
-			cur_pid = 0x11223344;
-			cur_fid = 0x11111111;
-			cur_offset = 0x22222222;
+			// if (cnt++ % 5 != 0) {
+			if (cnt_fuck++ % 5 == 0) { // 80% Retaining
+				cur_pid = 0;
+				cur_fid = 0;
+				cur_offset = 0;
+			}
+			else
+			{
+				cur_pid = 7;
+				cur_fid = 0x11111111;
+				cur_offset = 0x22222222;
+			}
 		}
 	}
 	// //sgxssd get inode to search piggyback set
 	//this is real code
-	if (1)
+	if (0)
 	{
 		if (qc && qc->sg && qc->n_elem > 0)
 		{
@@ -5871,6 +5881,15 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
 		{
 			printk("[ata_sg_setup] fail");
 		}
+	}
+
+	if(qc->tf.command==CMD_SGXSSD_WRITE_NOR &&  ((qc->tf.nsect + qc->tf.hob_nsect == 0) || (qc->tf.nsect + qc->tf.hob_nsect * 256 + SSD_PAGE_SIZE/512) > 0xFF)) 
+	{
+		//DMA_NOR에서는 64를 더해서는 안되는 상황이 있다. 추후 고쳐야 할 부분. 일단 bad로 보내겠음 (piggyback 안함)
+		qc->tf.command = 0xCA;
+		printk("Not piggybacked!");
+	//fis[12] = tf->nsect; //size 조정해서 보내야함. 512byte 추가 구현.
+	//fis[13] = tf->hob_nsect;
 	}
 
 	if (qc->tf.command == CMD_SGXSSD_WRITE_EXT || qc->tf.command == CMD_SGXSSD_WRITE_NOR)

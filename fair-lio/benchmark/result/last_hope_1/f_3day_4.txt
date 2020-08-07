@@ -1,0 +1,28 @@
+opt: q 113
+opt: w 119
+write option: write_pct: 1.000000, optarg = (null)
+opt: ÿ -1
+random range: 0
+random range2: 0
+ndev: 1
+device size: 63909100032
+max_req : 1, arena_size: 2097152
+30GB,,,,
+timer start!
+DAY1	14.386317 s
+DAY2	14.114368 s
+DAY3	14.447857 s
+DAY4	14.111483 s
+DAY5	14.101990 s
+DAY6	14.090373 s
+DAY7	14.099368 s
+DAY8	14.091520 s
+DAY9	14.136143 s
+finish,,,,
+run time: 141.661922 seconds
+queue depth: 1
+operation: sequential write
+request size: 1048576 bytes
+
+M /dev/sdc: 5368709120 36.14 MB/s
+total: 5368709120 36.14 MB/s skew 0.00 MB/s
