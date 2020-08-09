@@ -1,12 +1,15 @@
 #ignore all files
-!jinhoon/
-!diskshield/
+#!jinhoon/
+#!diskshield/
 
-timecapsulessd_kernel/*
-sgxssd_piggyback_device/*
+#timecapsulessd_kernel/*
+#sgxssd_piggyback_device/*
 log*
+modules.builtin
+.cache*
 
-
+timecapsulessd_kernel/.tmp_vmlinux*
+timecapsulessd_kernel/vmlinux*
 # Prerequisites
 *.d
 
